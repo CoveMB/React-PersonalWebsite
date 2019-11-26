@@ -93,4 +93,14 @@
     width: 20%;
     margin: 0 40% 20px 40%;
   }
+
+  .cardBox{
+    margin: 50px 20% 50px 20%;
+  }
+}
+
+@media only screen and (max-width: 855px) {
+  .cardBox{
+    margin: 50px 10% 50px 10%;
+  }
 }

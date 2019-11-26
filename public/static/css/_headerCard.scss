@@ -9,11 +9,17 @@
   z-index: 9999;
 }
 
+.card-header-welcome{
+  text-align: center;
+  font-size: 1.2em;
+  margin: 0 auto;
+}
+
 .headerCardTitle {
-  margin: 30px 4vw 10px 4vw;
+  margin: 0 4vw 0 4vw;
   font-style: normal;
   font-weight: bold;
-  font-size: 1.8em;
+  font-size: 2em;
   line-height: 44px;
   text-align: center;
   color: $darkpurple;
@@ -27,6 +33,19 @@
   font-size: 1.2em;
   line-height: 40px;
   color: $textgrey;
+}
+
+
+.social-icons-header{
+  width: 60%;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.svgSocialHeader{
+  margin-top: 38px;
+  width: 40px;
 }
 
 .svgDone{
@@ -66,7 +85,6 @@
   .headerCardText{
     font-size: 0.9em;
   }
-
 }
 
 @media only screen and (max-width: 1538px) {
@@ -86,6 +104,14 @@
   .header-card {
     width: 65vw;
   }
+
+  .card-header-welcome{
+    font-size: 1.4em;
+  }
+
+  .headerCardTitle {
+    font-size: 2.2em;
+  }
 }
 
 @media only screen and (max-width: 800px) {
@@ -94,5 +120,39 @@
     padding-top: 80px;
     width: 100vw;
     margin: -100vh 0 0 0;
+  }
+
+  .card-header-welcome{
+    font-size: 1.5em;
+  }
+
+  .headerCardTitle {
+    font-size: 2.3em;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .header-card {
+    min-height: 100vh;
+    padding-top: 80px;
+    width: 100vw;
+    margin: -100vh 0 0 0;
+  }
+
+  .card-header-welcome{
+    font-size: 1.5em;
+  }
+
+  .headerCardTitle {
+    font-size: 2em;
+  }
+
+  .headerCardText{
+    margin: 30px 4% 60px 4%;
+  }
+
+  .svgSocialHeader{
+    margin-top: 28px;
+    width: 30px;
   }
 }

@@ -8,7 +8,7 @@
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
-  background-color: #F3F3F3;
+  background-color: transparent;
   z-index: 999;
   transition: top 0.8s ease;
 }
@@ -24,6 +24,9 @@
   margin: 6px;
   border-radius: 45px;
   border: 2px solid $darkpurple;
+  -moz-box-shadow:    2px 4px 15px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
 }
 
 .navBtn:hover{
@@ -39,4 +42,11 @@
   border: none;
   margin: 0;
   padding: 0;
+}
+
+@media only screen and (max-width: 800px) {
+  .navbar {
+    height: 8vh;
+    background-color: #F3F3F3;
+  }
 }

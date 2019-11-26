@@ -1,35 +1,21 @@
 import React from 'react';
 import Plx from 'react-plx';
-import BrandWhite from './Avatar';
+import Avatar from './Avatar';
 import HeaderCardContent from './HeaderCardContent';
 
-
-const parallaxData = [
-  {
-    start: "self",
-    duration: 600,
-    easing: "easeIn",
-    properties: [
-      {
-        startValue: 0,
-        endValue: 8,
-        property: 'translateX',
-      },
-    ],
-  },
-];
+import { parallaxDataHeader } from '../../parallaxEffects/parallaxEffects';
 
 const headerCard = () => {
   return (
     <Plx
       className="parallaxTitle"
-      parallaxData={parallaxData}
+      parallaxData={parallaxDataHeader}
     >
       <div
         className="header-card scrollbarxcustom"
       >
         <div className="gradient-square-avatar">
-          <BrandWhite />
+          <Avatar />
         </div>
         <HeaderCardContent />
       </div>

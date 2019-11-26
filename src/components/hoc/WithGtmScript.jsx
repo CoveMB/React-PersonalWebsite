@@ -3,9 +3,9 @@ import TagManager from 'react-gtm-module';
 
 const gtmScript = (props) => {
   useEffect(() => {
-    if (window.location.href.match(/vizzmd.com/)) {
+    if (window.location.href.match(/benjaminmarquis.ia/)) {
       const tagManagerArgs = {
-        gtmId: 'GTM-TRVFXQP'
+        gtmId: 'GTM-PJVMQR7'
       };
       TagManager.initialize(tagManagerArgs);
     }

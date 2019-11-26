@@ -29,6 +29,21 @@ export const parallaxDataOpacity = nextId => [
   },
 ];
 
+export const parallaxDataHeader = [
+  {
+    start: "self",
+    duration: 600,
+    easing: "easeIn",
+    properties: [
+      {
+        startValue: 0,
+        endValue: 8,
+        property: 'translateX',
+      },
+    ],
+  },
+];
+
 export const parallaxDataCentech = [
   {
     start: "self",

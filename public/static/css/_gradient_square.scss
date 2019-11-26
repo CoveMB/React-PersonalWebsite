@@ -1,19 +1,27 @@
 .header-card-avatar{
   width: 100%;
   border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
   padding: 0.4rem;
+
 }
 
 .gradient-square-avatar{
   background: linear-gradient(90deg, $darkpurple 0%, $lightpurple 100%);
   width: 25%;
   border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
   margin: -65px auto 20px auto;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   z-index: 30;
+  -moz-box-shadow:    2px 4px 15px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .brandHeaderCard{
