@@ -1,0 +1,28 @@
+.header-card-avatar{
+  width: 100%;
+  border-radius: 150px;
+  padding: 0.4rem;
+}
+
+.gradient-square-avatar{
+  background: linear-gradient(90deg, $darkpurple 0%, $lightpurple 100%);
+  width: 25%;
+  border-radius: 150px;
+  margin: -65px auto 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 30;
+}
+
+.brandHeaderCard{
+  padding: 6%;
+  width:70% ;
+}
+
+@media only screen and (max-width: 1024px) {
+  .gradient-square-avatar{
+    margin: -50px auto 20px auto;
+  }
+}

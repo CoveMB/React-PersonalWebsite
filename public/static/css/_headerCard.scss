@@ -1,0 +1,98 @@
+.header-card {
+  width: 40vw;
+  min-height: 95vh;
+  margin: -92vh 0 0 5vh;
+  padding-top: 25px;
+  padding-bottom: 1px;
+  background: $backgroundwhite;
+  border-radius: 4px 4px 4px 4px;
+  z-index: 9999;
+}
+
+.headerCardTitle {
+  margin: 30px 4vw 10px 4vw;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 1.8em;
+  line-height: 44px;
+  text-align: center;
+  color: $darkpurple;
+}
+
+.headerCardText{
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  margin: 30px 8% 60px 8%;
+  font-size: 1.2em;
+  line-height: 40px;
+  color: $textgrey;
+}
+
+.svgDone{
+  width: 1.4em;
+  margin: 0 6px 6px 0
+}
+
+.headerList {
+  list-style: square;
+}
+
+.grabEmailPart{
+  margin: 30px 0;
+}
+
+.btnVizz{
+  background-color: $darkpurple;
+  color: white;
+}
+
+.emailSucces{
+  margin: 50px auto 0 auto;
+  width: 60%;
+  text-align: center;
+  color: $darkpurple;
+}
+
+@media only screen and (max-width: 1024px) {
+  .grabEmailPart{
+    margin-bottom: 20px;
+  }
+
+  .headerCardTitle {
+    font-size: 1.8em;
+  }
+
+  .headerCardText{
+    font-size: 0.9em;
+  }
+
+}
+
+@media only screen and (max-width: 1538px) {
+  .header-card {
+    width: 45vw;
+  }
+}
+
+
+@media only screen and (max-width: 1340px) {
+  .header-card {
+    width: 55vw;
+  }
+}
+
+@media only screen and (max-width: 995px) {
+  .header-card {
+    width: 65vw;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .header-card {
+    min-height: 100vh;
+    padding-top: 80px;
+    width: 100vw;
+    margin: -100vh 0 0 0;
+  }
+}

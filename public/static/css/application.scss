@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Ubuntu:400,700&display=swap');
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+@import 'colors';
+@import 'header';
+@import 'headerCard';
+@import 'gradient_square';
+@import 'navbar';
+@import 'cards';
+@import 'scrollbar';
+@import 'spinner';
+@import 'features';
+@import 'ongoing';
+@import 'text';
+@import 'footer';
+@import 'navBtn';
+
+body {
+  margin:0;
+  padding:0;
+  background-color: $backgroundwhite;
+  width: 100%;
+  color: $textgrey;
+  font-family: 'Lato', sans-serif;
+  overflow-x: hidden;
+}
+
+.normalizedBackground{
+  width: 100%;
+  background-color: $backgroundwhite;
+  margin: -5vh 0 0 0;
+  padding: 50px 0 50px 0;
+  border: 1px 1px 1px 1px solid $backgroundwhite;
+}
+
+.normalizedBackgroundWhite{
+  width: 100%;
+  background-color: $cardwhite;
+  margin: 0;
+  padding: 50px 0 50px 0;
+}
+
+.normalizedBackgroundbig{
+  width: 100%;
+  height: 200vh;
+  background-color: $backgroundwhite;
+  margin: 0;
+  padding-bottom: 65px;
+}
+
+.makeItFlex{
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.displayNone{
+  display: none;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
