@@ -44,7 +44,7 @@ export const parallaxDataHeader = [
   },
 ];
 
-export const parallaxDataCentech = [
+export const parallaxDataProjectLeft = [
   {
     start: "self",
     duration: 550,
@@ -59,10 +59,10 @@ export const parallaxDataCentech = [
   },
 ];
 
-export const parallaxDataMvp = [
+export const parallaxDataProjectRight = [
   {
     start: "self",
-    duration: 250,
+    duration: 550,
     easing: "linear",
     properties: [
       {
@@ -74,10 +74,10 @@ export const parallaxDataMvp = [
   },
 ];
 
-export const parallaxDataPT = [
+export const parallaxDataLN = [
   {
     start: "self",
-    duration: 300,
+    duration: 200,
     easing: "linear",
     properties: [
       {
@@ -89,10 +89,10 @@ export const parallaxDataPT = [
   },
 ];
 
-export const parallaxDataPE = [
+export const parallaxDataPO = [
   {
     start: "self",
-    duration: 500,
+    duration: 450,
     easing: "linear",
     properties: [
       {
@@ -104,7 +104,7 @@ export const parallaxDataPE = [
   },
 ];
 
-export const parallaxDataOM = [
+export const parallaxDataAN = [
   {
     start: "self",
     duration: 700,

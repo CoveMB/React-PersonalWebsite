@@ -9,12 +9,13 @@ const headerCardContent = () => {
       </div>
       <div className="headerCardText">
         <h2 style={{ marginBottom: "20px" }}>
-          🚀 Some Milestones:
+          Some Milestones:
         </h2>
-        <p className="cardListCompetence"><img style={{ marginLeft: "15px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /><strong className="darkblueTitle">Machine Learning Apprentice</strong> (Coursera)</p>
-        <p className="cardListCompetence"><img style={{ marginLeft: "15px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /><strong className="darkblueTitle">VizzMD's CTO</strong> (CENTEQ)</p>
-        <p className="cardListCompetence"><img style={{ marginLeft: "15px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /><strong className="darkblueTitle">Full Stack Developer</strong> (Le Wagon)</p>
-        <p className="cardListCompetence"><img style={{ marginLeft: "15px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /><strong className="darkblueTitle">Sociology Master degree</strong> (UQAM)</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🧠 Machine Learning Apprentice</strong> (Coursera)</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🚀 VizzMD's CTO</strong> (CENTEQ)</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">👨‍💻 Full Stack Developer</strong> (Le Wagon)</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"> 👨‍🍳 Team Lead</strong> (Mamie Clafoutis)</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🎓 Sociology Master degree</strong> (UQAM)</p>
         <div className="grabEmailPart" />
       </div>
       <div className="headerCardText">

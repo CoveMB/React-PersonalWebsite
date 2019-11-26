@@ -6,9 +6,9 @@ import OpacityParallax from './hoc/OpacityParallax';
 import NavBtns from './NavBtns';
 import NavBar from './navbar/NavBar';
 import Header from './header/Header';
-import Features from './features/Features';
-import CardsContainer from './cards/CardsContainer';
-import Ongoing from './ongoing/Ongoing';
+import Story from './story/Story';
+import QualificationContainer from './qualifications/QualificationContainer';
+import Projects from './projects/Projects';
 import ParalaxTitle from './ParalaxTitle';
 import Footer from './footer/Footer';
 
@@ -46,21 +46,21 @@ const app = () => {
       <NavBtns />
       <NavBar />
       <Header />
-      <OpacityParallax nextId="#features">
+      <OpacityParallax nextId="#projects">
         <div className="normalizedBackground" id="cardsDiv" ref={cardsRef}>
-          <ParalaxTitle title="Les enjeux des soins de santé aujourd'hui" />
-          <CardsContainer />
+          <ParalaxTitle title="My Peculiarities" />
+          <QualificationContainer />
         </div>
       </OpacityParallax>
-      <OpacityParallax nextId="#ongoing">
+      <OpacityParallax nextId="#story">
         <div className="normalizedBackgroundWhite" ref={featuresRef}>
-          <ParalaxTitle title="Passez du papier au numérique" idElement="features" />
-          <Features />
+          <ParalaxTitle title="Some Of My Projects" idElement="projects" />
+          <Projects />
         </div>
       </OpacityParallax>
       <div className="normalizedBackgroundWhite" ref={ongoingRef}>
-        <ParalaxTitle title="Origine et avancement du projet" idElement="ongoing" />
-        <Ongoing />
+        <ParalaxTitle title="Short Story About My Coding Journey" idElement="story" />
+        <Story />
       </div>
       <Footer />
     </Fragment>

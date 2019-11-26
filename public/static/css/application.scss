@@ -11,8 +11,9 @@
 @import 'scrollbar';
 @import 'spinner';
 @import 'features';
-@import 'ongoing';
+@import 'projects';
 @import 'text';
+@import 'story';
 @import 'footer';
 @import 'navBtn';
 
@@ -30,7 +31,7 @@ body {
   width: 100%;
   background-color: $backgroundwhite;
   margin: -5vh 0 0 0;
-  padding: 50px 0 50px 0;
+  padding: 60px 0 100px 0;
   border: 1px 1px 1px 1px solid $backgroundwhite;
 }
 
@@ -38,7 +39,7 @@ body {
   width: 100%;
   background-color: $cardwhite;
   margin: 0;
-  padding: 50px 0 50px 0;
+  padding: 100px 0 100px 0;
 }
 
 .normalizedBackgroundbig{

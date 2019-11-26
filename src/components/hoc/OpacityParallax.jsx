@@ -4,7 +4,6 @@ import Plx from 'react-plx';
 import { parallaxDataOpacity } from '../../parallaxEffects/parallaxEffects';
 
 const opacityParallax = (props) => {
-  console.log(props.nextId);
   return (
     <Plx
       className={props.classNameElement}

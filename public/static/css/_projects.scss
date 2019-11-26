@@ -1,0 +1,98 @@
+.ongoingIntro{
+  width: 70%;
+  margin: 60px auto 60px auto;
+}
+
+.ongoingSeparator{
+  width: 10%;
+  border: 1.5px solid $textgrey;
+  margin: 50px auto;
+}
+
+.ongoingRow{
+  display: flex;
+  align-items: center;
+  width: 70%;
+  margin: 0 15% 0 15%;
+}
+
+.ongoingText{
+  margin: auto 0 20px 0;
+  width: 60%;
+  text-align: center;
+}
+
+.project-image-n-details{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 40%;
+}
+
+.projectImageleft{
+  width: 70%;
+  margin: 0 30% 0 0;
+  cursor: pointer;
+}
+
+.projectImageright{
+  width: 70%;
+  margin: 0 0 0 30%;
+  cursor: pointer;
+}
+
+.projectBtnPositionleft{
+  text-align: center;
+  width: 70%;
+  margin: 50px 30% 0 0;
+}
+
+.projectBtnPositionright{
+  text-align: center;
+  width: 70%;
+  margin: 50px 0 0 30%;
+}
+
+.projectRepoBtn{
+  width: 40px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .projectImageright{
+    width: 70%;
+    margin: 0 15% 0 15%;
+  }
+
+  .projectImageleft{
+    width: 70%;
+    margin: 0 15% 0 15%;
+  }
+
+  .projectBtnPositionleft{
+    text-align: center;
+    width: 70%;
+    margin: 50px 15% 0 15%;
+  }
+
+  .projectBtnPositionright{
+    text-align: center;
+    width: 70%;
+    margin: 50px 15% 0 15%;
+  }
+
+  .ongoingIntro{
+    width: 80%;
+    margin: 60px auto 60px auto;
+  }
+
+  .ongoingText{
+    margin: auto 0;
+    width: 80%;
+    margin: 60px auto 60px auto;
+  }
+
+  .ongoingRow{
+    width: 90%;
+    margin: 0 auto 0 auto;
+  }
+}
