@@ -3,7 +3,7 @@ import TagManager from 'react-gtm-module';
 
 const gtmScript = (props) => {
   useEffect(() => {
-    if (window.location.href.match(/benjaminmarquis.ia/)) {
+    if (window.location.href.match(/benjaminmarquis.com/)) {
       const tagManagerArgs = {
         gtmId: 'GTM-PJVMQR7'
       };
