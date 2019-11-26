@@ -19,7 +19,7 @@ const headerCardContent = () => {
         <div className="grabEmailPart" />
       </div>
       <div className="headerCardText">
-        <h2 style={{ marginBottom: "20px" }}>
+        <h2 style={{ marginBottom: "10px" }}>
           Find me there:
         </h2>
         <div className="social-icons-header">
