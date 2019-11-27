@@ -11,12 +11,12 @@ const headerCardContent = () => {
         <p className="cardListCompetenceTitle" style={{ marginBottom: "20px" }}>
           MILESTONES:
         </p>
-        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🧠 Machine Learning Apprentice</strong> (Coursera)</p>
-        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🚀 VizzMD's CTO</strong> (CENTECH)</p>
-        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">👨‍💻 Full Stack Developer</strong> (Le Wagon)</p>
-        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"> 📈 Digital Marketing Specialist</strong> (LCI Education)</p>
-        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"> 👨‍🍳 Team Lead</strong> (Mamie Clafoutis)</p>
-        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🎓 Sociology Master degree</strong> (UQAM)</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🧠 Machine Learning Apprentice</strong> | Coursera</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🚀 VizzMD's CTO</strong> | Centech</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">👨‍💻 Full Stack Developer</strong> | Le Wagon</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"> 📈 Digital Marketing Specialist</strong> | LCI Education</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"> 👨‍🍳 Team Lead</strong> | Mamie Clafoutis</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🎓 Sociology Master degree</strong> | UQAM</p>
         <div className="grabEmailPart" />
       </div>
       <div className="headerCardText">
