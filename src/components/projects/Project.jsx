@@ -63,7 +63,7 @@ const project = (props) => {
       return (
         <div className="makeItFlex ongoingRow">
           <div className="project-image-n-details">
-            <a href={getWebsite()} target="_blank"><img className={`projectImage${side}`} src={`/static/images/${projectName}.png`} alt={`${projectName} logo`} width="90px" /></a>
+            <a href={getWebsite()} target="_blank"><img className={`projectImage${side} projectImage${projectName}`} src={`/static/images/${projectName}.png`} alt={`${projectName} logo`} width="90px" /></a>
             <a className={`projectBtnPosition${side}`} href={getGithubRepo()} target="_blank"><img className="projectRepoBtn" src="/static/images/github.svg" alt="Github Icon" /></a>
           </div>
           { getProjectText() }
