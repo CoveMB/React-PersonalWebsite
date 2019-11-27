@@ -1,0 +1,4 @@
+{
+  "presets": [ "next/babel" ],
+  "plugins": [ "transform-class-properties", "@babel/plugin-proposal-object-rest-spread", "@babel/plugin-syntax-dynamic-import", ["styled-components", { "ssr": true, "displayName": true, "preprocess": false } ]]
+}

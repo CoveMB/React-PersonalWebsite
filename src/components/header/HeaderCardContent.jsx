@@ -21,7 +21,7 @@ const headerCardContent = () => {
       </div>
       <div className="headerCardText">
         <h2 style={{ marginBottom: "10px" }}>
-          Find me there:
+          Contact me:
         </h2>
         <div className="social-icons-header">
           <a className="footerLink" href="mailto:bmarquiscom@gmail.com"><img className="svgSocialHeader" src="/static/images/email.svg" alt="email icon" /></a>
