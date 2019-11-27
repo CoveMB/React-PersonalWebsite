@@ -28,7 +28,7 @@ const qualification = (props) => {
       case "polyvalent":
         return (
           <p className="cardText">
-            My different experiences helped me aquire multiple skills, allowing me to take charge of polyvalent missions, with an holistic point of view. I can prioritise and optimise work across many projects and deliver within time constraints.<strong className="blueTitle">I make plans in order to achieve defined goals.</strong>
+            My different experiences helped me aquire multiple skills, allowing me to take charge of polyvalent missions, with an holistic point of view. I can prioritise and optimise work across many projects and deliver within time constraints.<strong className="blueTitle"> I make plans in order to achieve defined goals.</strong>
           </p>);
       case "analytical":
         return (

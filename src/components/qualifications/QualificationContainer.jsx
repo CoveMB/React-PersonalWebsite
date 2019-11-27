@@ -5,7 +5,7 @@ const qualificationContainer = () => {
   const cardTitle = (topic) => {
     switch (topic) {
       case "learning":
-        return <h2 className="cardTitle">Allways Learning</h2>;
+        return <h2 className="cardTitle">Always Learning</h2>;
       case "polyvalent":
         return <h2 className="cardTitle">Polyvalent Abilities</h2>;
       case "analytical":

@@ -9,7 +9,7 @@ const headerCardContent = () => {
       </div>
       <div className="headerCardText">
         <p className="cardListCompetenceTitle" style={{ marginBottom: "20px" }}>
-          Milestones:
+          MILESTONES:
         </p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🧠 Machine Learning Apprentice</strong> (Coursera)</p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🚀 VizzMD's CTO</strong> (CENTECH)</p>
@@ -21,7 +21,7 @@ const headerCardContent = () => {
       </div>
       <div className="headerCardText">
         <p className="cardListCompetenceTitle"style={{ marginBottom: "10px" }}>
-          Contact me:
+          CONTACT ME:
         </p>
         <div className="social-icons-header">
           <a className="footerLink" href="mailto:bmarquiscom@gmail.com"><img className="svgSocialHeader" src="/static/images/email.svg" alt="email icon" /></a>
