@@ -1,5 +1,6 @@
 @import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
 @import url('https://fonts.googleapis.com/css?family=Lato|Lustria&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css');
 
 @import 'colors';
 @import 'header';
@@ -29,7 +30,7 @@ body {
 .normalizedBackground{
   width: 100%;
   background-color: $backgroundwhite;
-  margin: -5vh 0 0 0;
+  margin: -5.5vh 0 0 0;
   padding: 60px 0 100px 0;
   border: 1px 1px 1px 1px solid $backgroundwhite;
 }

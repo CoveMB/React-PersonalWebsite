@@ -12,7 +12,7 @@ const headerCardContent = () => {
           Some Milestones:
         </h2>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🧠 Machine Learning Apprentice</strong> (Coursera)</p>
-        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🚀 VizzMD's CTO</strong> (CENTEQ)</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🚀 VizzMD's CTO</strong> (CENTECH)</p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">👨‍💻 Full Stack Developer</strong> (Le Wagon)</p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"> 📈 Digital Marketing Specialist</strong> (LCI Education)</p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"> 👨‍🍳 Team Lead</strong> (Mamie Clafoutis)</p>

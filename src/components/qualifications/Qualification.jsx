@@ -22,18 +22,18 @@ const qualification = (props) => {
       case "learning":
         return (
           <p className="cardText">
-            A great capacity for adaptation and a passion for learning. Will learn how to do anything that need to be done or to be improve, automating what can be along the way. Like to research and propose <strong className="blueTitle">new and inovative solutions to challenging problems</strong>
+            I Have a great capacity for adaptation and a passion for learning. I will learn how to do anything that I need to do or to be improve, automating what can be along the way. I like to research and propose <strong className="blueTitle">new and inovative solutions to challenging problems</strong>
           </p>
         );
       case "polyvalent":
         return (
           <p className="cardText">
-            Different experiences that develloped a faculty to take charge of polyvalent missions, with an holistic point of view. Can prioritise and optimise work across many projects and deliver within time constraints.<strong className="blueTitle">To make plans in order to achieve defined goals.</strong>
+            My different experiences helped me aquire multiple skills, allowing me to take charge of polyvalent missions, with an holistic point of view. I can prioritise and optimise work across many projects and deliver within time constraints.<strong className="blueTitle">I make plans in order to achieve defined goals.</strong>
           </p>);
       case "analytical":
         return (
           <p className="cardText">
-            A critical analytical thinking developed through both my education in human and social sciences, in qualitative and quantitative research and also my programming experience. Which <strong className="blueTitle">allows me the analysis and understanding of data</strong> to take better decisions.
+            I developed a critical analytical thinking through my education in human and social sciences, in qualitative and quantitative research. That my programming experience reinforced. Which <strong className="blueTitle">allows me the analysis and understanding of data</strong> to take better decisions.
           </p>
         );
       default:

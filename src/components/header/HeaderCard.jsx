@@ -12,7 +12,7 @@ const headerCard = () => {
       parallaxData={parallaxDataHeader}
     >
       <div
-        className="header-card scrollbarxcustom"
+        className="header-card scrollbarxcustom animated fadeIn"
       >
         <div className="gradient-square-avatar">
           <Avatar />
