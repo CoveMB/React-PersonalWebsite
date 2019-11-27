@@ -8,9 +8,9 @@ const headerCardContent = () => {
         <h1 className="headerCardTitle">Benjamin Marquis</h1>
       </div>
       <div className="headerCardText">
-        <h2 style={{ marginBottom: "20px" }}>
-          Some Milestones:
-        </h2>
+        <p className="cardListCompetenceTitle" style={{ marginBottom: "20px" }}>
+          Milestones:
+        </p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🧠 Machine Learning Apprentice</strong> (Coursera)</p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">🚀 VizzMD's CTO</strong> (CENTECH)</p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">👨‍💻 Full Stack Developer</strong> (Le Wagon)</p>
@@ -20,9 +20,9 @@ const headerCardContent = () => {
         <div className="grabEmailPart" />
       </div>
       <div className="headerCardText">
-        <h2 style={{ marginBottom: "10px" }}>
+        <p className="cardListCompetenceTitle"style={{ marginBottom: "10px" }}>
           Contact me:
-        </h2>
+        </p>
         <div className="social-icons-header">
           <a className="footerLink" href="mailto:bmarquiscom@gmail.com"><img className="svgSocialHeader" src="/static/images/email.svg" alt="email icon" /></a>
           <a className="footerLink" href="https://www.linkedin.com/in/benjamin-marquis-6956b367/?locale=en_US" target="_blank"><img className="svgSocialHeader" src="/static/images/linkedinSvg.svg" alt="LinkedIn Icon" /></a>

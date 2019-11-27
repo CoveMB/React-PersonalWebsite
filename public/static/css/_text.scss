@@ -15,8 +15,12 @@ p {
 }
 
 .cardListCompetence{
-  font-size: 20px;
+  font-size: 22px;
   margin-top: 10px;
+}
+
+.cardListCompetenceTitle{
+  font-size: 25px;
 }
 
 .cardTitle{
@@ -45,7 +49,7 @@ p {
 }
 
 .darkblueTitle{
-  color: $darkpurple;
+  color: $lightpurple;
   font-weight: 900;
   font-size: 1.05em;
 }
