@@ -4,6 +4,7 @@ export default {
   keywords: "full-stack developer, machine learning, programming, developer, react, js, node, docker",
   robot: 'index, follow',
   viewport: 'width=device-width, initial-scale=1',
+  canonical: 'https://www.benjaminmarquis.com/',
   openGraph: {
     type: 'profile',
     locale: 'en_IE',
