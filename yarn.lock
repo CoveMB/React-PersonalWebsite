@@ -6313,6 +6313,11 @@ next-redux-wrapper@^4.0.1:
   resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-4.0.1.tgz#70f2d83b5bd0fb07ec19e6e70bea6b179d295fd7"
   integrity sha512-aj9s4VT062hvrU8k2OQevf6iffHSIXpDXtIA8xbLzfpP94h3w7vZCmAJmbmfq3rXignqJT3KG44GODwsCQmdsA==
 
+next-seo@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/next-seo/-/next-seo-3.0.0.tgz#2b93397cd5d11103897c7d863d0948f3f650a087"
+  integrity sha512-Q072RQw/T4CY2yGnX6WRIFBVsizx19L9VeQKdnXB6g4NFGvzv2yPfmGdblS+/uVVSne63CXwDz0h4um1bFRVAQ==
+
 next@^9.0.8-canary.5:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/next/-/next-9.1.1.tgz#bede2e834548020bc4d3be0c46e3ed7edaac6d14"
