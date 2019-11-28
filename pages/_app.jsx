@@ -18,7 +18,7 @@ class MyApp extends App {
     return (
       <WithGtmScript>
         <Head>
-          <meta name="title" content="Benjamin Marquis" />
+          // <meta name="title" content="Benjamin Marquis" />
           <meta name="description" content="Find some of my last projects!" />
           <meta name="keywords" content="full-stack developer, machine learning, programming, developer, react, js, node, docker" />
           <meta name="robots" content="index, follow" />
@@ -32,8 +32,8 @@ class MyApp extends App {
           <meta property="og:type" content="profile" />
           <meta property="og:image" src="/static/images/ogimage.png" />
           <meta property="og:image:type" content="image/png" />
-          <meta property="og:image:width" content="400" />
-          <meta property="og:image:height" content="300" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
           <meta property="og:image:alt" content="A banner open graph image with a meeting image an my avatar" />
         </Head>
         <Component {...pageProps} />
