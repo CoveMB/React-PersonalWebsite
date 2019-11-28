@@ -14,7 +14,7 @@ export default {
     site_name: 'Benjamin Marquis - Find some of my projects!',
     images: [
       {
-        url: "/static/images/ogimage.png",
+        url: "https://ruby-portfolio-bucket.s3.ca-central-1.amazonaws.com/ogimage.png",
         width: "1200",
         height: "630",
         type: "image/png",
