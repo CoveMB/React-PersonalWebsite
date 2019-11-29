@@ -27,9 +27,11 @@
 }
 
 .headerCardText{
+  // width: 84%;
+  text-align: left;
   font-style: normal;
   font-weight: bold;
-  margin: 30px 8% 46px 8%;
+  margin: 30px 6% 46px 6%;
   font-size: 1.2em;
   line-height: 40px;
   color: $textgrey;
@@ -100,7 +102,7 @@
   }
 }
 
-@media only screen and (max-width: 995px) {
+@media only screen and (max-width: 1010px) {
   .header-card {
     width: 65vw;
   }
@@ -114,7 +116,7 @@
   }
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 870px) {
   .header-card {
     min-height: 100vh;
     padding-top: 80px;
@@ -131,7 +133,7 @@
   }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 570px) {
   .header-card {
     min-height: 100vh;
     padding-top: 80px;
