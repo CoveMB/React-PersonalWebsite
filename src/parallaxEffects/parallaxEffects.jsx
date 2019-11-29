@@ -1,3 +1,33 @@
+export const parallaxDataHeaderImage = [
+  {
+    start: 300,
+    duration: 450,
+    easing: "linear",
+    properties: [
+      {
+        startValue: 1,
+        endValue: 0,
+        property: 'opacity',
+      },
+    ],
+  },
+];
+
+export const parallaxDataHeaderCard = [
+  {
+    start: 0,
+    duration: 600,
+    easing: "linear",
+    properties: [
+      {
+        startValue: 0,
+        endValue: -800,
+        property: 'translateY',
+      },
+    ],
+  },
+];
+
 export const parallaxDataTitle = [
   {
     start: "self",
@@ -12,7 +42,6 @@ export const parallaxDataTitle = [
     ],
   },
 ];
-
 
 export const parallaxDataOpacity = nextId => [
   {
