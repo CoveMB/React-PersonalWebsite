@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import Plx from 'react-plx';
 import { TweenLite } from "gsap";
 import HeaderCard from './HeaderCard';
@@ -7,7 +7,6 @@ import HeaderWave from './HeaderWave';
 import { parallaxDataHeaderImage, parallaxDataHeaderCard } from '../../parallaxEffects/parallaxEffects';
 
 const header = () => {
-  // const [width, setWidth] = useState(0);
   const largeHeader = useRef();
   const canvas = useRef();
 
