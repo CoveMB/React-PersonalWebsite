@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import Plx from 'react-plx';
 import { TweenLite } from "gsap";
 import HeaderCard from './HeaderCard';
@@ -7,11 +7,8 @@ import HeaderWave from './HeaderWave';
 import { parallaxDataHeaderImage, parallaxDataHeaderCard } from '../../parallaxEffects/parallaxEffects';
 
 const header = () => {
-  const largeHeader = useRef();
-  const canvas = useRef();
-
   const testAnimation = () => {
-    let width; let height; let ctx; let points; let target; let
+    let width; let height; let canvas; let largeHeader; let ctx; let points; let target; let
       animateHeader = true;
 
     function initHeader() {
@@ -19,11 +16,13 @@ const header = () => {
       height = window.innerHeight;
       target = { x: width / 2, y: height / 2 };
 
-      largeHeader.current.style.height = `${height}px`;
+      largeHeader = document.getElementById('large-header');
+      largeHeader.style.height = `${height}px`;
 
-      canvas.current.width = width;
-      canvas.current.height = height;
-      ctx = canvas.current.getContext('2d');
+      canvas = document.getElementById('demo-canvas');
+      canvas.width = width;
+      canvas.height = height;
+      ctx = canvas.getContext('2d');
 
       // create points
       points = [];
@@ -95,9 +94,9 @@ const header = () => {
     function resize() {
       width = window.innerWidth;
       height = window.innerHeight;
-      largeHeader.current.style.height = `${height}px`;
-      canvas.current.width = width;
-      canvas.current.height = height;
+      largeHeader.style.height = `${height}px`;
+      canvas.width = width;
+      canvas.height = height;
     }
 
     // animation
@@ -203,8 +202,8 @@ const header = () => {
       >
         <div className="demo-1">
           <div className="content">
-            <div ref={largeHeader} className="large-header">
-              <canvas ref={canvas} />
+            <div id="large-header" className="large-header">
+              <canvas id="demo-canvas" />
               <h1 className="main-title">Connect <span className="thin">Three</span></h1>
             </div>
           </div>
