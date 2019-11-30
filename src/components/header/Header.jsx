@@ -7,9 +7,65 @@ import HeaderWave from './HeaderWave';
 import { parallaxDataHeaderImage, parallaxDataHeaderCard } from '../../parallaxEffects/parallaxEffects';
 
 const header = () => {
-  const testAnimation = () => {
-    let width; let height; let canvas; let largeHeader; let ctx; let points; let target; let
-      animateHeader = true;
+  console.log("render header");
+
+  let width;
+  let height;
+  let canvas;
+  let largeHeader;
+  let ctx;
+  let points;
+  let target;
+  let animateHeader = true;
+
+  const mouseMove = (e) => {
+    let posx = 0;
+    let posy = 0;
+    if (e.pageX || e.pageY) {
+      posx = e.pageX;
+      posy = e.pageY;
+    } else if (e.clientX || e.clientY) {
+      posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+      posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+    }
+    target.x = posx;
+    target.y = posy;
+  };
+
+  const scrollCheck = () => {
+    if (document.body.scrollTop > height) animateHeader = false;
+    else animateHeader = true;
+  };
+
+  const resize = () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    largeHeader.style.height = `${height}px`;
+    canvas.width = width;
+    canvas.height = height;
+  };
+
+  const addListeners = () => {
+    if (!('ontouchstart' in window)) {
+      window.addEventListener('mousemove', mouseMove);
+    }
+    window.addEventListener('scroll', scrollCheck);
+    window.addEventListener('resize', resize);
+  };
+
+  const removeListeners = () => {
+    if (!('ontouchstart' in window)) {
+      window.removeEventListener('mousemove', mouseMove);
+    }
+    window.removeEventListener('scroll', scrollCheck);
+    window.removeEventListener('resize', resize);
+  };
+
+  const startAnimation = () => {
+    // Util
+    function getDistance(p1, p2) {
+      return ((p1.x - p2.x) ** 2) + ((p1.y - p2.y) ** 2);
+    }
 
     function initHeader() {
       width = window.innerWidth;
@@ -28,8 +84,8 @@ const header = () => {
       points = [];
       for (let x = 0; x < width; x += width / 20) {
         for (let y = 0; y < height; y += height / 20) {
-          const px = x + Math.random() * width / 20;
-          const py = y + Math.random() * height / 20;
+          const px = x + (Math.random() * (width / 20));
+          const py = y + (Math.random() * (height / 20));
           const p = { x: px, originX: px, y: py, originY: py };
           points.push(p);
         }
@@ -41,11 +97,11 @@ const header = () => {
         const p1 = points[i];
         for (let j = 0; j < points.length; j++) {
           const p2 = points[j];
-          if (!(p1 == p2)) {
+          if (!(p1 === p2)) {
             let placed = false;
             for (var k = 0; k < 5; k++) {
               if (!placed) {
-                if (closest[k] == undefined) {
+                if (closest[k] === undefined) {
                   closest[k] = p2;
                   placed = true;
                 }
@@ -72,41 +128,38 @@ const header = () => {
       }
     }
 
-    function mouseMove(e) {
-      let posx = 0;
-      let posy = 0;
-      if (e.pageX || e.pageY) {
-        posx = e.pageX;
-        posy = e.pageY;
-      } else if (e.clientX || e.clientY) {
-        posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-        posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+    // Canvas manipulation
+    function drawLines(p) {
+      if (!p.active) return;
+      for (const i in p.closest) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.closest[i].x, p.closest[i].y);
+        ctx.strokeStyle = `rgba(156,217,249,${p.active})`;
+        ctx.stroke();
       }
-      target.x = posx;
-      target.y = posy;
     }
 
-    function scrollCheck() {
-      if (document.body.scrollTop > height) animateHeader = false;
-      else animateHeader = true;
-    }
+    function Circle(pos, rad, color) {
+      const _this = this;
 
-    function resize() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      largeHeader.style.height = `${height}px`;
-      canvas.width = width;
-      canvas.height = height;
+      // constructor
+      (function() {
+        _this.pos = pos || null;
+        _this.radius = rad || null;
+        _this.color = color || null;
+      }());
+
+      this.draw = function() {
+        if (!_this.active) return;
+        ctx.beginPath();
+        ctx.arc(_this.pos.x, _this.pos.y, _this.radius, 0, 2 * Math.PI, false);
+        ctx.fillStyle = `rgba(156,217,249,${_this.active})`;
+        ctx.fill();
+      };
     }
 
     // animation
-    function initAnimation() {
-      animate();
-      for (const i in points) {
-        shiftPoint(points[i]);
-      }
-    }
-
     function animate() {
       if (animateHeader) {
         ctx.clearRect(0, 0, width, height);
@@ -141,48 +194,11 @@ const header = () => {
         } });
     }
 
-    // Canvas manipulation
-    function drawLines(p) {
-      if (!p.active) return;
-      for (const i in p.closest) {
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(p.closest[i].x, p.closest[i].y);
-        ctx.strokeStyle = `rgba(156,217,249,${p.active})`;
-        ctx.stroke();
+    function initAnimation() {
+      animate();
+      for (const i in points) {
+        shiftPoint(points[i]);
       }
-    }
-
-    function Circle(pos, rad, color) {
-      const _this = this;
-
-      // constructor
-      (function() {
-        _this.pos = pos || null;
-        _this.radius = rad || null;
-        _this.color = color || null;
-      }());
-
-      this.draw = function() {
-        if (!_this.active) return;
-        ctx.beginPath();
-        ctx.arc(_this.pos.x, _this.pos.y, _this.radius, 0, 2 * Math.PI, false);
-        ctx.fillStyle = `rgba(156,217,249,${_this.active})`;
-        ctx.fill();
-      };
-    }
-
-    // Util
-    function getDistance(p1, p2) {
-      return ((p1.x - p2.x) ** 2) + ((p1.y - p2.y) ** 2);
-    }
-
-    function addListeners() {
-      if (!('ontouchstart' in window)) {
-        window.addEventListener('mousemove', mouseMove);
-      }
-      window.addEventListener('scroll', scrollCheck);
-      window.addEventListener('resize', resize);
     }
 
     initHeader();
@@ -191,7 +207,10 @@ const header = () => {
   };
 
   useEffect(() => {
-    testAnimation();
+    startAnimation();
+    return () => {
+      removeListeners();
+    };
   }, []);
 
   return (

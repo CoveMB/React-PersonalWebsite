@@ -13,7 +13,6 @@ import ParalaxTitle from './ParalaxTitle';
 import Footer from './footer/Footer';
 
 const app = () => {
-  console.log("app render");
   const dispatch = useStore(false)[1];
 
   const cardsRef = useRef();
