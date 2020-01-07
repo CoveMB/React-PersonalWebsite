@@ -7,8 +7,6 @@ import HeaderWave from './HeaderWave';
 import { parallaxDataHeaderImage, parallaxDataHeaderCard } from '../../parallaxEffects/parallaxEffects';
 
 const header = () => {
-  console.log("render header");
-
   let width;
   let height;
   let canvas;

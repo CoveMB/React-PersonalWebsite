@@ -53,7 +53,7 @@
     "webpack": "^4.26.1"
   },
   "scripts": {
-    "start": "serve ./out",
+    "start": "webpack-dev-server --mode development --config webpack.config.js --watch",
     "build": "next build",
     "dev": "next dev",
     "export": "next export",
