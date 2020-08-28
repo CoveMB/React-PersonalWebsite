@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const airflowProjectText = (<p className="cardText ongoingText"><strong className="blueTitle">> A data pipeline to automate our reporting:</strong> Working as a digital marketing specialist, I had a lot of reporting to do, especially because I was in charge of multiple clients. To make this reporting easier, I Learned Python and used Apache Airflow to build a data pipeline
   <br />
 The first part of the pipeline connects to different APIs (Google Ads/Facebook/Google Analytics/CRM)  to get the data I need for my reporting. The data is then sent to a Big Query data warehouse. The second part of the pipeline use Pandas to process the data from different sources to get some useful insights. The result is sent by email.
