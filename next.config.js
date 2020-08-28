@@ -6,12 +6,11 @@ const withPWA = require('next-pwa');
 
 require("dotenv").config();
 
-module.exports = withPWA({
-  // other next config
-});
-
-module.exports = withImages(withCSS(
+module.exports = withPWA(withImages(withCSS(
   withSass({
+    pwa: {
+      dest: 'public'
+    },
     webpack: (config) => {
     // Fixes npm packages that depend on `fs` module
       config.node = {
@@ -36,4 +35,4 @@ module.exports = withImages(withCSS(
       return config;
     }
   })
-));
+)));

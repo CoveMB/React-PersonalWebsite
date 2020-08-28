@@ -4,3 +4,6 @@ dist
 .env
 /.next
 .next/
+
+/public/sw.js*
+/public/*workbox*

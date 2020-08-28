@@ -3,6 +3,11 @@ export default {
   description: 'Discover some of my projects!',
   keywords: "full-stack developer, machine learning, programming, developer, react, js, node, docker",
   robot: 'index, follow',
+  "application-name": "Benjamin Marquis - Find some of my projects!",
+  "apple-mobile-web-app-capable": "yes",
+  "msapplication-TileColor": "#2B5797",
+  "msapplication-tap-highlight": "no",
+  "theme-color": "#000000",
   viewport: 'width=device-width, initial-scale=1',
   canonical: 'https://www.benjaminmarquis.com/',
   openGraph: {

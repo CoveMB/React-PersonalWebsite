@@ -39,7 +39,7 @@
     "babel-preset-env": "^7.0.0-beta.3",
     "dotenv": "^8.1.0",
     "gsap": "^3.0.1",
-    "next": "^9.0.8-canary.5",
+    "next": "^9.5.2",
     "next-images": "^1.2.0",
     "next-pwa": "^3.1.3",
     "next-redux-wrapper": "^4.0.1",
@@ -62,5 +62,5 @@
     "deploy": "next build && next export",
     "lint": "eslint './src/**/*.js' './src/**/*.jsx'"
   },
-  "homepage": "http://BjMrq.github.io/React-VizzMD-MVP"
+  "homepage": "https://github.com/BjMrq/React-PersonalWebsite"
 }
