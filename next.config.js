@@ -2,8 +2,13 @@ const withSass = require("@zeit/next-sass");
 const withCSS = require("@zeit/next-css");
 const withImages = require('next-images');
 const webpack = require("webpack");
+const withPWA = require('next-pwa');
 
 require("dotenv").config();
+
+module.exports = withPWA({
+  // other next config
+});
 
 module.exports = withImages(withCSS(
   withSass({
