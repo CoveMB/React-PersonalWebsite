@@ -11,11 +11,11 @@ const headerCardContent = () => {
         <p className="cardListCompetenceTitle" style={{ marginBottom: "20px" }}>
           MILESTONES:
         </p>
-        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"><img style={{ marginLeft: "10px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /> Machine Learning Apprentice</strong> | Coursera</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">‍<img style={{ marginLeft: "10px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /> Lead Full Stack Developer</strong> | Tooly</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"><img style={{ marginLeft: "10px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /> Machine Learning Apprentice</strong> | Next AI</p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"><img style={{ marginLeft: "10px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /> VizzMD's CTO</strong> | Centech</p>
-        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">‍<img style={{ marginLeft: "10px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /> Full Stack Developer</strong> | Le Wagon</p>
+        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle">‍<img style={{ marginLeft: "10px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /> Full Stack Teacher</strong> | Le Wagon</p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"><img style={{ marginLeft: "10px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" />  Digital Marketing Specialist</strong> | LCI Education</p>
-        <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"><img style={{ marginLeft: "10px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /> ‍Team Lead</strong> | Mamie Clafoutis</p>
         <p className="cardListCompetence" style={{ marginLeft: "15px" }}><strong className="darkblueTitle"><img style={{ marginLeft: "10px" }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" /> Sociology Master degree</strong> | UQAM</p>
         <div className="grabEmailPart" />
       </div>
