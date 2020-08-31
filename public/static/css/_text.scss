@@ -4,7 +4,7 @@ p {
   font-family: 'Lato', sans-serif;
 }
 
-.sectionTitle{
+.sectionTitle {
   font-family: 'Lustria', sans-serif;
   margin: 0 20% 100px 20%;
   font-style: normal;
@@ -14,16 +14,16 @@ p {
   color: $darkpurple;
 }
 
-.cardListCompetence{
+.cardListCompetence {
   font-size: 22px;
   margin-top: 10px;
 }
 
-.cardListCompetenceTitle{
+.cardListCompetenceTitle {
   font-size: 25px;
 }
 
-.cardTitle{
+.cardTitle {
   color: $darkpurple;
   font-style: normal;
   font-weight: 800;
@@ -33,7 +33,7 @@ p {
   margin: 0 10% 30px 10%;
 }
 
-.cardText{
+.cardText {
   font-style: normal;
   font-weight: 800;
   font-size: 1.3em;
@@ -42,39 +42,39 @@ p {
   color: $textgrey;
 }
 
-.blueTitle{
+.blueTitle {
   color: $lightpurple;
   font-weight: 900;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
-.darkblueTitle{
+.darkblueTitle {
   color: $lightpurple;
   font-weight: 900;
   font-size: 1.05em;
 }
 
-h2{
+h2 {
   font-size: 1.5em;
 }
 
 @media only screen and (max-width: 1024px) {
-  h2{
+  h2 {
     font-size: 1.5em;
   }
 
-  .selectedCardTitle{
+  .selectedCardTitle {
     width: 100%;
     padding: 0 15px 0 15px;
     font-size: 1.6em;
   }
 
-  .cardText{
+  .cardText {
     font-size: 1.3em;
     line-height: 30px;
   }
 
-  .cardTitle{
+  .cardTitle {
     font-size: 1.4em;
     line-height: 20px;
     margin: 0 10% 0 10%;
@@ -82,19 +82,18 @@ h2{
 }
 
 @media only screen and (max-width: 570px) {
-
-  .darkblueTitle{
+  .darkblueTitle {
     font-size: 0.95em;
   }
 
-  .cardListCompetence{
+  .cardListCompetence {
     font-size: 18px;
   }
-  .cardListCompetenceTitle{
+  .cardListCompetenceTitle {
     margin-left: 10px;
   }
 
-  .sectionTitle{
+  .sectionTitle {
     font-size: 2.8em;
   }
 }

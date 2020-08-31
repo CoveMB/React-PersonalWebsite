@@ -4,19 +4,23 @@ import Project from './Project';
 const ongoing = (props) => {
 
   const projectNames = {
-    tooly  : 'tooly',
-    leWagon: 'leWagon',
-    centech: 'centech',
-    shareIn: 'shareIn',
-    airflow: 'airflow'
+    tooly   : 'tooly',
+    leWagon : 'leWagon',
+    centech : 'centech',
+    shareIn : 'shareIn',
+    airflow : 'airflow',
+    cominity: 'cominity'
   };
 
   return (
     <>
       <p className="cardText ongoingIntro" id={props.idElement}>
-        <strong className="blueTitle"> Learn'n build:</strong>
+        <strong className="blueTitle"> Learn'N Build:</strong>
         {' '}
-        During my personal and profesianal path I encounter different challenges. Learning new skills to overcome them led me to build real projects, here are some of them.
+        During my personal and professional path I encounter different challenges. Learning new skills led me to turn them into opportunities and build real projects.
+        <br />
+        <br />
+        (Displayed from most recent to oldest)
       </p>
       <Project
         projectNames={projectNames}
@@ -25,23 +29,28 @@ const ongoing = (props) => {
       />
       <Project
         projectNames={projectNames}
-        projectName={projectNames.centech}
+        projectName={projectNames.cominity}
         side="left"
+      />
+      <Project
+        projectNames={projectNames}
+        projectName={projectNames.centech}
+        side="right"
       />
       <Project
         projectNames={projectNames}
         projectName={projectNames.leWagon}
-        side="right"
-      />
-      <Project
-        projectNames={projectNames}
-        projectName={projectNames.shareIn}
         side="left"
       />
       <Project
         projectNames={projectNames}
-        projectName={projectNames.airflow}
+        projectName={projectNames.shareIn}
         side="right"
+      />
+      <Project
+        projectNames={projectNames}
+        projectName={projectNames.airflow}
+        side="left"
       />
     </>
   );

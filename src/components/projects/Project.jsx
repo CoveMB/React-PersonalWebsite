@@ -1,6 +1,6 @@
 import React from 'react';
 import Plx from 'react-plx';
-import { airflowProjectText, shareInProjectText, centechProjectText, toolyProjectText, leWagonProjectText } from './projectText';
+import { airflowProjectText, shareInProjectText, centechProjectText, toolyProjectText, leWagonProjectText, cominityProjectText } from './projectText';
 import { parallaxDataProjectLeft, parallaxDataProjectRight } from '../../parallaxEffects/parallaxEffects';
 import ProjectImage from './ProjectImage';
 import ProjectGitLink from './ProjectGitLink';
@@ -8,7 +8,7 @@ import ProjectGitLink from './ProjectGitLink';
 const project = ({ projectName, side, projectNames }) => {
 
   const {
-    tooly, leWagon, centech, shareIn, airflow
+    tooly, leWagon, centech, shareIn, airflow, cominity
   } = projectNames;
 
   const getParallaxData = () => {
@@ -32,6 +32,8 @@ const project = ({ projectName, side, projectNames }) => {
 
       case tooly:
         return toolyProjectText;
+      case cominity:
+        return cominityProjectText;
       case centech:
         return centechProjectText;
       case leWagon:
@@ -53,6 +55,8 @@ const project = ({ projectName, side, projectNames }) => {
 
       case tooly:
         return `/static/images/${projectName}.svg`;
+      case cominity:
+        return `/static/images/${projectName}.png`;
       case centech:
         return `/static/images/${projectName}.png`;
       case leWagon:
@@ -90,7 +94,9 @@ const project = ({ projectName, side, projectNames }) => {
     switch (projectName) {
 
       case tooly:
-        return 'https://app.tooly.ai/';
+        return 'https://tooly.ai/';
+      case cominity:
+        return 'https://cominity.ca/';
       case centech:
         return 'https://react-rails-vizzmd-mvp.herokuapp.com/p';
       case leWagon:
