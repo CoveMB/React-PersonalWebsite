@@ -1,32 +1,22 @@
-// .header-background{
-//   background: url("../images/header.png");
-//   background-size: cover;
-//   background-repeat: no-repeat;
-//   margin-top: -4vh;
-//   height: 100vh;
-//   width: 100%;
-//   z-index: -1;
-// }
-
 .large-header {
   margin-top: -4vh;
-	position: relative;
-	width: 100%;
+  position: relative;
+  width: 100%;
   height: 100vh;
-	background: #333;
-	overflow: hidden;
-	background-size: cover;
-	background-position: center center;
-	z-index: 1;
+  background: #333;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center center;
+  z-index: 1;
 }
 
 .demo-1 .large-header {
-	background-image: url('/static/images/header-min.jpg');
+  background-image: url('/static/images/header-min.jpg');
 }
 
-.stickyHeader{
+.stickyHeader {
   position: sticky;
-  top: 0;
+  top: -2px;
   left: 0;
   z-index: -1;
 }
@@ -44,7 +34,7 @@
     display: none;
   }
 
-  .header-background{
+  .header-background {
     background-size: cover;
     height: 98vh;
     width: 100%;
