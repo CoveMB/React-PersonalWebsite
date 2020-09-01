@@ -1,7 +1,7 @@
 .header-card {
   width: 40vw;
   min-height: 95vh;
-  margin: -92vh 0 0 5vh;
+  margin: -88vh 0 0 5vh;
   padding-top: 25px;
   padding-bottom: 1px;
   background: $backgroundwhite;
@@ -9,7 +9,7 @@
   z-index: 9999;
 }
 
-.card-header-welcome{
+.card-header-welcome {
   text-align: center;
   font-size: 18px;
   margin: 0 auto;
@@ -26,7 +26,7 @@
   font-family: 'Lustria', sans-serif;
 }
 
-.headerCardText{
+.headerCardText {
   // width: 84%;
   text-align: left;
   font-style: normal;
@@ -37,38 +37,37 @@
   color: $textgrey;
 }
 
-
-.social-icons-header{
+.social-icons-header {
   width: 60%;
   margin: auto;
   display: flex;
   justify-content: space-around;
 }
 
-.svgSocialHeader{
+.svgSocialHeader {
   margin-top: 20px;
   width: 40px;
 }
 
-.svgDone{
+.svgDone {
   width: 1.4em;
-  margin: 0 6px 6px 0
+  margin: 0 6px 6px 0;
 }
 
 .headerList {
   list-style: square;
 }
 
-.grabEmailPart{
+.grabEmailPart {
   margin: 30px 0;
 }
 
-.btnVizz{
+.btnVizz {
   background-color: $darkpurple;
   color: white;
 }
 
-.emailSucces{
+.emailSucces {
   margin: 50px auto 0 auto;
   width: 60%;
   text-align: center;
@@ -76,7 +75,7 @@
 }
 
 @media only screen and (max-width: 1024px) {
-  .grabEmailPart{
+  .grabEmailPart {
     margin-bottom: 20px;
   }
 
@@ -84,7 +83,7 @@
     font-size: 1.8em;
   }
 
-  .headerCardText{
+  .headerCardText {
     font-size: 0.9em;
   }
 }
@@ -94,7 +93,6 @@
     width: 45vw;
   }
 }
-
 
 @media only screen and (max-width: 1340px) {
   .header-card {
@@ -107,7 +105,7 @@
     width: 65vw;
   }
 
-  .card-header-welcome{
+  .card-header-welcome {
     font-size: 1.4em;
   }
 
@@ -124,7 +122,7 @@
     margin: -100vh 0 0 0;
   }
 
-  .card-header-welcome{
+  .card-header-welcome {
     font-size: 1.5em;
   }
 
@@ -141,7 +139,7 @@
     margin: -100vh 0 0 0;
   }
 
-  .card-header-welcome{
+  .card-header-welcome {
     font-size: 1.5em;
   }
 
@@ -149,11 +147,11 @@
     font-size: 2em;
   }
 
-  .headerCardText{
+  .headerCardText {
     margin: 30px 0 60px 0;
   }
 
-  .svgSocialHeader{
+  .svgSocialHeader {
     margin-top: 28px;
     width: 30px;
   }

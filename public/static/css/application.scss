@@ -17,9 +17,13 @@
 @import 'footer';
 @import 'navBtn';
 
+html {
+  overflow-x: hidden;
+}
+
 body {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   background-color: $backgroundwhite;
   width: 100%;
   color: $textgrey;
@@ -27,7 +31,7 @@ body {
   overflow-x: hidden;
 }
 
-.normalizedBackground{
+.normalizedBackground {
   width: 100%;
   background-color: $backgroundwhite;
   margin: -5.5vh 0 0 0;
@@ -35,14 +39,14 @@ body {
   border: 1px 1px 1px 1px solid $backgroundwhite;
 }
 
-.normalizedBackgroundWhite{
+.normalizedBackgroundWhite {
   width: 100%;
   background-color: $cardwhite;
   margin: 0;
   padding: 100px 0 100px 0;
 }
 
-.normalizedBackgroundbig{
+.normalizedBackgroundbig {
   width: 100%;
   height: 200vh;
   background-color: $backgroundwhite;
@@ -50,7 +54,7 @@ body {
   padding-bottom: 65px;
 }
 
-.makeItFlex{
+.makeItFlex {
   display: flex;
   display: -webkit-flex;
   -webkit-flex-wrap: wrap;
@@ -58,12 +62,12 @@ body {
   justify-content: space-around;
 }
 
-.displayNone{
+.displayNone {
   display: none;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
-	html {
-		scroll-behavior: auto;
-	}
+  html {
+    scroll-behavior: auto;
+  }
 }

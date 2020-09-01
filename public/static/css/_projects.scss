@@ -1,113 +1,134 @@
-.ongoingIntro{
+.ongoingIntro {
   width: 70%;
   margin: 60px auto 60px auto;
 }
 
-.ongoingSeparator{
+.projectImagetooly {
+  width: 180% !important;
+}
+
+.ongoingSeparator {
   width: 10%;
-  border: 1.5px solid $textgrey;
+  border-top: 1.5px solid $darkpurple;
   margin: 50px auto;
 }
 
-.ongoingRow{
+.ongoingRow {
   display: flex;
   align-items: center;
   width: 70%;
   margin: 0 15% 0 15%;
 }
 
-.ongoingText{
+.ongoingText {
   margin: auto 0 20px 0;
   width: 60%;
   text-align: center;
 }
 
-.project-image-n-details{
+.project-image-n-details {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   width: 40%;
 }
 
-.projectImageairflow{
+.projectImageairflow {
   width: 70%;
   margin: 0 30% 0 0;
-  -webkit-animation:spin 8s linear infinite;
-    -moz-animation:spin 8s linear infinite;
-    animation:spin 8s linear infinite;
+  -webkit-animation: spin 12s linear infinite;
+  -moz-animation: spin 12s linear infinite;
+  animation: spin 12s linear infinite;
 }
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
 
-.projectImageleft{
+.projectImageleft {
   width: 70%;
   margin: 0 30% 0 0;
   cursor: pointer;
 }
 
-.projectImageright{
+.projectImageright {
   width: 70%;
   margin: 0 0 0 30%;
   cursor: pointer;
 }
 
-.projectBtnPositionleft{
+.projectBtnPositionleft {
   text-align: center;
   width: 70%;
   margin: 50px 30% 0 0;
 }
 
-.projectBtnPositionright{
+.projectBtnPositionright {
   text-align: center;
   width: 70%;
   margin: 50px 0 0 30%;
 }
 
-.projectRepoBtn{
+.projectRepoBtn {
   width: 40px;
 }
 
 @media only screen and (max-width: 1024px) {
-  .projectImageright{
+  .projectImageright {
     width: 70%;
     margin: 0 15% 0 15%;
   }
 
-  .projectImageleft{
+  .projectImagetooly {
+    width: 120% !important;
+  }
+
+  .projectImageleft {
     width: 70%;
     margin: 0 15% 0 15%;
   }
 
-  .projectBtnPositionleft{
+  .projectBtnPositionleft {
     text-align: center;
     width: 70%;
     margin: 50px 15% 0 15%;
   }
 
-  .projectBtnPositionright{
+  .projectBtnPositionright {
     text-align: center;
     width: 70%;
     margin: 50px 15% 0 15%;
   }
 
-  .ongoingIntro{
+  .ongoingIntro {
     width: 80%;
     margin: 60px auto 60px auto;
   }
 
-  .ongoingText{
+  .ongoingText {
     margin: auto 0;
     width: 80%;
     margin: 60px auto 60px auto;
   }
 
-  .ongoingRow{
+  .ongoingRow {
     width: 90%;
     margin: 0 auto 0 auto;
   }
 
-  .ongoingSeparator{
+  .ongoingSeparator {
     width: 20%;
   }
 }

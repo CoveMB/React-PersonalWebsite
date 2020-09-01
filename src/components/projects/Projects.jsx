@@ -1,20 +1,60 @@
-import React, { Fragment } from 'react';
-import Plx from 'react-plx';
-
-import { parallaxDataCentech, parallaxDataProjectRight } from '../../parallaxEffects/parallaxEffects';
-
+import React from 'react';
 import Project from './Project';
-import Mvp from './Mvp';
 
 const ongoing = (props) => {
+
+  const projectNames = {
+    tooly   : 'tooly',
+    leWagon : 'leWagon',
+    centech : 'centech',
+    shareIn : 'shareIn',
+    airflow : 'airflow',
+    cominity: 'cominity'
+  };
+
   return (
-    <Fragment>
-      <p className="cardText ongoingIntro" id={props.idElement}><strong className="blueTitle">> Learn'n build:</strong> During my personal and profesianal path I encounter different challenges. Learning new skills to overcome them led me to build real projects, here are some of them.
+    <>
+      <p className="cardText ongoingIntro" id={props.idElement}>
+        <strong className="blueTitle"> Learn'N Build:</strong>
+        {' '}
+        During my personal and professional path I encounter different challenges. Learning new skills led me to turn them into opportunities and build real projects.
+        <br />
+        <br />
+        (Displayed from most recent to oldest)
       </p>
-      <Project projectName="airflow" side="left" />
-      <Project projectName="shareIn" side="right" />
-      <Project projectName="centech" side="left" />
-    </Fragment>
+      <Project
+        projectNames={projectNames}
+        projectName={projectNames.tooly}
+        side="right"
+      />
+      <Project
+        projectNames={projectNames}
+        projectName={projectNames.cominity}
+        side="left"
+      />
+      <Project
+        projectNames={projectNames}
+        projectName={projectNames.centech}
+        side="right"
+      />
+      <Project
+        projectNames={projectNames}
+        projectName={projectNames.leWagon}
+        side="left"
+      />
+      <Project
+        projectNames={projectNames}
+        projectName={projectNames.shareIn}
+        side="right"
+      />
+      <Project
+        projectNames={projectNames}
+        projectName={projectNames.airflow}
+        side="left"
+      />
+    </>
   );
+
 };
+
 export default ongoing;

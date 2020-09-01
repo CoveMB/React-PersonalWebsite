@@ -7,30 +7,30 @@
   width: 100vw;
   height: 8vh;
   position: -webkit-sticky; /* Safari */
-  position: sticky;
+  position: fixed;
   top: 0;
-  background-color: transparent;
+  background-color: transparent !important;
   z-index: 999;
   transition: top 0.8s ease;
 }
 
-.normalizeBtn{
+.normalizeBtn {
   background: none;
   border: none;
   margin: 0;
   padding: 0;
 }
 
-.navBrand{
+.navBrand {
   margin: 6px;
   border-radius: 45px;
   border: 1px solid $darkpurple;
-  -moz-box-shadow:    2px 4px 15px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.4);
   -webkit-box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.4);
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
 }
 
-.navBtn:hover{
+.navBtn:hover {
   background: none;
   border: none;
   margin: 0;
@@ -38,7 +38,7 @@
   cursor: pointer;
 }
 
-.navBtn:focus{
+.navBtn:focus {
   background: none;
   border: none;
   margin: 0;
@@ -48,6 +48,6 @@
 @media only screen and (max-width: 800px) {
   .navbar {
     height: 8vh;
-    background-color: #F3F3F3;
+    background-color: #f3f3f3;
   }
 }

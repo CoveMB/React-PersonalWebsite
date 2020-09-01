@@ -1,4 +1,4 @@
-.NavBtn{
+.NavBtn {
   height: 16px;
   background-color: $backgroundwhite;
   border: 2px solid $darkpurple;
@@ -7,46 +7,44 @@
   transition: background-color 0.1s linear;
 }
 
-.NavBtn:hover{
+.NavBtn:hover {
   transform: scale(1.2);
   transition: transform 0.1s;
 }
 
-
-.NavBtn:focus{
+.NavBtn:focus {
   -webkit-box-shadow: none;
   box-shadow: none;
   text-decoration: none;
   outline: none;
 }
 
-.activateBtn{
+.activateBtn {
   transform: scale(1.2);
   background-color: $darkpurple;
   transition: transform 0.2s;
 }
 
-
-.NavBtntop{
-  position: sticky;
+.NavBtntop {
+  position: fixed;
   top: 45vh;
   left: 96vw;
 }
 
-.NavBtncards{
-  position: sticky;
+.NavBtncards {
+  position: fixed;
   top: 48vh;
   left: 96vw;
 }
 
-.NavBtnfeatures{
-  position: sticky;
+.NavBtnfeatures {
+  position: fixed;
   top: 51vh;
   left: 96vw;
 }
 
-.NavBtnongoing{
-  position: sticky;
+.NavBtnongoing {
+  position: fixed;
   top: 54vh;
   left: 96vw;
 }

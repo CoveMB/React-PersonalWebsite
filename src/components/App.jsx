@@ -13,6 +13,7 @@ import ParalaxTitle from './ParalaxTitle';
 import Footer from './footer/Footer';
 
 const app = () => {
+
   const dispatch = useStore(false)[1];
 
   const cardsRef = useRef();
@@ -20,29 +21,39 @@ const app = () => {
   const ongoingRef = useRef();
 
   const adjustOffsets = () => {
-    const offsetsToSet =
-    {
-      top: 0,
-      cards: cardsRef.current.offsetTop,
+
+    const offsetsToSet =    {
+      top     : 0,
+      cards   : cardsRef.current.offsetTop,
       features: featuresRef.current.offsetTop,
-      ongoing: ongoingRef.current.offsetTop
+      ongoing : ongoingRef.current.offsetTop
     };
-    dispatch("SET_REFS", offsetsToSet);
+
+    dispatch('SET_REFS', offsetsToSet);
+
   };
 
   useEffect(() => {
+
     const updateSize = () => {
+
       adjustOffsets();
+
     };
+
     window.addEventListener('resize', updateSize);
     updateSize();
+
     return () => {
+
       window.removeEventListener('resize', updateSize);
+
     };
+
   }, []);
 
   return (
-    <Fragment>
+    <>
       <NavBtns />
       <NavBar />
       <Header />
@@ -63,8 +74,9 @@ const app = () => {
         <Story />
       </div>
       <Footer />
-    </Fragment>
+    </>
   );
+
 };
 
 export default app;
