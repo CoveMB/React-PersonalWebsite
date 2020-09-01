@@ -1,8 +1,7 @@
 import React, { Fragment, useRef, useEffect } from 'react';
 import { useStore } from '../store/useStore';
-
+import 'regenerator-runtime/runtime.js';
 import OpacityParallax from './hoc/OpacityParallax';
-
 import NavBtns from './NavBtns';
 import NavBar from './navbar/NavBar';
 import Header from './header/Header';

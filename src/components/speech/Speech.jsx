@@ -110,7 +110,7 @@ const Speech = () => {
 
       try {
 
-        await fetch('https://hooks.zapier.com/hooks/catch/8391499/oamk1o1/', {
+        await fetch(process.env.ZAPPIER_EMAIL_ENDPOINT, {
           method: 'POST',
           body  : JSON.stringify({
             sender: emailState.sender, transcript
@@ -132,8 +132,6 @@ const Speech = () => {
   };
 
   const handleSendEmail = async () => {
-
-    console.log(emailState);
 
     if (transcriptCompleted() && verifyEmail()) {
 
