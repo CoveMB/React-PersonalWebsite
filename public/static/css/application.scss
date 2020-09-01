@@ -32,7 +32,7 @@ body {
 //   scroll-behavior: smooth;
 // }
 
-@media screen {
+@media screen and (hover: none) {
   .scrollNoOverflow {
     overflow-x: hidden;
     overflow-y: scroll;
