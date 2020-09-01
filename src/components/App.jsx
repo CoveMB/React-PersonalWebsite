@@ -1,12 +1,11 @@
 import React, { Fragment, useRef, useEffect } from 'react';
 import { useStore } from '../store/useStore';
-
+import 'regenerator-runtime/runtime.js';
 import OpacityParallax from './hoc/OpacityParallax';
-
 import NavBtns from './NavBtns';
 import NavBar from './navbar/NavBar';
 import Header from './header/Header';
-import Story from './story/Story';
+import Story from './speech/Speech';
 import QualificationContainer from './qualifications/QualificationContainer';
 import Projects from './projects/Projects';
 import ParalaxTitle from './ParalaxTitle';
@@ -70,7 +69,7 @@ const app = () => {
         </div>
       </OpacityParallax>
       <div className="normalizedBackgroundWhite" ref={ongoingRef}>
-        <ParalaxTitle title="Short Story About My Coding Journey" idElement="story" />
+        <ParalaxTitle title="Speech me an email!" idElement="story" />
         <Story />
       </div>
       <Footer />

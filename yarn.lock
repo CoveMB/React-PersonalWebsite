@@ -884,6 +884,16 @@
     resolve "^1.8.1"
     semver "^5.5.1"
 
+"@babel/plugin-transform-runtime@^7.11.5":
+  version "7.11.5"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-runtime/-/plugin-transform-runtime-7.11.5.tgz#f108bc8e0cf33c37da031c097d1df470b3a293fc"
+  integrity sha512-9aIoee+EhjySZ6vY5hnLjigHzunBlscx9ANKutkeWTJTx6m5Rbq6Ic01tLvO54lSusR+BxV7u4UDdCmXv5aagg==
+  dependencies:
+    "@babel/helper-module-imports" "^7.10.4"
+    "@babel/helper-plugin-utils" "^7.10.4"
+    resolve "^1.8.1"
+    semver "^5.5.1"
+
 "@babel/plugin-transform-shorthand-properties@^7.10.4", "@babel/plugin-transform-shorthand-properties@^7.8.3":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-shorthand-properties/-/plugin-transform-shorthand-properties-7.10.4.tgz#9fd25ec5cdd555bb7f473e5e6ee1c971eede4dd6"
@@ -1164,7 +1174,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.10.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
   version "7.11.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
   integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
@@ -8101,6 +8111,11 @@ react-refresh@0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
+
+react-speech-recognition@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-speech-recognition/-/react-speech-recognition-3.2.2.tgz#f530f3f83b23c6171a80bcc0682b29cd9666d334"
+  integrity sha512-QXvtBqHyCEDZjzaKlUExCTZvr1amXSf74JY+rp0Al7VNwRZRkmo6AOpd7U49cmoFaA0EnrDtmYgDxXmkLiPnHA==
 
 react-transition-group@^4.3.0:
   version "4.4.1"

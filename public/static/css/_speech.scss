@@ -1,0 +1,145 @@
+@import url(https://fonts.googleapis.com/css?family=Handlee);
+
+.speechPart {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  min-width: 400px;
+  margin: 0 auto;
+}
+
+.inputFromEmail {
+  border-radius: 8px;
+  width: 60%;
+  margin: 0 auto;
+  height: 32px;
+  padding-left: 10px;
+  background: radial-gradient(#575450 6px, transparent 7px) repeat-y;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  color: mediumblue;
+  font-family: 'Handlee', cursive;
+  font-weight: bold;
+  border: 1px solid #91d1d3;
+  // font-size: 18px;
+  box-sizing: border-box;
+  margin-bottom: 7px;
+}
+
+.emailFeedback {
+  text-align: center;
+  margin-top: -34px;
+  margin-bottom: 10px;
+}
+
+.emailErrorFeedback {
+  color: rgba(255, 0, 0, 0.637);
+}
+
+.emailSuccessFeedback {
+  color: rgba(17, 167, 37, 0.712);
+}
+
+.inputFromEmail:focus {
+  border: 1px solid #91d1d3;
+  outline: none;
+}
+
+.labelFromEmail {
+  display: flex;
+  margin: 12px 0;
+}
+
+.storyText {
+  width: 60%;
+  margin: auto;
+}
+
+.speechTextArea {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.speechButtonSend {
+  float: right;
+}
+
+.speechButtons {
+  margin-top: 50px;
+  justify-content: space-around;
+}
+
+.speechButton {
+  margin-right: 10px;
+  background-color: $darkpurple;
+  color: $backgroundwhite;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.paper {
+  min-width: auto !important;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  min-width: 400px;
+  height: 480px;
+  margin: 0 auto;
+  background: #fafafa;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.paper:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  background: radial-gradient(#575450 6px, transparent 7px) repeat-y;
+  background-size: 30px 30px;
+  border-right: 3px solid #d44147;
+  box-sizing: border-box;
+}
+
+.paper-content {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  bottom: 30px;
+  left: 60px;
+  background: linear-gradient(transparent, transparent 28px, #91d1d3 28px);
+  background-size: 30px 30px;
+}
+
+.paper-content textarea {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  line-height: 30px;
+  padding: 0 10px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: mediumblue;
+  font-family: 'Handlee', cursive;
+  font-weight: bold;
+  font-size: 18px;
+  box-sizing: border-box;
+  z-index: 1;
+}
