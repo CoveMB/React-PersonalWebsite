@@ -18,7 +18,13 @@
 @import 'navBtn';
 
 html {
+  // overflow-x: hidden;
+  // overflow-y: scroll;
+}
+
+.scrollNoOverflow {
   overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 body {
@@ -29,6 +35,7 @@ body {
   color: $textgrey;
   font-family: 'Lato', sans-serif;
   overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .normalizedBackground {

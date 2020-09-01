@@ -14,7 +14,7 @@ class MyDocument extends Document {
   render() {
 
     return (
-      <Html>
+      <Html className="scrollNoOverflow">
         <Head>
           <link rel="shortcut icon" type="image/x-icon" href="/static/images/favicon.ico" />
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
