@@ -17,16 +17,6 @@
 @import 'footer';
 @import 'navBtn';
 
-html {
-  // overflow-x: hidden;
-  // overflow-y: scroll;
-}
-
-.scrollNoOverflow {
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -36,6 +26,17 @@ body {
   font-family: 'Lato', sans-serif;
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+// html {
+//   scroll-behavior: smooth;
+// }
+
+@media screen {
+  .scrollNoOverflow {
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
 }
 
 .normalizedBackground {
@@ -75,6 +76,6 @@ body {
 
 @media screen and (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: auto;
+    scroll-behavior: smooth;
   }
 }
