@@ -63,6 +63,10 @@ h2 {
     font-size: 1.5em;
   }
 
+  .blueTitle {
+    font-size: 1.14em;
+  }
+
   .selectedCardTitle {
     width: 100%;
     padding: 0 15px 0 15px;
@@ -84,6 +88,10 @@ h2 {
 @media only screen and (max-width: 570px) {
   .darkblueTitle {
     font-size: 0.95em;
+  }
+
+  .blueTitle {
+    font-size: 1.1em;
   }
 
   .cardListCompetence {
