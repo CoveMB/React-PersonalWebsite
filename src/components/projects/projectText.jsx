@@ -5,11 +5,11 @@ export const toolyProjectText = (
     <strong className="blueTitle">Growing a product:</strong>
     <br />
     {' '}
-    During Centech's acceleration program I meet with Olivier his goal was to able to recommend you the best SaaS for your need, and offered me to hop in the project.
+    During Centech's acceleration program I met with Olivier his goal was to be able to recommend you the best SaaS for your needs, and offered me to hop in the project.
     <br />
     With Tooly we enrolled in
     <strong className="blueTitle"> Next AI's </strong>
-    incubation program. I, of course had to build the tech side of the project from
+    incubation program. I, of course, had to build the tech side of the project from
     <strong className="blueTitle"> machine learning models </strong>
     to an admin panel with
     <strong className="blueTitle"> Koa and Graphql</strong>
@@ -24,9 +24,9 @@ export const cominityProjectText = (
     <strong className="blueTitle">Implementing new processes:</strong>
     <br />
     {' '}
-    Alongside Tooly, there is an other business Cominity, the agency.
+    Alongside Tooly, there is another business Cominity, the agency.
     <br />
-    Been part of an agency has led me to learn a handful of technologies. I was able to engineer the whole CI/CD pipeline for the applications
+    Being part of an agency has led me to learn a handful of technologies. I was able to engineer the whole CI/CD pipeline for the applications
     <strong className="blueTitle"> Dockerizing </strong>
     the app on the way. I learned
     <strong className="blueTitle"> Kubernetes </strong>
@@ -62,11 +62,11 @@ export const leWagonProjectText = (
     <strong className="blueTitle">Teaching one's passion:</strong>
     <br />
     {' '}
-    After graduating the Wagon they ask me to join their forces and become an teacher assistant, soon enough I became a teacher.
+    After graduating from the Wagon they asked me to join their forces and become a teacher assistant, soon enough I became a teacher.
     <br />
-    I always liked explaining things to others and find ways they could understand the same with their own logic. Become a teacher for the
+    I always liked explaining things to others and finding ways they could understand the same with their own logic. Becoming a teacher for the
     <strong className="blueTitle"> Javascript </strong>
-    part of the program allowed me to share my passion for the language. Even if I had great confidence in my technology's skill I had to overcome m6y fear of speaking in front of an audience..
+    part of the program allowed me to share my passion for the language. Even if I had great confidence in my technology's skill I had to overcome my fear of speaking in front of an audience..
   </p>
 );
 
