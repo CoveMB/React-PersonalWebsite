@@ -5,11 +5,11 @@ export const toolyProjectText = (
     <strong className="blueTitle">Growing a product:</strong>
     <br />
     {' '}
-    During Centech's acceleration program I meet with Olivier his goal was to able to recommend you the best SaaS for your need, and offered me to hop in in the project.
+    During Centech's acceleration program I meet with Olivier his goal was to able to recommend you the best SaaS for your need, and offered me to hop in the project.
     <br />
     With Tooly we enrolled in
     <strong className="blueTitle"> Next AI's </strong>
-    incubation program. I of course had to build the tech side of the project from
+    incubation program. I, of course had to build the tech side of the project from
     <strong className="blueTitle"> machine learning models </strong>
     to an admin panel with
     <strong className="blueTitle"> Koa and Graphql</strong>
@@ -26,7 +26,7 @@ export const cominityProjectText = (
     {' '}
     Alongside Tooly, there is an other business Cominity, the agency.
     <br />
-    Been part of an agency has led me to learn an handful of technologies. I was able to engineer the whole CI/CD pipeline for the applications
+    Been part of an agency has led me to learn a handful of technologies. I was able to engineer the whole CI/CD pipeline for the applications
     <strong className="blueTitle"> Dockerizing </strong>
     the app on the way. I learned
     <strong className="blueTitle"> Kubernetes </strong>
@@ -45,7 +45,7 @@ export const centechProjectText = (
     <strong className="blueTitle">Entering the entrepreneur's world:</strong>
     <br />
     {' '}
-    At the end of Le Wagon bootcamp one of the students came to me: his idea has been accepted to the Centech's Acceleration program and he proposed me to be the CTO for the project.
+    At the end of Le Wagon bootcamp, one of the students came to me: his idea has been accepted to the Centech's Acceleration program and he proposed me to be the CTO for the project.
     <br />
     Following the training offered by the Centech made me enter the
     <strong className="blueTitle"> entrepreneur's </strong>
@@ -62,7 +62,7 @@ export const leWagonProjectText = (
     <strong className="blueTitle">Teaching one's passion:</strong>
     <br />
     {' '}
-    After graduating the Wagon they ask me join their forces and become an teacher assistant, soon enough I became a teacher.
+    After graduating the Wagon they ask me to join their forces and become an teacher assistant, soon enough I became a teacher.
     <br />
     I always liked explaining things to others and find ways they could understand the same with their own logic. Become a teacher for the
     <strong className="blueTitle"> Javascript </strong>
@@ -75,12 +75,12 @@ export const shareInProjectText = (
     <strong className="blueTitle">Beginning the Full-Stack journey:</strong>
     <br />
     {' '}
-    After having successfully build a data pipeline to automate my reporting, I realised that I was having more fun developing and coding than building marketing campaigns. I already Learned
+    After having successfully built a data pipeline to automate my reporting, I realised that I was having more fun developing and coding than building marketing campaigns. I already Learned
     <strong className="blueTitle"> Javascript and Python </strong>
     on my own, now it was time to practice my coding skills with a team.
     <br />
-    The Wagon offered me the opportunity to do just that. My project was selected as a final project. We built an app that would bring people together depending on their cultural interest. The app included a built in instant messagerie using
-    <strong className="blueTitle"> websockets</strong>
+    The Wagon offered me the opportunity to do just that. My project was selected as a final project. We built an app that would bring people together depending on their cultural interest. The app included a built-in instant messaging service using
+    <strong className="blueTitle"> WebSockets</strong>
     .
   </p>
 );
@@ -96,7 +96,9 @@ export const airflowProjectText = (
     <br />
     The first part of the pipeline connects to different APIs (Google Ads/Facebook/Google Analytics/CRM)  to get the data I need for my reporting. The data is then sent to a
     <strong className="blueTitle"> Big Query </strong>
-    data warehouse. The second part of the pipeline use Pandas to process the data from different sources to get some useful insights. The result is sent by email.
+    data warehouse. The second part of the pipeline uses
+    <strong className="blueTitle"> Pandas </strong>
+    to process the data from different sources to get some useful insights. The result is sent by email.
     <br />
     To make the development of this app easier I used
     <strong className="blueTitle"> Docker </strong>

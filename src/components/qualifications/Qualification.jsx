@@ -4,45 +4,63 @@ import Plx from 'react-plx';
 import { parallaxDataLN, parallaxDataPO, parallaxDataAN } from '../../parallaxEffects/parallaxEffects';
 
 const qualification = (props) => {
+
   const getParallaxData = (topic) => {
+
     switch (topic) {
-      case "learning":
+
+      case 'learning':
         return parallaxDataLN;
-      case "polyvalent":
+      case 'polyvalent':
         return parallaxDataPO;
-      case "analytical":
+      case 'analytical':
         return parallaxDataAN;
       default:
         return parallaxDataLN;
+
     }
+
   };
 
   const cardText = () => {
+
     switch (props.topic) {
-      case "learning":
+
+      case 'learning':
         return (
           <p className="cardText">
-            I Have a great capacity for adaptation and a passion for learning. I will learn how to do anything that I need to do or to be improve, automating what can be along the way. I like to research and propose <strong className="blueTitle">new and inovative solutions to challenging problems</strong>
+            I Have a great capacity for adaptation and a passion for learning. I will learn how to do anything that I need to do or to be improved, automating what can be along the way. I like to research and propose
+            {' '}
+            <strong className="blueTitle">new and innovative solutions to challenging problems</strong>
           </p>
         );
-      case "polyvalent":
+      case 'polyvalent':
         return (
           <p className="cardText">
-            My different experiences helped me aquire multiple skills, allowing me to take charge of polyvalent missions, with an holistic point of view. I can prioritise and optimise work across many scopes of a project and deliver within time constraints.<strong className="blueTitle"> I make plans in order to achieve defined goals.</strong>
-          </p>);
-      case "analytical":
+            My different experiences helped me acquire multiple skills, allowing me to take charge of polyvalent missions, with a holistic point of view. I can prioritize and optimise work across many scopes of a project and deliver within time constraints.
+            <strong className="blueTitle"> I make plans in order to achieve defined goals.</strong>
+          </p>
+        );
+      case 'analytical':
         return (
           <p className="cardText">
-            I developed a critical analytical thinking through my education in human and social sciences, in qualitative and quantitative research. That my programming experience reinforced. Which <strong className="blueTitle">allows me the analysis and understanding of data</strong> to take better decisions.
+            I developed a critical analytical thinking through my education in human and social sciences, in qualitative and quantitative research. That my programming experience reinforced. Which
+            {' '}
+            <strong className="blueTitle">allows me the analysis and understanding of data</strong>
+            {' '}
+            to make better decisions.
           </p>
         );
       default:
         return null;
+
     }
+
   };
+
   return (
     <div
-      className={props.topic === "analytical" ? "topic topicNoBorder mobilepaddingNone" : "topic"}
+      className={props.topic === 'analytical' ? 'topic topicNoBorder mobilepaddingNone' : 'topic'}
     >
       <Plx
         parallaxData={getParallaxData(props.topic)}
@@ -58,6 +76,7 @@ const qualification = (props) => {
       </Plx>
     </div>
   );
+
 };
 
 export default qualification;
