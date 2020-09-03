@@ -49,9 +49,9 @@ export const centechProjectText = (
     <br />
     Following the training offered by the Centech made me enter the
     <strong className="blueTitle"> entrepreneur's </strong>
-    word which I have found too thrilling to quit since.
+    world which I have found too thrilling to quit since.
     <br />
-    The project was a data visualisation tool for physical rehabilitation professionals. I use this opportunity to some new technology like
+    The project was a data visualisation tool for physical rehabilitation professionals. I use this opportunity to learn some new technology like
     <strong className="blueTitle"> React </strong>
     to quickly build our first MVP.
   </p>
