@@ -110,9 +110,12 @@ const Speech = () => {
 
       try {
 
-        await fetch(process.env.ZAPPIER_EMAIL_ENDPOINT, {
-          method: 'POST',
-          body  : JSON.stringify({
+        await fetch(process.env.INTEGRATION_ENDPOINT, {
+          method : 'POST',
+          headers: {
+            ' Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
             sender: emailState.sender, transcript
           }),
         });
