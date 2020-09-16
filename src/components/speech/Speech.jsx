@@ -3,6 +3,7 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophoneAlt } from '@fortawesome/free-solid-svg-icons';
 import Spinner from '../Spinner';
+import { capitalize } from '../../utils/strings';
 
 const emailActions = {
   sending     : 'sending',
@@ -116,8 +117,7 @@ const Speech = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            sender    : emailState.sender,
-            transcript: transcript.charAt(0).toUpperCase() + transcript.slice(1)
+            sender: emailState.sender, transcript: capitalize(transcript)
           }),
         });
 
@@ -173,7 +173,7 @@ const Speech = () => {
         <div className="paper-content">
           <textarea
             onChange={() => {}}
-            value={transcript}
+            value={capitalize(transcript)}
             placeholder="Press the start button and let me know if next monday would be a good time to jump on a call?"
           />
         </div>
