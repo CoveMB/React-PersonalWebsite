@@ -116,7 +116,8 @@ const Speech = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            sender: emailState.sender, transcript
+            sender    : emailState.sender,
+            transcript: transcript.charAt(0).toUpperCase() + transcript.slice(1)
           }),
         });
 
