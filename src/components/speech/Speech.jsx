@@ -113,7 +113,7 @@ const Speech = () => {
         await fetch(process.env.INTEGRATION_ENDPOINT, {
           method : 'POST',
           headers: {
-            ' Content-Type': 'application/json'
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             sender: emailState.sender, transcript

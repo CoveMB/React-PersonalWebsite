@@ -1,10 +1,10 @@
-const withSass = require("@zeit/next-sass");
-const withCSS = require("@zeit/next-css");
+const withSass = require('@zeit/next-sass');
+const withCSS = require('@zeit/next-css');
 const withImages = require('next-images');
-const webpack = require("webpack");
+const webpack = require('webpack');
 const withPWA = require('next-pwa');
 
-require("dotenv").config();
+require('dotenv').config();
 
 module.exports = withPWA(withImages(withCSS(
   withSass({
@@ -12,16 +12,21 @@ module.exports = withPWA(withImages(withCSS(
       dest: 'public'
     },
     webpack: (config) => {
-    // Fixes npm packages that depend on `fs` module
+
+      // Fixes npm packages that depend on `fs` module
       config.node = {
         fs: 'empty'
       };
+
       /**
      * Returns environment variables as an object
      */
       const env = Object.keys(process.env).reduce((acc, curr) => {
+
         acc[`process.env.${curr}`] = JSON.stringify(process.env[curr]);
+
         return acc;
+
       }, {});
 
       /** Allows you to create global constants which can be configured
@@ -30,9 +35,11 @@ module.exports = withPWA(withImages(withCSS(
       config.plugins.push(new webpack.DefinePlugin(env));
       config.module.rules.push({
         test: /\.svg$/,
-        use: ['@svgr/webpack'],
+        use : [ '@svgr/webpack' ],
       });
+
       return config;
+
     }
   })
 )));
