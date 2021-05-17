@@ -37,7 +37,7 @@ const qualification = (props) => {
       case 'polyvalent':
         return (
           <p className="cardText">
-            Different experiences and learnings helped me acquire multiple skills from back-end to front-end or DevOps, allowing me to take charge of polyvalent missions, with a holistic point of view. I can prioritize and optimise work
+            Different experiences and learnings helped me acquire multiple skills from back-end to front-end or DevOps. Allowing me to take charge of polyvalent missions, with a holistic point of view. I can prioritize and optimise work
             {' '}
             <strong className="blueTitle">across different scopes of a project </strong>
             {' '}
