@@ -28,15 +28,16 @@ const qualification = (props) => {
       case 'learning':
         return (
           <p className="cardText">
-            I Have a great capacity for adaptation and a passion for learning. I will learn how to do anything that I need to do or to be improved, automating what can be along the way. I like to research and propose
+            There is always something new to learn, and it motivates me. I developed a great capacity for adaptation and a passion for discovering new topics in various domains. Spreading this learning with others on the way. I like to research and propose
             {' '}
             <strong className="blueTitle">new and innovative solutions to challenging problems</strong>
+            .
           </p>
         );
       case 'polyvalent':
         return (
           <p className="cardText">
-            My different experiences helped me acquire multiple skills from back-end to front-end or DevOps, allowing me to take charge of polyvalent missions, with a holistic point of view. I can prioritize and optimise work
+            Different experiences and learnings helped me acquire multiple skills from back-end to front-end or DevOps, allowing me to take charge of polyvalent missions, with a holistic point of view. I can prioritize and optimise work
             {' '}
             <strong className="blueTitle">across different scopes of a project </strong>
             {' '}
@@ -46,12 +47,11 @@ const qualification = (props) => {
       case 'lead':
         return (
           <p className="cardText">
-            I understand that a project can only go as far as the team can bring it. As a lead developer and a scrum master, I have learned to orient individuals and spread knowledge to
+            The core of every project is the team that is responsible for it. As a lead developer and a scrum master, I have learned to orient individuals and spread knowledge to
             {' '}
-            <strong className="blueTitle">empower the team and strengthen its effectiveness</strong>
+            <strong className="blueTitle">empower the team and strengthen its effectiveness </strong>
             {' '}
-            for continuous improvement
-            .
+            supporting the project&apos;s goals for continuous improvement.
           </p>
         );
       default:
