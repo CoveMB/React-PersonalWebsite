@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Qualification from './Qualification';
 
 const qualificationContainer = () => {
@@ -23,12 +23,12 @@ const qualificationContainer = () => {
             Abilities
           </h2>
         );
-      case 'analytical':
+      case 'lead':
         return (
           <h2 className="cardTitle">
-            Analytical
+            Team
             <br />
-            Thinking
+            Focused
           </h2>
         );
       default:
@@ -43,7 +43,7 @@ const qualificationContainer = () => {
       <div className="cardBox makeItFlex flexColumnMobile">
         <Qualification topic="learning" cardTitle={cardTitle} />
         <Qualification topic="polyvalent" cardTitle={cardTitle} />
-        <Qualification topic="analytical" cardTitle={cardTitle} />
+        <Qualification topic="lead" cardTitle={cardTitle} />
       </div>
     </>
   );

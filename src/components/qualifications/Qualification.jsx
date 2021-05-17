@@ -1,7 +1,6 @@
 import React from 'react';
 import Plx from 'react-plx';
-
-import { parallaxDataLN, parallaxDataPO, parallaxDataAN } from '../../parallaxEffects/parallaxEffects';
+import { parallaxDataAN, parallaxDataLN, parallaxDataPO } from '../../parallaxEffects/parallaxEffects';
 
 const qualification = (props) => {
 
@@ -13,7 +12,7 @@ const qualification = (props) => {
         return parallaxDataLN;
       case 'polyvalent':
         return parallaxDataPO;
-      case 'analytical':
+      case 'lead':
         return parallaxDataAN;
       default:
         return parallaxDataLN;
@@ -37,18 +36,23 @@ const qualification = (props) => {
       case 'polyvalent':
         return (
           <p className="cardText">
-            My different experiences helped me acquire multiple skills, allowing me to take charge of polyvalent missions, with a holistic point of view. I can prioritize and optimise work across many scopes of a project and deliver within time constraints.
-            <strong className="blueTitle"> I make plans in order to achieve defined goals.</strong>
+            My different experiences helped me acquire multiple skills from back-end to front-end or devops, allowing me to take charge of polyvalent missions, with a holistic point of view. I can prioritize and optimise work
+            {' '}
+            <strong className="blueTitle">across different scopes of a project </strong>
+            {' '}
+            and deliver within time constraints.
           </p>
         );
-      case 'analytical':
+      case 'lead':
         return (
           <p className="cardText">
-            I developed a critical analytical thinking through my education in human and social sciences, in qualitative and quantitative research. That my programming experience reinforced. Which
+            I understand that a project can only go as far as the team can brings it. As a lead developer and a scrum master, I have learn to
+            orient individuals and spread knowledge in order to
             {' '}
-            <strong className="blueTitle">allows me the analysis and understanding of data</strong>
+            <strong className="blueTitle">empower the team and strengthen it&apos;s effectiveness</strong>
             {' '}
-            to make better decisions.
+            for a continuous improvement
+            .
           </p>
         );
       default:

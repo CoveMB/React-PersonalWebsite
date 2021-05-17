@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 const headerCardContent = () => (
   <>
@@ -19,6 +19,16 @@ const headerCardContent = () => (
         </strong>
         {' '}
         | Tooly
+      </p>
+      <p className="cardListCompetence" style={{ marginLeft: '15px' }}>
+        <strong className="darkblueTitle">
+          ‍
+          <img style={{ marginLeft: '10px' }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" />
+          {' '}
+          Professional Scrum Master
+        </strong>
+        {' '}
+        | PSMI
       </p>
       <p className="cardListCompetence" style={{ marginLeft: '15px' }}>
         <strong className="darkblueTitle">
@@ -52,28 +62,10 @@ const headerCardContent = () => (
           ‍
           <img style={{ marginLeft: '10px' }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" />
           {' '}
-          Full Stack Teacher
+          Full Stack Teacher and Mentor
         </strong>
         {' '}
         | Le Wagon
-      </p>
-      <p className="cardListCompetence" style={{ marginLeft: '15px' }}>
-        <strong className="darkblueTitle">
-          <img style={{ marginLeft: '10px' }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" />
-          {' '}
-          Digital Marketing Specialist
-        </strong>
-        {' '}
-        | LCI Education
-      </p>
-      <p className="cardListCompetence" style={{ marginLeft: '15px' }}>
-        <strong className="darkblueTitle">
-          <img style={{ marginLeft: '10px' }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" />
-          {' '}
-          Sociology Master degree
-        </strong>
-        {' '}
-        | UQAM
       </p>
       <div className="grabEmailPart" />
     </div>
