@@ -46,12 +46,11 @@ const qualification = (props) => {
       case 'lead':
         return (
           <p className="cardText">
-            I understand that a project can only go as far as the team can brings it. As a lead developer and a scrum master, I have learn to
-            orient individuals and spread knowledge in order to
+            I understand that a project can only go as far as the team can bring it. As a lead developer and a scrum master, I have learned to orient individuals and spread knowledge to
             {' '}
-            <strong className="blueTitle">empower the team and strengthen it&apos;s effectiveness</strong>
+            <strong className="blueTitle">empower the team and strengthen its effectiveness</strong>
             {' '}
-            for a continuous improvement
+            for continuous improvement
             .
           </p>
         );
