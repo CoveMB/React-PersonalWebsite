@@ -36,7 +36,7 @@ const qualification = (props) => {
       case 'polyvalent':
         return (
           <p className="cardText">
-            My different experiences helped me acquire multiple skills from back-end to front-end or devops, allowing me to take charge of polyvalent missions, with a holistic point of view. I can prioritize and optimise work
+            My different experiences helped me acquire multiple skills from back-end to front-end or DevOps, allowing me to take charge of polyvalent missions, with a holistic point of view. I can prioritize and optimise work
             {' '}
             <strong className="blueTitle">across different scopes of a project </strong>
             {' '}
@@ -63,7 +63,7 @@ const qualification = (props) => {
 
   return (
     <div
-      className={props.topic === 'analytical' ? 'topic topicNoBorder mobilepaddingNone' : 'topic'}
+      className={props.topic === 'learning' ? 'topic topicNoBorder mobilepaddingNone' : 'topic'}
     >
       <Plx
         parallaxData={getParallaxData(props.topic)}

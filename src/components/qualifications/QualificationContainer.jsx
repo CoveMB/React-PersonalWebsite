@@ -41,9 +41,9 @@ const qualificationContainer = () => {
   return (
     <>
       <div className="cardBox makeItFlex flexColumnMobile">
-        <Qualification topic="learning" cardTitle={cardTitle} />
-        <Qualification topic="polyvalent" cardTitle={cardTitle} />
         <Qualification topic="lead" cardTitle={cardTitle} />
+        <Qualification topic="polyvalent" cardTitle={cardTitle} />
+        <Qualification topic="learning" cardTitle={cardTitle} />
       </div>
     </>
   );
