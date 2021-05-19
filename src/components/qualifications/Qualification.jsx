@@ -9,11 +9,11 @@ const qualification = (props) => {
     switch (topic) {
 
       case 'learning':
-        return parallaxDataLN;
+        return parallaxDataAN;
       case 'polyvalent':
         return parallaxDataPO;
       case 'lead':
-        return parallaxDataAN;
+        return parallaxDataLN;
       default:
         return parallaxDataLN;
 
