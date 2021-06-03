@@ -18,6 +18,16 @@ const headerCardContent = () => (
           Lead Full Stack Developer
         </strong>
         {' '}
+        | Spockee
+      </p>
+      <p className="cardListCompetence" style={{ marginLeft: '15px' }}>
+        <strong className="darkblueTitle">
+          ‍
+          <img style={{ marginLeft: '10px' }} className="svgDone" src="/static/images/donesvg.svg" alt="svg done" />
+          {' '}
+          Lead Full Stack Developer
+        </strong>
+        {' '}
         | Tooly
       </p>
       <p className="cardListCompetence" style={{ marginLeft: '15px' }}>
