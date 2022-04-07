@@ -1,35 +1,43 @@
-import React from 'react';
-import Plx from 'react-plx';
-import { airflowProjectText, shareInProjectText, centechProjectText, toolyProjectText, leWagonProjectText, cominityProjectText } from './projectText';
-import { parallaxDataProjectLeft, parallaxDataProjectRight } from '../../parallaxEffects/parallaxEffects';
-import ProjectImage from './ProjectImage';
-import ProjectGitLink from './ProjectGitLink';
+import React from "react";
+import Plx from "react-plx";
+import {
+  parallaxDataProjectLeft,
+  parallaxDataProjectRight,
+} from "../../parallaxEffects/parallaxEffects";
+import ProjectGitLink from "./ProjectGitLink";
+import ProjectImage from "./ProjectImage";
+import {
+  airflowProjectText,
+  aldoProjectText,
+  centechProjectText,
+  cominityProjectText,
+  leWagonProjectText,
+  shareInProjectText,
+  spockeeProjectText,
+  toolyProjectText,
+} from "./projectText";
 
 const project = ({ projectName, side, projectNames }) => {
-
-  const {
-    tooly, leWagon, centech, shareIn, airflow, cominity
-  } = projectNames;
+  const { spockee, tooly, leWagon, centech, shareIn, airflow, cominity, aldo } =
+    projectNames;
 
   const getParallaxData = () => {
-
     switch (side) {
-
-      case 'left':
+      case "left":
         return parallaxDataProjectLeft;
-      case 'right':
+      case "right":
         return parallaxDataProjectRight;
       default:
         return null;
-
     }
-
   };
 
   const getProjectText = () => {
-
     switch (projectName) {
-
+      case aldo:
+        return aldoProjectText;
+      case spockee:
+        return spockeeProjectText;
       case tooly:
         return toolyProjectText;
       case cominity:
@@ -44,17 +52,17 @@ const project = ({ projectName, side, projectNames }) => {
         return airflowProjectText;
       default:
         return null;
-
     }
-
   };
 
   const getProjectImage = () => {
-
     switch (projectName) {
-
-      case tooly:
+      case aldo:
+        return `/static/images/${projectName}.png`;
+      case spockee:
         return `/static/images/${projectName}.svg`;
+      case tooly:
+        return `/static/images/${projectName}.png`;
       case cominity:
         return `/static/images/${projectName}.png`;
       case centech:
@@ -67,55 +75,47 @@ const project = ({ projectName, side, projectNames }) => {
         return `/static/images/${projectName}.png`;
       default:
         return null;
-
     }
-
   };
 
   const getGithubRepo = () => {
-
     switch (projectName) {
-
       case airflow:
-        return 'https://github.com/BjMrq/Python-AirflowReportPipeline';
+        return "https://github.com/BjMrq/Python-AirflowReportPipeline";
       case shareIn:
-        return 'https://github.com/BjMrq/Rails-Share-in-App';
+        return "https://github.com/BjMrq/Rails-Share-in-App";
       case centech:
-        return 'https://github.com/BjMrq/Rails-React-VizzMD-App';
+        return "https://github.com/BjMrq/Rails-React-VizzMD-App";
       default:
         return null;
-
     }
-
   };
 
   const getWebsite = () => {
-
     switch (projectName) {
-
+      case aldo:
+        return "https://www.aldogroup.com/";
+      case spockee:
+        return "https://skeepers.io/en/live-shopping/";
       case tooly:
-        return 'https://tooly.ai/';
+        return "https://www.nextcanada.com/next-ai/";
       case cominity:
-        return 'https://cominity.ca/';
+        return "https://cominity.ca/";
       case centech:
-        return 'https://react-rails-vizzmd-mvp.herokuapp.com/p';
+        return "https://react-rails-vizzmd-mvp.herokuapp.com";
       case leWagon:
-        return 'https://www.lewagon.com/';
+        return "https://www.lewagon.com/";
       case shareIn:
-        return 'https://ruby-share-in-app.herokuapp.com/';
+        return "https://ruby-share-in-app.herokuapp.com/";
       case airflow:
-        return 'https://github.com/BjMrq/Python-AirflowReportPipeline';
+        return "https://github.com/BjMrq/Python-AirflowReportPipeline";
       default:
         return null;
-
     }
-
   };
 
   const getSide = () => {
-
-    if (side === 'left') {
-
+    if (side === "left") {
       return (
         <div className="makeItFlex ongoingRow">
           <div className="project-image-n-details">
@@ -125,8 +125,7 @@ const project = ({ projectName, side, projectNames }) => {
               side={side}
               projectName={projectName}
             />
-            {getGithubRepo()
-            && (
+            {getGithubRepo() && (
               <ProjectGitLink
                 hrefSource={getGithubRepo()}
                 side={side}
@@ -134,15 +133,14 @@ const project = ({ projectName, side, projectNames }) => {
               />
             )}
           </div>
-          { getProjectText() }
+          {getProjectText()}
         </div>
       );
-
     }
 
     return (
       <div className="makeItFlex ongoingRow">
-        { getProjectText() }
+        {getProjectText()}
         <div className="project-image-n-details">
           <ProjectImage
             hrefSource={getWebsite()}
@@ -150,8 +148,7 @@ const project = ({ projectName, side, projectNames }) => {
             side={side}
             projectName={projectName}
           />
-          {getGithubRepo()
-          && (
+          {getGithubRepo() && (
             <ProjectGitLink
               hrefSource={getGithubRepo()}
               side={side}
@@ -161,21 +158,16 @@ const project = ({ projectName, side, projectNames }) => {
         </div>
       </div>
     );
-
   };
 
   return (
-    <Plx
-      className="parallaxTitle"
-      parallaxData={getParallaxData()}
-    >
+    <Plx className="parallaxTitle" parallaxData={getParallaxData()}>
       <>
         <hr className="ongoingSeparator" />
-        { getSide() }
+        {getSide()}
       </>
     </Plx>
   );
-
 };
 
 export default project;

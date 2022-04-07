@@ -1,31 +1,29 @@
-import React from 'react';
-import Plx from 'react-plx';
-
-import { parallaxDataProjectImageRight, parallaxDataProjectImageLeft, parallaxDataProjectImageEyesRight } from '../../parallaxEffects/parallaxEffects';
+import React from "react";
+import Plx from "react-plx";
+import {
+  parallaxDataProjectImageLeft,
+  parallaxDataProjectImageRight,
+} from "../../parallaxEffects/parallaxEffects";
 
 export default function ProjectImage({
-  side, projectName, projectImage, hrefSource
+  side,
+  projectName,
+  projectImage,
+  hrefSource,
 }) {
-
   const getParallaxEffect = (specific) => {
-
-    if (specific === 'toolyEyes') {
-
-      return parallaxDataProjectImageEyesRight;
-
-    }
+    // if (specific === "toolyEyes") {
+    //   return parallaxDataProjectImageEyesRight;
+    // }
 
     switch (side) {
-
-      case 'right':
+      case "right":
         return parallaxDataProjectImageRight;
-      case 'left':
+      case "left":
         return parallaxDataProjectImageLeft;
       default:
         return null;
-
     }
-
   };
 
   return (
@@ -34,11 +32,7 @@ export default function ProjectImage({
         className={`parallaxImage${projectName}`}
         parallaxData={getParallaxEffect()}
       >
-        <a
-          href={hrefSource}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href={hrefSource} target="_blank" rel="noreferrer">
           <img
             className={`projectImage${side} projectImage${projectName}`}
             src={projectImage}
@@ -47,27 +41,22 @@ export default function ProjectImage({
           />
         </a>
       </Plx>
-      { projectName === 'tooly'
-      && (
+      {/* Previous image project with cute face and eye and special parallax effect */}
+      {/* {projectName === "tooly" && (
         <Plx
           className={`parallaxImage${projectName}`}
-          parallaxData={getParallaxEffect('toolyEyes')}
+          parallaxData={getParallaxEffect("toolyEyes")}
         >
-          <a
-            href={hrefSource}
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={hrefSource} target="_blank" rel="noreferrer">
             <img
               className={`projectImage${side} projectImage${projectName}`}
-              src={`${projectImage.replace('.svg', 'Eyes.svg')}`}
+              src={`${projectImage.replace(".svg", "Eyes.svg")}`}
               alt={`${projectName} logo`}
               width="90px"
             />
           </a>
         </Plx>
-      )}
+      )} */}
     </>
   );
-
 }
