@@ -63,6 +63,9 @@ export const toolyProjectText = (
     <br />
     But I also had the opportunity to participate in the development of the
     whole product from business model to MVP experiments.
+    <br />I followed a{" "}
+    <strong className="blueTitle">product ownership bootcamp</strong> to tace
+    better product decision.
   </p>
 );
 
