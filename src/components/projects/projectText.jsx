@@ -10,7 +10,7 @@ export const aldoProjectText = (
     It was not an easy task since this system is interconnected with multiple
     other systems and OMS is the glue that connects them all.
     <br />
-    The new OMS was build with the latest concepts and technologies with an{" "}
+    The new OMS was built with the latest concepts and technologies with an{" "}
     <strong className="blueTitle">event driven microservice</strong>{" "}
     architecture using <strong className="blueTitle">Eventbridge</strong> and{" "}
     <strong className="blueTitle">Lambda functions.</strong>
@@ -40,7 +40,7 @@ export const spockeeProjectText = (
     <strong className="blueTitle">scrum master certification</strong> to help
     the team mature in agile methodologies.
     <br />I was also there to support the team to grow in those new technologies
-    we where adopting with lunch and learns and pair programming.
+    we were adopting with lunch and learns and pair programming.
   </p>
 );
 
