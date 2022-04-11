@@ -3,6 +3,7 @@ import Project from "./Project";
 
 const ongoing = (props) => {
   const projectNames = {
+    astroLight: "astroLight",
     aldo: "aldo",
     spockee: "spockee",
     tooly: "tooly",
@@ -24,6 +25,11 @@ const ongoing = (props) => {
         <br />
         (Displayed from most recent to oldest)
       </p>
+      <Project
+        projectNames={projectNames}
+        projectName={projectNames.astroLight}
+        side="left"
+      />
       <Project
         projectNames={projectNames}
         projectName={projectNames.aldo}

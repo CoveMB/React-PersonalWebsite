@@ -1,6 +1,33 @@
 /* eslint-disable max-len */
 import React from "react";
 
+export const astroLightProjectText = (
+  <p className="cardText ongoingText">
+    <strong className="blueTitle">
+      Building a small DEFI and DAO DAPP to teach blockchain :
+    </strong>
+    <br />I started to grow an interest for{" "}
+    <strong className="blueTitle">blockchain technology</strong> and how it
+    could change the web and impact some of our social processes. My family and
+    friends also got curious about blockchain the more I talked about it. I
+    started <strong className="blueTitle">teaching sessions</strong> where I
+    explain blockchain fundamentals, getting into technological and practical
+    concepts. There is nothing better than practice to retain learning
+    information so I built a small{" "}
+    <strong className="blueTitle">DEFI and DAO DAPP</strong> so that the persons
+    I am teaching to can interact with{" "}
+    <strong className="blueTitle">Ethereum’s testnet</strong>. I created an{" "}
+    <strong className="blueTitle">ERC20 token named Astro Light</strong> that
+    people can buy then either <strong className="blueTitle">swap</strong> for
+    another token or <strong className="blueTitle">stake</strong>. As ASTRO
+    holders they can also participate to the{" "}
+    <strong className="blueTitle">DAO</strong> and make a proposal of their own
+    to change the color of a UI element that get its color from a smart contract
+    managed by a set of{" "}
+    <strong className="blueTitle">governance smart contracts</strong>.
+  </p>
+);
+
 export const aldoProjectText = (
   <p className="cardText ongoingText">
     <strong className="blueTitle">Replacing the heart of an e-commerce:</strong>

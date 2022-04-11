@@ -9,6 +9,7 @@ import ProjectImage from "./ProjectImage";
 import {
   airflowProjectText,
   aldoProjectText,
+  astroLightProjectText,
   centechProjectText,
   cominityProjectText,
   leWagonProjectText,
@@ -18,8 +19,17 @@ import {
 } from "./projectText";
 
 const project = ({ projectName, side, projectNames }) => {
-  const { spockee, tooly, leWagon, centech, shareIn, airflow, cominity, aldo } =
-    projectNames;
+  const {
+    spockee,
+    tooly,
+    leWagon,
+    centech,
+    shareIn,
+    airflow,
+    cominity,
+    aldo,
+    astroLight,
+  } = projectNames;
 
   const getParallaxData = () => {
     switch (side) {
@@ -34,6 +44,8 @@ const project = ({ projectName, side, projectNames }) => {
 
   const getProjectText = () => {
     switch (projectName) {
+      case astroLight:
+        return astroLightProjectText;
       case aldo:
         return aldoProjectText;
       case spockee:
@@ -57,6 +69,8 @@ const project = ({ projectName, side, projectNames }) => {
 
   const getProjectImage = () => {
     switch (projectName) {
+      case astroLight:
+        return `/static/images/${projectName}.svg`;
       case aldo:
         return `/static/images/${projectName}.png`;
       case spockee:
@@ -80,6 +94,8 @@ const project = ({ projectName, side, projectNames }) => {
 
   const getGithubRepo = () => {
     switch (projectName) {
+      case astroLight:
+        return "https://github.com/BjMrq/solidity-DEFI-DAO";
       case airflow:
         return "https://github.com/BjMrq/Python-AirflowReportPipeline";
       case shareIn:
@@ -93,6 +109,8 @@ const project = ({ projectName, side, projectNames }) => {
 
   const getWebsite = () => {
     switch (projectName) {
+      case astroLight:
+        return "https://astro-light.netlify.app/";
       case aldo:
         return "https://www.aldogroup.com/";
       case spockee:

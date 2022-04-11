@@ -1,25 +1,20 @@
-import React from 'react';
-import Plx from 'react-plx';
+import React from "react";
+import Plx from "react-plx";
+import {
+  parallaxDataProjectGitLinkLeft,
+  parallaxDataProjectGitLinkRight,
+} from "../../parallaxEffects/parallaxEffects";
 
-import { parallaxDataProjectGitLinkRight, parallaxDataProjectGitLinkLeft } from '../../parallaxEffects/parallaxEffects';
-
-export default function ProjectGitLink({
-  side, projectName, hrefSource
-}) {
-
+export default function ProjectGitLink({ side, projectName, hrefSource }) {
   const getParallaxEffect = () => {
-
     switch (side) {
-
-      case 'right':
+      case "right":
         return parallaxDataProjectGitLinkRight;
-      case 'left':
+      case "left":
         return parallaxDataProjectGitLinkLeft;
       default:
         return null;
-
     }
-
   };
 
   return (
@@ -27,11 +22,7 @@ export default function ProjectGitLink({
       className={`projectBtnPosition${side}`}
       parallaxData={getParallaxEffect()}
     >
-      <a
-        href={hrefSource}
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a href={hrefSource} target="_blank" rel="noreferrer">
         <img
           className="projectRepoBtn"
           src="/static/images/github.svg"
@@ -40,5 +31,4 @@ export default function ProjectGitLink({
       </a>
     </Plx>
   );
-
 }
