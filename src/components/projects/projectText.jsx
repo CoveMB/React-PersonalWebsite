@@ -6,7 +6,7 @@ export const astroLightProjectText = (
     <strong className="blueTitle">
       Building a small DEFI and DAO DAPP to teach blockchain :
     </strong>
-    <br />I started to grow an interest for{" "}
+    <br />I started to grow an interest in{" "}
     <strong className="blueTitle">blockchain technology</strong> and how it
     could change the web and impact some of our social processes. My family and
     friends also got curious about blockchain the more I talked about it. I
@@ -18,12 +18,12 @@ export const astroLightProjectText = (
     I am teaching to can interact with{" "}
     <strong className="blueTitle">Ethereum’s testnet</strong>. I created an{" "}
     <strong className="blueTitle">ERC20 token named Astro Light</strong> that
-    people can buy then either <strong className="blueTitle">swap</strong> for
-    another token or <strong className="blueTitle">stake</strong>. As ASTRO
-    holders they can also participate to the{" "}
+    people can buy and then either <strong className="blueTitle">swap</strong>{" "}
+    for another token or <strong className="blueTitle">stake</strong>. As ASTRO
+    holders they can also participate in the{" "}
     <strong className="blueTitle">DAO</strong> and make a proposal of their own
-    to change the color of a UI element that get its color from a smart contract
-    managed by a set of{" "}
+    to change the color of a UI element that gets its color from a smart
+    contract managed by a set of{" "}
     <strong className="blueTitle">governance smart contracts</strong>.
   </p>
 );
