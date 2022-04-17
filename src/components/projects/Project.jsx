@@ -110,7 +110,7 @@ const project = ({ projectName, side, projectNames }) => {
   const getWebsite = () => {
     switch (projectName) {
       case astroLight:
-        return "https://astro-light.netlify.app/";
+        return "https://astro-light.on.fleek.co/";
       case aldo:
         return "https://www.aldogroup.com/";
       case spockee:
