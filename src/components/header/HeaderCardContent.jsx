@@ -32,6 +32,19 @@ const headerCardContent = () => (
             src="/static/images/donesvg.svg"
             alt="svg done"
           />{" "}
+          Certified Ethereum Developer
+        </strong>{" "}
+        | Blockchain Council
+      </p>
+      <p className="cardListCompetence" style={{ marginLeft: "15px" }}>
+        <strong className="darkblueTitle">
+          ‍
+          <img
+            style={{ marginLeft: "10px" }}
+            className="svgDone"
+            src="/static/images/donesvg.svg"
+            alt="svg done"
+          />{" "}
           Professional Scrum Master
         </strong>{" "}
         | PSMI
