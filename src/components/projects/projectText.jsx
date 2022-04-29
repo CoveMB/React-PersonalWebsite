@@ -43,7 +43,8 @@ export const aldoProjectText = (
     <strong className="blueTitle">Lambda functions.</strong>
     <br />I also created a{" "}
     <strong className="blueTitle">CLI and IDE extension</strong> to smooth out
-    development and eliminate the need to access AWS console.
+    development and eliminate the need to access AWS console when interacting
+    with Event bridge and Lambda functions.
   </p>
 );
 
