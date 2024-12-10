@@ -42,7 +42,7 @@
     "dotenv": "^8.1.0",
     "eslint-plugin-eslint-plugin": "^2.3.0",
     "eslint-plugin-react-hooks": "^4.1.0",
-    "gsap": "^3.0.1",
+    "gsap": "^3.6.0",
     "next": "^9.5.2",
     "next-images": "^1.2.0",
     "next-pwa": "^3.1.3",
