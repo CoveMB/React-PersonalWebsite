@@ -1,23 +1,23 @@
 export default {
-  title: "Cove Marquis",
+  title: "Cove Marquis-Bortoli",
   description: "Discover some of my projects!",
   keywords:
     "full-stack developer, machine learning, programming, developer, react, js, node, docker",
   robot: "index, follow",
-  "application-name": "Cove Marquis - Find some of my projects!",
+  "application-name": "Cove Marquis-Bortoli - Find some of my projects!",
   "apple-mobile-web-app-capable": "yes",
   "msapplication-TileColor": "#2B5797",
   "msapplication-tap-highlight": "no",
   "theme-color": "#000000",
   viewport: "width=device-width, initial-scale=1",
-  canonical: "https://www.benjaminmarquis.com/",
+  canonical: "https://cove-marquis-bortoli.xyz/",
   openGraph: {
     type: "profile",
     locale: "en_IE",
-    url: "https://www.benjaminmarquis.com/",
-    title: "Cove Marquis",
+    url: "https://cove-marquis-bortoli.xyz/",
+    title: "Cove Marquis-Bortoli",
     description: "Discover some of my projects!",
-    site_name: "Cove Marquis - Find some of my projects!",
+    site_name: "Cove Marquis-Bortoli - Find some of my projects!",
     images: [
       {
         url: "https://ruby-portfolio-bucket.s3.ca-central-1.amazonaws.com/squareogimage.jpg",
