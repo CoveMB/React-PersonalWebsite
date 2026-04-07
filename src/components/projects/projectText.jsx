@@ -3,36 +3,26 @@ import React from "react";
 export const suiToolingProjectText = (
   <p className="cardText ongoingText">
     <strong className="blueTitle">
-      Building the tooling layer of a fullstack DAPP for a growing ecosystem
-      SUI:
+      Building the tooling layer for a Sui marketplace dApp:
     </strong>
     <br />
-    At OpenZeppelin we helped new ecosystem grow safely by helping them building
-    secure smart contract component and tooling layer. Todo this I built a{" "}
-    <strong className="blueTitle">marketplace dApp</strong> fullstack example
-    and focused on designing a dedicated{" "}
-    <strong className="blueTitle">tooling layer</strong> to streamline smart
-    contract development and interaction across environments.
+    At OpenZeppelin, I built a{" "}
+    <strong className="blueTitle">full-stack marketplace example</strong> and
+    the surrounding <strong className="blueTitle">tooling layer</strong> to make
+    Move contract development easier across environments.
     <br />
-    The tooling allowed developers to{" "}
-    <strong className="blueTitle">publish Move smart contracts</strong> to
-    multiple Sui networks, manage deployment artifacts, and easily{" "}
-    <strong className="blueTitle">interact with on-chain objects</strong> from
-    scripts and tests. It included abstractions around{" "}
-    <strong className="blueTitle">network configuration</strong>, contract
-    addresses, and transaction helpers so the same codebase could target{" "}
-    <strong className="blueTitle">different environments</strong> without manual
-    changes. An other key part was creating an{" "}
-    <strong className="blueTitle">integration test harness</strong> that deploys
-    contracts, seeds state, and executes end-to-end scenarios to validate the
-    full dApp workflow. This made it possible to test{" "}
-    <strong className="blueTitle">on-chain interactions</strong> in a
-    reproducible way.
+    The work covered <strong className="blueTitle">contract publishing</strong>,
+    deployment artifacts,{" "}
+    <strong className="blueTitle">network-aware configuration</strong>,
+    transaction helpers, and an{" "}
+    <strong className="blueTitle">integration test harness</strong> that could
+    deploy contracts, seed state, and validate end-to-end flows.
     <br />
-    The goal was to improve{" "}
-    <strong className="blueTitle">developer experience</strong> and provide a
-    consistent pipeline for deploying, interacting, and testing Sui applications
-    built with <strong className="blueTitle">Move smart contracts</strong>.
+    The result was a stronger{" "}
+    <strong className="blueTitle">developer experience</strong> and a more
+    repeatable pipeline for building, testing, and operating{" "}
+    <strong className="blueTitle">Sui applications</strong> with Move smart
+    contracts.
   </p>
 );
 
@@ -41,76 +31,71 @@ export const defenderProjectText = (
     <strong className="blueTitle">
       Securing smart contract operations at scale:
     </strong>
+    <br />I worked on{" "}
+    <strong className="blueTitle">OpenZeppelin Defender</strong>, a platform
+    used by teams to deploy, monitor, and operate smart contracts in production
+    with stronger operational safety.
+    <br />I contributed across the{" "}
+    <strong className="blueTitle">full stack</strong>, from blockchain
+    integration flows to backend services and product-facing UI.
     <br />
-    Joining OpenZeppelin I knew I would be working on serious project that would
-    help secure the blockchain ecosystem.{" "}
-    <strong className="blueTitle">
-      Upon joining I first worked on Defender
-    </strong>
-    , a platform designed to help teams securely deploy, monitor and operate{" "}
-    <strong className="blueTitle">smart contracts</strong> in production.
-    <br />I contributed to building end-to-end features across the{" "}
-    <strong className="blueTitle">full-stack</strong>, from UI interfaces to
-    backend services and blockchain integrations.
-    <br />
-    The work involved improving tooling around{" "}
+    To improve
     <strong className="blueTitle">contract administration</strong>,{" "}
     <strong className="blueTitle">automated operations</strong> and{" "}
     <strong className="blueTitle">real-time monitoring</strong> so teams could
     react quickly to on-chain events and reduce manual intervention.
-    <br />I also helped design parts of the{" "}
-    <strong className="blueTitle">micro-service architecture</strong> deployed
-    on AWS, and worked on features integrating with{" "}
-    <strong className="blueTitle">on-chain triggers</strong>,{" "}
-    <strong className="blueTitle">automation bots</strong> and{" "}
-    <strong className="blueTitle">secure operational workflows</strong>.
+    <strong className="blueTitle">contract administration</strong>, automation,
+    monitoring, and workflows that help teams react to on-chain activity with
+    less manual intervention. I also contributed to the{" "}
+    <strong className="blueTitle">microservice architecture</strong> running on
+    AWS and to features built around triggers, automation bots, and secure
+    operational workflows.
   </p>
 );
 
 export const astroLightProjectText = (
   <p className="cardText ongoingText">
     <strong className="blueTitle">
-      Building a small DEFI and DAO DAPP to teach blockchain:
+      A teaching dApp for DeFi and DAO concepts:
     </strong>
-    <br />I started to grow an interest in{" "}
-    <strong className="blueTitle">blockchain technology</strong> and how it
-    could change the web and impact some of our social processes. My family and
-    friends also got curious about blockchain the more I talked about it. I
-    started <strong className="blueTitle">teaching sessions</strong> where I
-    explain blockchain fundamentals, getting into technological and practical
-    concepts. There is nothing better than practice to retain learning
-    information so I built a small{" "}
-    <strong className="blueTitle">DEFI and DAO DAPP</strong> so that the persons
-    I am teaching to can interact with{" "}
-    <strong className="blueTitle">Ethereum’s testnet</strong>. I created an{" "}
-    <strong className="blueTitle">ERC20 token named Astro Light</strong> that
-    people can buy and then either <strong className="blueTitle">swap</strong>{" "}
-    for another token or <strong className="blueTitle">stake</strong>. As ASTRO
-    holders they can also participate in the{" "}
-    <strong className="blueTitle">DAO</strong> and make a proposal of their own
-    to change the color of a UI element that gets its color from a smart
-    contract managed by a set of{" "}
-    <strong className="blueTitle">governance smart contracts</strong>.
+    <br />I built Astro Light as a hands-on way to teach{" "}
+    <strong className="blueTitle">blockchain fundamentals</strong> beyond slide
+    decks and theory.
+    <br />
+    The project combined a small{" "}
+    <strong className="blueTitle">DeFi and DAO experience</strong> on Ethereum
+    testnet: users could buy a token, swap, stake, and participate in a simple
+    governance flow that updated a UI element through on-chain decisions.
+    <br />
+    It turned abstract concepts like{" "}
+    <strong className="blueTitle">
+      tokens, staking, governance, and smart contracts
+    </strong>{" "}
+    into something people could actually use and understand.
   </p>
 );
 
 export const aldoProjectText = (
   <p className="cardText ongoingText">
-    <strong className="blueTitle">Replacing the heart of an e-commerce:</strong>
-    <br /> I joined Aldo just before the start of a big project that was to
-    rebuild from scratch the OMS (order management system).
+    <strong className="blueTitle">
+      Modernizing the core of an e-commerce platform:
+    </strong>
     <br />
-    It was not an easy task since this system is interconnected with multiple
-    other systems and OMS is the glue that connects them all.
+    At Aldo, I joined the team during the rebuild of the{" "}
+    <strong className="blueTitle">order management system</strong>, one of the
+    most critical systems in the commerce stack.
     <br />
-    The new OMS was built with the latest concepts and technologies with an{" "}
-    <strong className="blueTitle">event driven microservice</strong>{" "}
-    architecture using <strong className="blueTitle">Eventbridge</strong> and{" "}
-    <strong className="blueTitle">Lambda functions.</strong>
-    <br />I also created a{" "}
-    <strong className="blueTitle">CLI and IDE extension</strong> to smooth out
-    development and eliminate the need to access AWS console when interacting
-    with EventBridge and Lambda functions.
+    The new platform was built around an{" "}
+    <strong className="blueTitle">
+      event-driven microservice architecture
+    </strong>{" "}
+    using EventBridge and Lambda functions, with the OMS acting as the
+    coordination layer between multiple interconnected services.
+    <br />
+    Alongside product work, I created a{" "}
+    <strong className="blueTitle">CLI and IDE extension</strong> to streamline
+    developer workflows and reduce the need to jump into the AWS console for
+    common operational tasks.
   </p>
 );
 
