@@ -1,10 +1,11 @@
 import React from "react";
+import {
+  resumeDownloadName,
+  resumeFilePath,
+  socialLinks,
+} from "../../utils/profile";
 
 const doneImagePath = "/static/images/donesvg.svg";
-const resumeFilePath = encodeURI(
-  "/static/documents/Resume Cove Marquis EN.pdf",
-);
-const githubProfileUrl = "https://github.com/CoveMB";
 
 const focusAreas = [
   "Full-stack delivery",
@@ -55,42 +56,12 @@ const milestoneItems = [
   },
 ];
 
-const contactLinks = [
-  {
-    alt: "email icon",
-    href: "mailto:bmarquiscom@gmail.com",
-    imagePath: "/static/images/email.svg",
-    target: "_top",
-  },
-  {
-    alt: "LinkedIn Icon",
-    href: "https://www.linkedin.com/in/cove-marquis-eth/?locale=en_US",
-    imagePath: "/static/images/linkedinSvg.svg",
-    rel: "noopener noreferrer",
-    target: "_blank",
-  },
-  {
-    alt: "GitHub Icon",
-    href: githubProfileUrl,
-    imagePath: "/static/images/github.svg",
-    rel: "noopener noreferrer",
-    target: "_blank",
-  },
-  {
-    alt: "Instagram Icon",
-    href: "https://www.instagram.com/cove.suchness/?hl=en",
-    imagePath: "/static/images/instagram.svg",
-    rel: "noopener noreferrer",
-    target: "_blank",
-  },
-];
-
 const heroActionLinks = [
   {
     className: "headerCardPrimaryLink",
-    download: "Resume Cove Marquis EN.pdf",
+    download: resumeDownloadName,
     href: resumeFilePath,
-    label: "View resume",
+    label: "Download resume",
   },
 ];
 
@@ -103,8 +74,22 @@ const renderMilestone = ({ label, organization }) => (
   </div>
 );
 
-const renderContactLink = ({ alt, href, imagePath, rel, target }) => (
-  <a className="footerLink" href={href} key={href} rel={rel} target={target}>
+const renderContactLink = ({
+  alt,
+  href,
+  imagePath,
+  rel,
+  target,
+  style = {},
+}) => (
+  <a
+    className="footerLink"
+    href={href}
+    key={href}
+    rel={rel}
+    target={target}
+    style={style}
+  >
     <img className="svgSocialHeader" src={imagePath} alt={alt} />
   </a>
 );
@@ -147,7 +132,7 @@ const HeaderCardContent = () => (
         I build secure product platforms and developer tooling across smart
         contracts, backend systems, and modern frontend applications. Most
         recently, I worked on blockchain tooling and product engineering at
-        OpenZeppelin.
+        <strong> OpenZeppelin</strong>.
       </p>
       <div className="headerCardActions">
         {heroActionLinks.map(renderHeroActionLink)}
@@ -158,7 +143,7 @@ const HeaderCardContent = () => (
         className="cardListCompetenceTitle headerCardSectionTitle"
         style={{ marginTop: "40px" }}
       >
-        Selected experience
+        Milestones
       </p>
       {milestoneItems.map(renderMilestone)}
       <div className="grabEmailPart" />
@@ -167,7 +152,7 @@ const HeaderCardContent = () => (
       <div className="headerCardBottomBlock">
         <p className="cardListCompetenceTitle headerCardActionTitle">Connect</p>
         <div className="social-icons-header">
-          {contactLinks.map(renderContactLink)}
+          {socialLinks.map(renderContactLink)}
         </div>
       </div>
       <div className="headerCardBottomBlock headerCardResumeBlock">

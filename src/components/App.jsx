@@ -9,13 +9,18 @@ import ParallaxTitle from "./ParalaxTitle";
 import Projects from "./projects/Projects";
 import QualificationContainer from "./qualifications/QualificationContainer";
 import Story from "./speech/Speech";
+import TrustSignals from "./trust/TrustSignals";
 import NavBar from "./navbar/NavBar";
 import { initializeStores } from "../store/initializeStores";
 import { useStore } from "../store/useStore";
 
 initializeStores();
 
-const getSectionOffsets = ({ cardsElement, featuresElement, ongoingElement }) => ({
+const getSectionOffsets = ({
+  cardsElement,
+  featuresElement,
+  ongoingElement,
+}) => ({
   cards: cardsElement?.offsetTop ?? 0,
   features: featuresElement?.offsetTop ?? 0,
   ongoing: ongoingElement?.offsetTop ?? 0,
@@ -26,7 +31,7 @@ export default function App() {
   const cardsReference = useRef(null);
   const featuresReference = useRef(null);
   const ongoingReference = useRef(null);
-  const [ , dispatch ] = useStore(false);
+  const [, dispatch] = useStore(false);
 
   useEffect(() => {
     const updateOffsets = () => {
@@ -36,7 +41,7 @@ export default function App() {
           cardsElement: cardsReference.current,
           featuresElement: featuresReference.current,
           ongoingElement: ongoingReference.current,
-        })
+        }),
       );
     };
 
@@ -46,7 +51,7 @@ export default function App() {
     return () => {
       window.removeEventListener("resize", updateOffsets);
     };
-  }, [ dispatch ]);
+  }, [dispatch]);
 
   return (
     <>
@@ -54,7 +59,12 @@ export default function App() {
       <NavBar />
       <Header />
       <OpacityParallax nextId="#projects">
-        <div className="normalizedBackground" id="cardsDiv" ref={cardsReference}>
+        <div
+          className="normalizedBackground"
+          id="cardsDiv"
+          ref={cardsReference}
+        >
+          <TrustSignals />
           <ParallaxTitle title="My Peculiarities" />
           <QualificationContainer />
         </div>

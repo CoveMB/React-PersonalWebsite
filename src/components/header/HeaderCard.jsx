@@ -6,7 +6,7 @@ import HeaderCardContent from "./HeaderCardContent";
 export default function HeaderCard() {
   return (
     <ScrollParallax className="parallaxTitle" parallaxData={parallaxDataHeader}>
-      <div className="header-card scrollbarxcustom animated">
+      <div className="header-card scrollbarxcustom">
         <div className="gradient-square-avatar">
           <Avatar />
         </div>

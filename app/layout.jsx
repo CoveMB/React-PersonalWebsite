@@ -7,19 +7,19 @@ export { metadata, viewport };
 
 const sansFont = Manrope({
   display: "swap",
-  subsets: [ "latin" ],
+  subsets: ["latin"],
   variable: "--font-sans",
 });
 
 const displayFont = Fraunces({
   display: "swap",
-  subsets: [ "latin" ],
+  subsets: ["latin"],
   variable: "--font-display",
 });
 
 const handwrittenFont = Caveat({
   display: "swap",
-  subsets: [ "latin" ],
+  subsets: ["latin"],
   variable: "--font-handwritten",
 });
 
@@ -31,8 +31,14 @@ export default function RootLayout({ children }) {
       className={`${sansFont.variable} ${displayFont.variable} ${handwrittenFont.variable} scrollNoOverflow`}
     >
       <head>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" rel="stylesheet" />
+        <link
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          rel="stylesheet"
+        />
+        <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"
+          rel="stylesheet"
+        />
       </head>
       <body suppressHydrationWarning>
         {children}

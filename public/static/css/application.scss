@@ -10,6 +10,7 @@
 @use 'projects';
 @use 'text';
 @use 'speech';
+@use 'trustSignals';
 @use 'footer';
 @use 'navBtn';
 
@@ -39,6 +40,7 @@ button {
   -webkit-tap-highlight-color: transparent;
   -webkit-focus-ring-color: transparent;
   outline: none;
+  border-radius: 16px;
 }
 
 @media screen and (hover: none) {
