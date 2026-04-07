@@ -1,52 +1,131 @@
 @use 'colors';
 
 .NavBtn {
-  height: 16px;
-  background-color: colors.$backgroundwhite;
-  border: 2px solid colors.$darkpurple;
-  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 8px 0 8px 14px;
+  border: 0;
+  background: transparent;
   z-index: 999;
-  transition: background-color 0.1s linear;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.NavBtn:hover {
-  transform: scale(1.2);
-  transition: transform 0.1s;
+.NavBtnLabel {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid rgba(colors.$darkpurple, 0.12);
+  border-radius: 999px;
+  background-color: rgba(colors.$cardwhite, 0.88);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 14px 28px rgba(colors.$darkpurple, 0.1);
+  color: colors.$darkpurple;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  opacity: 0;
+  pointer-events: none;
+  text-transform: uppercase;
+  transform: translateX(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.NavBtn:focus {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  text-decoration: none;
+.NavBtnDot {
+  width: 16px;
+  height: 16px;
+  border: 2px solid colors.$darkpurple;
+  border-radius: 50%;
+  background-color: rgba(colors.$backgroundwhite, 0.92);
+  box-shadow: 0 10px 22px rgba(colors.$darkpurple, 0.14);
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.NavBtn:hover .NavBtnLabel,
+.NavBtn:focus-visible .NavBtnLabel {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.NavBtn:hover .NavBtnDot,
+.NavBtn:focus-visible .NavBtnDot {
+  transform: scale(1.55);
+  box-shadow: 0 16px 30px rgba(colors.$darkpurple, 0.22);
+}
+
+.NavBtn:focus-visible {
   outline: none;
 }
 
-.activateBtn {
+.NavBtn:focus-visible .NavBtnLabel {
+  border-color: rgba(colors.$darkpurple, 0.3);
+  background-color: rgba(colors.$cardwhite, 0.98);
+}
+
+.NavBtn:focus-visible .NavBtnDot {
+  outline: 2px solid rgba(colors.$lightpurple, 0.45);
+  outline-offset: 4px;
+}
+
+.activateBtn .NavBtnDot {
   transform: scale(1.2);
   background-color: colors.$darkpurple;
-  transition: transform 0.2s;
+}
+
+.activateBtn:hover .NavBtnDot,
+.activateBtn:focus-visible .NavBtnDot {
+  transform: scale(1.8);
 }
 
 .NavBtntop {
   position: fixed;
   top: 45vh;
-  left: 96vw;
+  right: 1.75rem;
 }
 
 .NavBtncards {
   position: fixed;
   top: 48vh;
-  left: 96vw;
+  right: 1.75rem;
 }
 
 .NavBtnfeatures {
   position: fixed;
   top: 51vh;
-  left: 96vw;
+  right: 1.75rem;
 }
 
 .NavBtnongoing {
   position: fixed;
   top: 54vh;
-  left: 96vw;
+  right: 1.75rem;
+}
+
+@media only screen and (max-width: 870px) {
+  .NavBtntop,
+  .NavBtncards,
+  .NavBtnfeatures,
+  .NavBtnongoing {
+    right: 0.85rem;
+  }
+
+  .NavBtn {
+    gap: 10px;
+    padding-left: 10px;
+  }
+
+  .NavBtnLabel {
+    min-height: 30px;
+    padding: 0 12px;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+  }
+
+  .NavBtnDot {
+    width: 14px;
+    height: 14px;
+  }
 }

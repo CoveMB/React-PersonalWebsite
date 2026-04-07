@@ -1,6 +1,29 @@
 import { useEffect } from "react";
 import { useStore } from "../store/useStore";
 
+const navigationButtons = [
+  {
+    ariaLabel: "Go to top section",
+    id: "top",
+    label: "Top",
+  },
+  {
+    ariaLabel: "Go to peculiarities section",
+    id: "cards",
+    label: "Peculiarities",
+  },
+  {
+    ariaLabel: "Go to projects section",
+    id: "features",
+    label: "Projects",
+  },
+  {
+    ariaLabel: "Go to email section",
+    id: "ongoing",
+    label: "Contact",
+  },
+];
+
 const getCurrentSection = ({ currentPosition, refsOffsets }) => {
   if (!refsOffsets) {
     return "top";
@@ -54,10 +77,19 @@ export default function NavBtns() {
 
   return (
     <>
-      <button aria-label="Go to top section" className={getNavButtonClasses("top")} onClick={() => dispatch("GO_TO_REF", "top")} type="button" />
-      <button aria-label="Go to peculiarities section" className={getNavButtonClasses("cards")} onClick={() => dispatch("GO_TO_REF", "cards")} type="button" />
-      <button aria-label="Go to projects section" className={getNavButtonClasses("features")} onClick={() => dispatch("GO_TO_REF", "features")} type="button" />
-      <button aria-label="Go to email section" className={getNavButtonClasses("ongoing")} onClick={() => dispatch("GO_TO_REF", "ongoing")} type="button" />
+      {navigationButtons.map(({ ariaLabel, id, label }) => (
+        <button
+          aria-current={id === state.position ? "location" : undefined}
+          aria-label={ariaLabel}
+          className={getNavButtonClasses(id)}
+          key={id}
+          onClick={() => dispatch("GO_TO_REF", id)}
+          type="button"
+        >
+          <span className="NavBtnLabel">{label}</span>
+          <span aria-hidden="true" className="NavBtnDot" />
+        </button>
+      ))}
     </>
   );
 }
