@@ -1,77 +1,26 @@
 import React from "react";
 import Project from "./Project";
 
-const ongoing = (props) => {
-  const projectNames = {
-    astroLight: "astroLight",
-    aldo: "aldo",
-    spockee: "spockee",
-    tooly: "tooly",
-    leWagon: "leWagon",
-    centech: "centech",
-    shareIn: "shareIn",
-    airflow: "airflow",
-    cominity: "cominity",
-  };
-
-  return (
-    <>
-      <p className="cardText ongoingIntro" id={props.idElement}>
-        <strong className="blueTitle"> Learn'N Build:</strong> During my
-        personal and professional path I encounter different challenges.
-        Learning new skills led me to turn them into opportunities and build
-        real projects.
-        <br />
-        <br />
-        (Displayed from most recent to oldest)
-      </p>
-      <Project
-        projectNames={projectNames}
-        projectName={projectNames.astroLight}
-        side="left"
-      />
-      <Project
-        projectNames={projectNames}
-        projectName={projectNames.aldo}
-        side="right"
-      />
-      <Project
-        projectNames={projectNames}
-        projectName={projectNames.spockee}
-        side="left"
-      />
-      <Project
-        projectNames={projectNames}
-        projectName={projectNames.tooly}
-        side="right"
-      />
-      <Project
-        projectNames={projectNames}
-        projectName={projectNames.cominity}
-        side="left"
-      />
-      <Project
-        projectNames={projectNames}
-        projectName={projectNames.centech}
-        side="right"
-      />
-      <Project
-        projectNames={projectNames}
-        projectName={projectNames.leWagon}
-        side="left"
-      />
-      <Project
-        projectNames={projectNames}
-        projectName={projectNames.shareIn}
-        side="right"
-      />
-      <Project
-        projectNames={projectNames}
-        projectName={projectNames.airflow}
-        side="left"
-      />
-    </>
-  );
-};
+const ongoing = (props) => (
+  <>
+    <p className="cardText ongoingIntro" id={props.idElement}>
+      <strong className="blueTitle"> Learn'N Build:</strong> During my personal
+      and professional path I encounter different challenges. Learning new
+      skills led me to turn them into opportunities and build real projects.
+      Here are some of them sorted with most recent first:
+    </p>
+    <Project projectName="suiTooling" side="left" />
+    <Project projectName="defender" side="right" />
+    <Project projectName="astroLight" side="left" />
+    <Project projectName="aldo" side="right" />
+    <Project projectName="spockee" side="left" />
+    <Project projectName="tooly" side="right" />
+    <Project projectName="cominity" side="left" />
+    <Project projectName="centech" side="right" />
+    <Project projectName="leWagon" side="left" />
+    <Project projectName="shareIn" side="right" />
+    <Project projectName="airflow" side="left" />
+  </>
+);
 
 export default ongoing;

@@ -12,24 +12,28 @@ import {
   astroLightProjectText,
   centechProjectText,
   cominityProjectText,
+  defenderProjectText,
   leWagonProjectText,
   shareInProjectText,
   spockeeProjectText,
+  suiToolingProjectText,
   toolyProjectText,
 } from "./projectText";
 
-const project = ({ projectName, side, projectNames }) => {
-  const {
-    spockee,
-    tooly,
-    leWagon,
-    centech,
-    shareIn,
-    airflow,
-    cominity,
-    aldo,
-    astroLight,
-  } = projectNames;
+const project = ({ projectName, side }) => {
+  const projectNames = {
+    suiTooling: "suiTooling",
+    defender: "defender",
+    astroLight: "astroLight",
+    aldo: "aldo",
+    spockee: "spockee",
+    tooly: "tooly",
+    leWagon: "leWagon",
+    centech: "centech",
+    shareIn: "shareIn",
+    airflow: "airflow",
+    cominity: "cominity",
+  };
 
   const getParallaxData = () => {
     switch (side) {
@@ -44,23 +48,27 @@ const project = ({ projectName, side, projectNames }) => {
 
   const getProjectText = () => {
     switch (projectName) {
-      case astroLight:
+      case projectNames.suiTooling:
+        return suiToolingProjectText;
+      case projectNames.defender:
+        return defenderProjectText;
+      case projectNames.astroLight:
         return astroLightProjectText;
-      case aldo:
+      case projectNames.aldo:
         return aldoProjectText;
-      case spockee:
+      case projectNames.spockee:
         return spockeeProjectText;
-      case tooly:
+      case projectNames.tooly:
         return toolyProjectText;
-      case cominity:
+      case projectNames.cominity:
         return cominityProjectText;
-      case centech:
+      case projectNames.centech:
         return centechProjectText;
-      case leWagon:
+      case projectNames.leWagon:
         return leWagonProjectText;
-      case shareIn:
+      case projectNames.shareIn:
         return shareInProjectText;
-      case airflow:
+      case projectNames.airflow:
         return airflowProjectText;
       default:
         return null;
@@ -69,23 +77,27 @@ const project = ({ projectName, side, projectNames }) => {
 
   const getProjectImage = () => {
     switch (projectName) {
-      case astroLight:
+      case projectNames.suiTooling:
         return `/static/images/${projectName}.svg`;
-      case aldo:
+      case projectNames.defender:
         return `/static/images/${projectName}.png`;
-      case spockee:
+      case projectNames.astroLight:
         return `/static/images/${projectName}.svg`;
-      case tooly:
+      case projectNames.aldo:
         return `/static/images/${projectName}.png`;
-      case cominity:
+      case projectNames.spockee:
+        return `/static/images/${projectName}.svg`;
+      case projectNames.tooly:
         return `/static/images/${projectName}.png`;
-      case centech:
+      case projectNames.cominity:
         return `/static/images/${projectName}.png`;
-      case leWagon:
+      case projectNames.centech:
         return `/static/images/${projectName}.png`;
-      case shareIn:
+      case projectNames.leWagon:
         return `/static/images/${projectName}.png`;
-      case airflow:
+      case projectNames.shareIn:
+        return `/static/images/${projectName}.png`;
+      case projectNames.airflow:
         return `/static/images/${projectName}.png`;
       default:
         return null;
@@ -94,14 +106,16 @@ const project = ({ projectName, side, projectNames }) => {
 
   const getGithubRepo = () => {
     switch (projectName) {
-      case astroLight:
-        return "https://github.com/BjMrq/solidity-DEFI-DAO";
-      case airflow:
-        return "https://github.com/BjMrq/Python-AirflowReportPipeline";
-      case shareIn:
-        return "https://github.com/BjMrq/Rails-Share-in-App";
-      case centech:
-        return "https://github.com/BjMrq/Rails-React-VizzMD-App";
+      case projectNames.suiTooling:
+        return "https://github.com/OpenZeppelin/openzeppelin-sui-marketplace";
+      case projectNames.astroLight:
+        return "https://github.com/CoveMB/solidity-DEFI-DAO";
+      case projectNames.airflow:
+        return "https://github.com/CoveMB/Python-AirflowReportPipeline";
+      case projectNames.shareIn:
+        return "https://github.com/CoveMB/Rails-Share-in-App";
+      case projectNames.centech:
+        return "https://github.com/CoveMB/Rails-React-VizzMD-App";
       default:
         return null;
     }
@@ -109,24 +123,28 @@ const project = ({ projectName, side, projectNames }) => {
 
   const getWebsite = () => {
     switch (projectName) {
-      case astroLight:
+      case projectNames.defender:
+        return "https://docs.openzeppelin.com/defender";
+      case projectNames.suiTooling:
+        return "https://www.sui.io/";
+      case projectNames.astroLight:
         return "https://astro-light.on.fleek.co/";
-      case aldo:
+      case projectNames.aldo:
         return "https://www.aldogroup.com/";
-      case spockee:
+      case projectNames.spockee:
         return "https://skeepers.io/en/live-shopping/";
-      case tooly:
+      case projectNames.tooly:
         return "https://www.nextcanada.com/next-ai/";
-      case cominity:
+      case projectNames.cominity:
         return "https://cominity.ca/";
-      case centech:
+      case projectNames.centech:
         return "https://react-rails-vizzmd-mvp.herokuapp.com";
-      case leWagon:
+      case projectNames.leWagon:
         return "https://www.lewagon.com/";
-      case shareIn:
+      case projectNames.shareIn:
         return "https://ruby-share-in-app.herokuapp.com/";
-      case airflow:
-        return "https://github.com/BjMrq/Python-AirflowReportPipeline";
+      case projectNames.airflow:
+        return "https://github.com/CoveMB/Python-AirflowReportPipeline";
       default:
         return null;
     }

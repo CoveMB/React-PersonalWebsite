@@ -1,10 +1,77 @@
 /* eslint-disable max-len */
 import React from "react";
 
+export const suiToolingProjectText = (
+  <p className="cardText ongoingText">
+    <strong className="blueTitle">
+      Building the tooling layer of a fullstack DAPP for a growing ecosystem
+      SUI:
+    </strong>
+    <br />
+    At OpenZeppelin we helped new ecosystem grow safely by helping them building
+    secure smart contract component and tooling layer. Todo this I built a{" "}
+    <strong className="blueTitle">marketplace dApp</strong> fullstack example
+    and focused on designing a dedicated{" "}
+    <strong className="blueTitle">tooling layer</strong> to streamline smart
+    contract development and interaction across environments.
+    <br />
+    The tooling allowed developers to{" "}
+    <strong className="blueTitle">publish Move smart contracts</strong> to
+    multiple Sui networks, manage deployment artifacts, and easily{" "}
+    <strong className="blueTitle">interact with on-chain objects</strong> from
+    scripts and tests. It included abstractions around{" "}
+    <strong className="blueTitle">network configuration</strong>, contract
+    addresses, and transaction helpers so the same codebase could target{" "}
+    <strong className="blueTitle">different environments</strong> without manual
+    changes. An other key part was creating an{" "}
+    <strong className="blueTitle">integration test harness</strong> that deploys
+    contracts, seeds state, and executes end-to-end scenarios to validate the
+    full dApp workflow. This made it possible to test{" "}
+    <strong className="blueTitle">on-chain interactions</strong> in a
+    reproducible way.
+    <br />
+    The goal was to improve{" "}
+    <strong className="blueTitle">developer experience</strong> and provide a
+    consistent pipeline for deploying, interacting, and testing Sui applications
+    built with <strong className="blueTitle">Move smart contracts</strong>.
+  </p>
+);
+
+export const defenderProjectText = (
+  <p className="cardText ongoingText">
+    <strong className="blueTitle">
+      Securing smart contract operations at scale:
+    </strong>
+    <br />
+    Joining OpenZeppelin I knew I would be working on serious project that would
+    help secure the blockchain ecosystem.{" "}
+    <strong className="blueTitle">
+      Upon joining I first worked on Defender
+    </strong>
+    , a platform designed to help teams securely deploy, monitor and operate{" "}
+    <strong className="blueTitle">smart contracts</strong> in production.
+    <br />I contributed to building end-to-end features across the{" "}
+    <strong className="blueTitle">full-stack</strong>, from UI interfaces to
+    backend services and blockchain integrations.
+    <br />
+    The work involved improving tooling around{" "}
+    <strong className="blueTitle">contract administration</strong>,{" "}
+    <strong className="blueTitle">automated operations</strong> and{" "}
+    <strong className="blueTitle">real-time monitoring</strong> so teams could
+    react quickly to on-chain events and reduce manual intervention.
+    <br />I also helped design parts of the{" "}
+    <strong className="blueTitle">micro-service architecture</strong> deployed
+    on AWS, and worked on features integrating with{" "}
+    <strong className="blueTitle">on-chain triggers</strong>,{" "}
+    <strong className="blueTitle">automation bots</strong> and{" "}
+    <strong className="blueTitle">secure operational workflows</strong>.
+  </p>
+);
+
 export const astroLightProjectText = (
   <p className="cardText ongoingText">
     <strong className="blueTitle">
-      Building a small DEFI and DAO DAPP to teach blockchain :
+      Building a small DEFI and DAO DAPP to teach blockchain:
     </strong>
     <br />I started to grow an interest in{" "}
     <strong className="blueTitle">blockchain technology</strong> and how it

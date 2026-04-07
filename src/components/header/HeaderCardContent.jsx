@@ -4,30 +4,28 @@ const headerCardContent = () => (
   <>
     <div className="headerCardText">
       <p className="card-header-welcome">Hi, I'm</p>
-      <h1 className="headerCardTitle">Benjamin Marquis</h1>
+      <h1 className="headerCardTitle">Cove Marquis-Bortoli</h1>
     </div>
     <div className="headerCardText">
       <p className="cardListCompetenceTitle" style={{ marginBottom: "20px" }}>
         MILESTONES:
       </p>
-      <p className="cardListCompetence" style={{ marginLeft: "15px" }}>
+      <p className="cardListCompetence">
         <strong className="darkblueTitle">
           ‍
           <img
-            style={{ marginLeft: "10px" }}
             className="svgDone"
             src="/static/images/donesvg.svg"
             alt="svg done"
           />{" "}
-          Lead Full Stack Developer
+          Senior Full Stack Blockchain Developer
         </strong>{" "}
-        | Spockee
+        | OpenZeppelin
       </p>
-      <p className="cardListCompetence" style={{ marginLeft: "15px" }}>
+      <p className="cardListCompetence">
         <strong className="darkblueTitle">
           ‍
           <img
-            style={{ marginLeft: "10px" }}
             className="svgDone"
             src="/static/images/donesvg.svg"
             alt="svg done"
@@ -36,11 +34,10 @@ const headerCardContent = () => (
         </strong>{" "}
         | Blockchain Council
       </p>
-      <p className="cardListCompetence" style={{ marginLeft: "15px" }}>
+      <p className="cardListCompetence">
         <strong className="darkblueTitle">
           ‍
           <img
-            style={{ marginLeft: "10px" }}
             className="svgDone"
             src="/static/images/donesvg.svg"
             alt="svg done"
@@ -49,23 +46,21 @@ const headerCardContent = () => (
         </strong>{" "}
         | PSMI
       </p>
-      <p className="cardListCompetence" style={{ marginLeft: "15px" }}>
+      <p className="cardListCompetence">
         <strong className="darkblueTitle">
           ‍
           <img
-            style={{ marginLeft: "10px" }}
             className="svgDone"
             src="/static/images/donesvg.svg"
             alt="svg done"
           />{" "}
           Lead Full Stack Developer
         </strong>{" "}
-        | Tooly
+        | Spockee
       </p>
-      <p className="cardListCompetence" style={{ marginLeft: "15px" }}>
+      <p className="cardListCompetence">
         <strong className="darkblueTitle">
           <img
-            style={{ marginLeft: "10px" }}
             className="svgDone"
             src="/static/images/donesvg.svg"
             alt="svg done"
@@ -74,22 +69,9 @@ const headerCardContent = () => (
         </strong>{" "}
         | Next AI
       </p>
-      <p className="cardListCompetence" style={{ marginLeft: "15px" }}>
+      <p className="cardListCompetence">
         <strong className="darkblueTitle">
           <img
-            style={{ marginLeft: "10px" }}
-            className="svgDone"
-            src="/static/images/donesvg.svg"
-            alt="svg done"
-          />{" "}
-          CTO & Co-founder
-        </strong>{" "}
-        | VizzMD
-      </p>
-      <p className="cardListCompetence" style={{ marginLeft: "15px" }}>
-        <strong className="darkblueTitle">
-          <img
-            style={{ marginLeft: "10px" }}
             className="svgDone"
             src="/static/images/donesvg.svg"
             alt="svg done"
@@ -98,11 +80,21 @@ const headerCardContent = () => (
         </strong>{" "}
         | Centech
       </p>
-      <p className="cardListCompetence" style={{ marginLeft: "15px" }}>
+      <p className="cardListCompetence">
+        <strong className="darkblueTitle">
+          <img
+            className="svgDone"
+            src="/static/images/donesvg.svg"
+            alt="svg done"
+          />{" "}
+          CTO & Co-founder
+        </strong>{" "}
+        | VizzMD
+      </p>
+      <p className="cardListCompetence">
         <strong className="darkblueTitle">
           ‍
           <img
-            style={{ marginLeft: "10px" }}
             className="svgDone"
             src="/static/images/donesvg.svg"
             alt="svg done"
@@ -131,7 +123,7 @@ const headerCardContent = () => (
         </a>
         <a
           className="footerLink"
-          href="https://www.linkedin.com/in/benjamin-marquis-6956b367/?locale=en_US"
+          href="https://www.linkedin.com/in/cove-marquis-eth/?locale=en_US"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -143,7 +135,7 @@ const headerCardContent = () => (
         </a>
         <a
           className="footerLink"
-          href="https://github.com/BjMrq"
+          href="https://github.com/CoveMB"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -155,7 +147,7 @@ const headerCardContent = () => (
         </a>
         <a
           className="footerLink"
-          href="https://www.instagram.com/bjmrq/?hl=en"
+          href="https://www.instagram.com/cove.suchness/?hl=en"
           target="_blank"
           rel="noopener noreferrer"
         >
