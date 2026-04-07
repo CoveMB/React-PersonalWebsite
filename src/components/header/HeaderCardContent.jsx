@@ -4,6 +4,13 @@ const doneImagePath = "/static/images/donesvg.svg";
 const resumeFilePath = encodeURI(
   "/static/documents/Resume Cove Marquis EN.pdf",
 );
+const githubProfileUrl = "https://github.com/CoveMB";
+
+const focusAreas = [
+  "Full-stack delivery",
+  "Processes improvement",
+  "Developer tooling",
+];
 
 const milestoneItems = [
   {
@@ -64,7 +71,7 @@ const contactLinks = [
   },
   {
     alt: "GitHub Icon",
-    href: "https://github.com/CoveMB",
+    href: githubProfileUrl,
     imagePath: "/static/images/github.svg",
     rel: "noopener noreferrer",
     target: "_blank",
@@ -75,6 +82,15 @@ const contactLinks = [
     imagePath: "/static/images/instagram.svg",
     rel: "noopener noreferrer",
     target: "_blank",
+  },
+];
+
+const heroActionLinks = [
+  {
+    className: "headerCardPrimaryLink",
+    download: "Resume Cove Marquis EN.pdf",
+    href: resumeFilePath,
+    label: "View resume",
   },
 ];
 
@@ -93,37 +109,72 @@ const renderContactLink = ({ alt, href, imagePath, rel, target }) => (
   </a>
 );
 
+const renderHeroActionLink = ({
+  className,
+  download,
+  href,
+  label,
+  rel,
+  target,
+}) => (
+  <a
+    aria-label={label}
+    className={className}
+    download={download}
+    href={href}
+    key={label}
+    rel={rel}
+    target={target}
+  >
+    {label}
+  </a>
+);
+
+const renderFocusArea = (focusArea) => (
+  <li className="headerCardFocusItem" key={focusArea}>
+    {focusArea}
+  </li>
+);
+
 const HeaderCardContent = () => (
   <>
     <div className="headerCardText">
-      <p className="card-header-welcome">Hi, I'm</p>
+      <p className="card-header-welcome">
+        Senior full-stack blockchain developer
+      </p>
       <h1 className="headerCardTitle">Cove Marquis-Bortoli</h1>
+      <p className="headerCardSummary">
+        I build secure product platforms and developer tooling across smart
+        contracts, backend systems, and modern frontend applications. Most
+        recently, I worked on blockchain tooling and product engineering at
+        OpenZeppelin.
+      </p>
+      <div className="headerCardActions">
+        {heroActionLinks.map(renderHeroActionLink)}
+      </div>
     </div>
     <div className="headerCardText">
-      <p className="cardListCompetenceTitle headerCardSectionTitle">
-        MILESTONES:
+      <p
+        className="cardListCompetenceTitle headerCardSectionTitle"
+        style={{ marginTop: "40px" }}
+      >
+        Selected experience
       </p>
       {milestoneItems.map(renderMilestone)}
       <div className="grabEmailPart" />
     </div>
     <div className="headerCardText headerCardBottomSection">
       <div className="headerCardBottomBlock">
-        <p className="cardListCompetenceTitle headerCardActionTitle">
-          CONTACT ME:
-        </p>
+        <p className="cardListCompetenceTitle headerCardActionTitle">Connect</p>
         <div className="social-icons-header">
           {contactLinks.map(renderContactLink)}
         </div>
       </div>
       <div className="headerCardBottomBlock headerCardResumeBlock">
-        <a
-          aria-label="Download Cove Marquis-Bortoli CV"
-          className="headerCardDownloadLink"
-          download="Resume Cove Marquis EN.pdf"
-          href={resumeFilePath}
-        >
-          Download my CV
-        </a>
+        <p className="cardListCompetenceTitle headerCardActionTitle">Focus</p>
+        <ul className="headerCardFocusList">
+          {focusAreas.map(renderFocusArea)}
+        </ul>
       </div>
     </div>
   </>
