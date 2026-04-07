@@ -32,6 +32,15 @@ select {
   font-family: inherit;
 }
 
+button {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-focus-ring-color: transparent;
+  outline: none;
+}
+
 @media screen and (hover: none) {
   .scrollNoOverflow {
     overflow-x: hidden;
