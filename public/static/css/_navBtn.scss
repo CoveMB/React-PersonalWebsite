@@ -1,7 +1,9 @@
+@use 'colors';
+
 .NavBtn {
   height: 16px;
-  background-color: $backgroundwhite;
-  border: 2px solid $darkpurple;
+  background-color: colors.$backgroundwhite;
+  border: 2px solid colors.$darkpurple;
   border-radius: 50px;
   z-index: 999;
   transition: background-color 0.1s linear;
@@ -21,7 +23,7 @@
 
 .activateBtn {
   transform: scale(1.2);
-  background-color: $darkpurple;
+  background-color: colors.$darkpurple;
   transition: transform 0.2s;
 }
 

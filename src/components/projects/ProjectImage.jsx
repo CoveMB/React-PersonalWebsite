@@ -1,62 +1,17 @@
-import React from "react";
-import Plx from "react-plx";
-import {
-  parallaxDataProjectImageLeft,
-  parallaxDataProjectImageRight,
-} from "../../parallaxEffects/parallaxEffects";
+import ScrollParallax from "../animation/ScrollParallax";
+import { parallaxDataProjectImageLeft, parallaxDataProjectImageRight } from "../../parallaxEffects/parallaxEffects";
 
-export default function ProjectImage({
-  side,
-  projectName,
-  projectImage,
-  hrefSource,
-}) {
-  const getParallaxEffect = (specific) => {
-    // if (specific === "toolyEyes") {
-    //   return parallaxDataProjectImageEyesRight;
-    // }
+const parallaxDataBySide = {
+  left: parallaxDataProjectImageLeft,
+  right: parallaxDataProjectImageRight,
+};
 
-    switch (side) {
-      case "right":
-        return parallaxDataProjectImageRight;
-      case "left":
-        return parallaxDataProjectImageLeft;
-      default:
-        return null;
-    }
-  };
-
+export default function ProjectImage({ hrefSource, projectImage, projectName, side }) {
   return (
-    <>
-      <Plx
-        className={`parallaxImage${projectName}`}
-        parallaxData={getParallaxEffect()}
-      >
-        <a href={hrefSource} target="_blank" rel="noreferrer">
-          <img
-            className={`projectImage${side} projectImage${projectName}`}
-            src={projectImage}
-            alt={`${projectName} logo`}
-            width="90px"
-          />
-        </a>
-      </Plx>
-      {/* Previous image project with cute face and eye and special parallax effect */}
-      {/* {projectName === "tooly" && (
-        <Plx
-          className={`parallaxImage${projectName}`}
-          parallaxData={getParallaxEffect("toolyEyes")}
-        >
-          <a href={hrefSource} target="_blank" rel="noreferrer">
-            <img
-              className={`projectImage${side} projectImage${projectName}`}
-              src={`${projectImage.replace(".svg", "Eyes.svg")}`}
-              alt={`${projectName} logo`}
-              width="90px"
-            />
-          </a>
-        </Plx>
-      )} */}
-    </>
+    <ScrollParallax className={`parallaxImage${projectName}`} parallaxData={parallaxDataBySide[side]}>
+      <a href={hrefSource} rel="noreferrer" target="_blank">
+        <img alt={`${projectName} logo`} className={`projectImage${side} projectImage${projectName}`} src={projectImage} width="90" />
+      </a>
+    </ScrollParallax>
   );
 }

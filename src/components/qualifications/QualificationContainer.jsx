@@ -1,53 +1,37 @@
-import React from 'react';
-import Qualification from './Qualification';
+import Qualification from "./Qualification";
 
-const qualificationContainer = () => {
-
-  const cardTitle = (topic) => {
-
-    switch (topic) {
-
-      case 'learning':
-        return (
-          <h2 className="cardTitle">
-            Always
-            <br />
-            Learning
-          </h2>
-        );
-      case 'polyvalent':
-        return (
-          <h2 className="cardTitle">
-            Polyvalent
-            <br />
-            Abilities
-          </h2>
-        );
-      case 'lead':
-        return (
-          <h2 className="cardTitle">
-            Team
-            <br />
-            Focused
-          </h2>
-        );
-      default:
-        return null;
-
-    }
-
-  };
-
-  return (
-    <>
-      <div className="cardBox makeItFlex flexColumnMobile">
-        <Qualification topic="lead" cardTitle={cardTitle} />
-        <Qualification topic="polyvalent" cardTitle={cardTitle} />
-        <Qualification topic="learning" cardTitle={cardTitle} />
-      </div>
-    </>
-  );
-
+const cardTitles = {
+  lead: (
+    <h2 className="cardTitle">
+      Team
+      <br />
+      Focused
+    </h2>
+  ),
+  learning: (
+    <h2 className="cardTitle">
+      Always
+      <br />
+      Learning
+    </h2>
+  ),
+  polyvalent: (
+    <h2 className="cardTitle">
+      Polyvalent
+      <br />
+      Abilities
+    </h2>
+  ),
 };
 
-export default qualificationContainer;
+const renderCardTitle = (topic) => cardTitles[topic] ?? null;
+
+export default function QualificationContainer() {
+  return (
+    <div className="cardBox makeItFlex flexColumnMobile">
+      <Qualification cardTitle={renderCardTitle} topic="lead" />
+      <Qualification cardTitle={renderCardTitle} topic="polyvalent" />
+      <Qualification cardTitle={renderCardTitle} topic="learning" />
+    </div>
+  );
+}

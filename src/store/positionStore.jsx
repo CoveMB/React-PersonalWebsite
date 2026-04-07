@@ -1,12 +1,12 @@
-import { initStore } from './useStore';
+import { initStore } from "./useStore";
 
 const configurePositionStore = () => {
-  const actions = {
-    SET_POSITION: (currentState, newPosition) => {
-      return { position: newPosition };
-    }
-  };
-  initStore(actions, { position: "top" });
+  initStore(
+    {
+      SET_POSITION: (currentState, newPosition) => ({ position: newPosition }),
+    },
+    { position: "top" }
+  );
 };
 
 export default configurePositionStore;

@@ -1,3 +1,5 @@
+@use 'colors';
+
 .numerisationImg{
   width: 80%;
   margin: 90px auto;
@@ -18,7 +20,7 @@
   font-weight: bold;
   font-size: 3em;
   text-align: center;
-  color: $darkpurple;
+  color: colors.$darkpurple;
 }
 
 .paperImg{

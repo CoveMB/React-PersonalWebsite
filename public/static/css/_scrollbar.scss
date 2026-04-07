@@ -1,6 +1,8 @@
+@use 'colors';
+
 body::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	background-color: $backgroundwhite;
+	background-color: colors.$backgroundwhite;
 	border-radius: 8px;
 }
 
@@ -16,21 +18,21 @@ body::-webkit-scrollbar-thumb {
 		linear,
 		left bottom,
 		left top,
-		color-stop(0.44, $lightpurple),
-		color-stop(0.72, $darkpurple),
-		color-stop(0.86, $darkpurple)
+		color-stop(0.44, colors.$lightpurple),
+		color-stop(0.72, colors.$darkpurple),
+		color-stop(0.86, colors.$darkpurple)
 	);
 }
 
 .scrollbarxcustom::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	background-color: $backgroundwhite;
+	background-color: colors.$backgroundwhite;
 	border-radius: 8px;
 }
 
 .scrollbarxcustom::-webkit-scrollbar {
 	width: 5px;
-	background-color: $backgroundwhite;
+	background-color: colors.$backgroundwhite;
 }
 
 .scrollbarxcustom::-webkit-scrollbar-thumb {
@@ -39,21 +41,21 @@ body::-webkit-scrollbar-thumb {
 		linear,
 		left bottom,
 		left top,
-		color-stop(0.44, $lightpurple),
-		color-stop(0.72, $darkpurple),
-		color-stop(0.86, $darkpurple)
+		color-stop(0.44, colors.$lightpurple),
+		color-stop(0.72, colors.$darkpurple),
+		color-stop(0.86, colors.$darkpurple)
 	);
 }
 
 .scrollbarycustom::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	background-color: $backgroundwhite;
+	background-color: colors.$backgroundwhite;
 	border-radius: 8px;
 }
 
 .scrollbarycustom::-webkit-scrollbar {
 	height: 5px;
-	background-color: $backgroundwhite;
+	background-color: colors.$backgroundwhite;
 }
 
 .scrollbarycustom::-webkit-scrollbar-thumb {
@@ -62,8 +64,8 @@ body::-webkit-scrollbar-thumb {
 		linear,
 		left bottom,
 		left top,
-		color-stop(0.44, $darkpurple),
-		color-stop(0.72, $darkpurple),
-		color-stop(0.86, $darkpurple)
+		color-stop(0.44, colors.$darkpurple),
+		color-stop(0.72, colors.$darkpurple),
+		color-stop(0.86, colors.$darkpurple)
 	);
 }

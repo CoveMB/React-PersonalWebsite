@@ -1,45 +1,10 @@
-const withSass = require('@zeit/next-sass');
-const withCSS = require('@zeit/next-css');
-const withImages = require('next-images');
-const webpack = require('webpack');
-const withPWA = require('next-pwa');
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: "export",
+  images: {
+    unoptimized: true,
+  },
+  reactStrictMode: true,
+};
 
-require('dotenv').config();
-
-module.exports = withPWA(withImages(withCSS(
-  withSass({
-    pwa: {
-      dest: 'public'
-    },
-    webpack: (config) => {
-
-      // Fixes npm packages that depend on `fs` module
-      config.node = {
-        fs: 'empty'
-      };
-
-      /**
-     * Returns environment variables as an object
-     */
-      const env = Object.keys(process.env).reduce((acc, curr) => {
-
-        acc[`process.env.${curr}`] = JSON.stringify(process.env[curr]);
-
-        return acc;
-
-      }, {});
-
-      /** Allows you to create global constants which can be configured
-    * at compile time, which in our case is our environment variables
-    */
-      config.plugins.push(new webpack.DefinePlugin(env));
-      config.module.rules.push({
-        test: /\.svg$/,
-        use : [ '@svgr/webpack' ],
-      });
-
-      return config;
-
-    }
-  })
-)));
+module.exports = nextConfig;

@@ -1,3 +1,5 @@
+@use 'colors';
+
 .ongoingIntro {
   width: 70%;
   margin: 60px auto 60px auto;
@@ -9,7 +11,7 @@
 
 .ongoingSeparator {
   width: 10%;
-  border-top: 1.5px solid $darkpurple;
+  border-top: 1.5px solid colors.$darkpurple;
   margin: 50px auto;
 }
 

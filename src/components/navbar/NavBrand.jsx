@@ -1,12 +1,11 @@
-import React from 'react';
-import { useStore } from '../../store/useStore';
+import { useStore } from "../../store/useStore";
 
-const navBrand = () => {
-  const dispatch = useStore()[1];
+export default function NavBrand() {
+  const [ , dispatch ] = useStore();
 
   return (
-    <button className="normalizeBtn" onClick={() => { dispatch("GO_TO_REF", "top"); }}><img className="navBrand" src="/static/images/avatar.jpg" alt="avatar logo" height="52" width="52" /></button>
+    <button className="normalizeBtn" onClick={() => dispatch("GO_TO_REF", "top")} type="button">
+      <img alt="avatar logo" className="navBrand" height="52" src="/static/images/avatar.jpg" width="52" />
+    </button>
   );
-};
-
-export default navBrand;
+}

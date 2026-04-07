@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Handlee);
+@use 'colors';
 
 .speechPart {
   position: relative;
@@ -70,8 +70,8 @@
 
 .speechButton {
   margin-right: 10px;
-  background-color: $darkpurple;
-  color: $backgroundwhite;
+  background-color: colors.$darkpurple;
+  color: colors.$backgroundwhite;
   display: inline-block;
   font-weight: 400;
   text-align: center;

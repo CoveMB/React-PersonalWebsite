@@ -1,38 +1,64 @@
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from "react";
 
+let actions = {};
 let globalState = {};
 let listeners = [];
-let actions = {};
+
+const emitChange = () => {
+  listeners.forEach((listener) => {
+    listener();
+  });
+};
+
+const subscribe = (listener) => {
+  listeners = [ ...listeners, listener ];
+
+  return () => {
+    listeners = listeners.filter((registeredListener) => registeredListener !== listener);
+  };
+};
+
+const getSnapshot = () => globalState;
+
+const dispatch = (actionIdentifier, payload) => {
+  const action = actions[actionIdentifier];
+
+  if (!action) {
+    return;
+  }
+
+  const nextState = action(globalState, payload);
+
+  if (nextState && typeof nextState === "object") {
+    globalState = {
+      ...globalState,
+      ...nextState,
+    };
+  }
+
+  emitChange();
+};
 
 export const useStore = (shouldListen = true) => {
-  const setGlobalState = useState(globalState)[1];
+  const snapshot = useSyncExternalStore(
+    shouldListen ? subscribe : () => () => {},
+    getSnapshot,
+    getSnapshot
+  );
 
-  const dispatch = (actionIdentifier, payload) => {
-    const newState = actions[actionIdentifier](globalState, payload);
-    globalState = { ...globalState, ...newState };
-
-    listeners.forEach((listener) => {
-      listener(globalState);
-    });
-  };
-
-  useEffect(() => {
-    if (shouldListen) {
-      listeners.push(setGlobalState);
-    }
-    return () => {
-      if (shouldListen) {
-        listeners = listeners.filter(li => li !== setGlobalState);
-      }
-    };
-  }, []);
-
-  return [globalState, dispatch];
+  return [ snapshot, dispatch ];
 };
 
 export const initStore = (userActions, initialState) => {
   if (initialState) {
-    globalState = { ...globalState, ...initialState };
+    globalState = {
+      ...globalState,
+      ...initialState,
+    };
   }
-  actions = { ...actions, ...userActions };
+
+  actions = {
+    ...actions,
+    ...userActions,
+  };
 };

@@ -1,30 +1,38 @@
-import { initStore } from './useStore';
+import { initStore } from "./useStore";
+
+const scrollToOffset = (offset) => {
+  window.scrollTo({
+    behavior: "smooth",
+    left: 0,
+    top: offset,
+  });
+};
+
+const getTargetOffset = (currentState, sectionName) => {
+  const sectionOffsets = {
+    cards: currentState.refsOffsets?.cards ?? 0,
+    features: currentState.refsOffsets?.features ?? 0,
+    ongoing: currentState.refsOffsets?.ongoing ?? 0,
+    top: 0,
+  };
+
+  if (sectionName === "top") {
+    return sectionOffsets.top;
+  }
+
+  return Math.max(sectionOffsets[sectionName] - 30, 0);
+};
 
 const configureRefStore = () => {
-  const actions = {
-    SET_REFS: (currentState, refsOffsets) => {
-      return { refsOffsets };
+  initStore(
+    {
+      GO_TO_REF: (currentState, sectionName) => {
+        scrollToOffset(getTargetOffset(currentState, sectionName));
+      },
+      SET_REFS: (currentState, refsOffsets) => ({ refsOffsets }),
     },
-    GO_TO_REF: (currentState, goToElement) => {
-      switch (goToElement) {
-        case "top":
-          window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
-          break;
-        case "cards":
-          window.scrollTo({ left: 0, top: currentState.refsOffsets.cards - 30, behavior: 'smooth' });
-          break;
-        case "features":
-          window.scrollTo({ left: 0, top: currentState.refsOffsets.features - 30, behavior: 'smooth' });
-          break;
-        case "ongoing":
-          window.scrollTo({ left: 0, top: currentState.refsOffsets.ongoing - 30, behavior: 'smooth' });
-          break;
-        default:
-          break;
-      }
-    }
-  };
-  initStore(actions, {});
+    {}
+  );
 };
 
 export default configureRefStore;

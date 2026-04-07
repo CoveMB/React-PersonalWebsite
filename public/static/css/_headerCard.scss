@@ -1,11 +1,13 @@
+@use 'colors';
+
 .header-card {
   width: 42vw;
   min-height: 95vh;
   margin: -88vh 0 0 5vh;
   padding-top: 25px;
   padding-bottom: 1px;
-  background: $backgroundwhite;
-  border-radius: 4px 4px 4px 4px;
+  background: colors.$backgroundwhite;
+  border-radius: 22px;
   z-index: 9999;
 }
 
@@ -22,7 +24,7 @@
   font-size: 2em;
   line-height: 44px;
   text-align: center;
-  color: $darkpurple;
+  color: colors.$darkpurple;
   font-family: 'Lustria', sans-serif;
 }
 
@@ -34,7 +36,7 @@
   margin: 30px 6% 40px 6%;
   font-size: 1.2em;
   line-height: 40px;
-  color: $textgrey;
+  color: colors.$textgrey;
 }
 
 .social-icons-header {
@@ -63,7 +65,7 @@
 }
 
 .btnVizz {
-  background-color: $darkpurple;
+  background-color: colors.$darkpurple;
   color: white;
 }
 
@@ -71,7 +73,7 @@
   margin: 50px auto 0 auto;
   width: 60%;
   text-align: center;
-  color: $darkpurple;
+  color: colors.$darkpurple;
 }
 
 @media only screen and (max-width: 1024px) {

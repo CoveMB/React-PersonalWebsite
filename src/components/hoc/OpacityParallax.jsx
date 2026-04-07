@@ -1,15 +1,10 @@
-import React from 'react';
-import Plx from 'react-plx';
+import ScrollParallax from "../animation/ScrollParallax";
+import { parallaxDataOpacity } from "../../parallaxEffects/parallaxEffects";
 
-import { parallaxDataOpacity } from '../../parallaxEffects/parallaxEffects';
-
-const opacityParallax = (props) => (
-  <Plx
-    className={props.classNameElement}
-    parallaxData={parallaxDataOpacity(props.nextId)}
-  >
-    {props.children}
-  </Plx>
-);
-
-export default opacityParallax;
+export default function OpacityParallax({ children, classNameElement, nextId }) {
+  return (
+    <ScrollParallax className={classNameElement} parallaxData={parallaxDataOpacity(nextId)}>
+      {children}
+    </ScrollParallax>
+  );
+}

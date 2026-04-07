@@ -1,231 +1,178 @@
-import React, { useReducer } from 'react';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophoneAlt } from '@fortawesome/free-solid-svg-icons';
-import Spinner from '../Spinner';
-import { capitalize } from '../../utils/strings';
+import { useEffect, useReducer, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import Spinner from "../Spinner";
+import { capitalize } from "../../utils/strings";
 
 const emailActions = {
-  sending     : 'sending',
-  fail        : 'fail',
-  success     : 'success',
-  updateSender: 'sender'
-};
-
-const reducer = (state, { type, payload }) => {
-
-  switch (type) {
-
-    case emailActions.updateSender:
-
-      return {
-        ...state, sender: payload
-      };
-
-    case emailActions.sending:
-
-      return {
-        ...state, success: false, sending: true, fail: false
-      };
-
-    case emailActions.fail:
-      return {
-        ...state, success: false, sending: false, fail: true, errorMessage: payload
-      };
-
-    case emailActions.success:
-      return {
-        ...state, success: true, sending: false, fail: false
-      };
-
-    default:
-      return state;
-
-  }
-
+  fail: "fail",
+  sending: "sending",
+  success: "success",
+  updateSender: "sender",
 };
 
 const initialEmailState = {
-  success     : false,
-  sending     : false,
-  fail        : false,
-  sender      : '',
-  errorMessage: ''
+  errorMessage: "",
+  fail: false,
+  sender: "",
+  sending: false,
+  success: false,
 };
 
-const Speech = () => {
+const reducer = (state, { payload, type }) => {
+  switch (type) {
+    case emailActions.updateSender:
+      return { ...state, sender: payload };
+    case emailActions.sending:
+      return { ...state, fail: false, sending: true, success: false };
+    case emailActions.fail:
+      return { ...state, errorMessage: payload, fail: true, sending: false, success: false };
+    case emailActions.success:
+      return { ...state, fail: false, sending: false, success: true };
+    default:
+      return state;
+  }
+};
 
-  const { transcript, resetTranscript, listening } = useSpeechRecognition();
+const delay = (duration) => new Promise((resolve) => {
+  window.setTimeout(resolve, duration);
+});
 
+const emailExpression = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+
+export default function Speech() {
+  const { listening, resetTranscript, transcript } = useSpeechRecognition();
   const [ emailState, dispatch ] = useReducer(reducer, initialEmailState);
+  const [ hasMounted, setHasMounted ] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-
     return null;
-
   }
 
   const updateSender = (event) => {
-
-    dispatch({
-      type: emailActions.updateSender, payload: event.target.value
-    });
-
+    dispatch({ payload: event.target.value, type: emailActions.updateSender });
   };
 
   const transcriptCompleted = () => {
+    if (transcript.length > 4) {
+      return true;
+    }
 
-    if (transcript.length > 4) return true;
-
-    dispatch({
-      type: emailActions.fail, payload: 'Press start to speech a little something'
-    });
-
+    dispatch({ payload: "Press start to speech a little something", type: emailActions.fail });
     return false;
-
   };
 
   const verifyEmail = () => {
-
-    const testEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailState.sender);
-
-    if (testEmail) {
-
-      return (true);
-
+    if (emailExpression.test(emailState.sender)) {
+      return true;
     }
 
-    dispatch({
-      type: emailActions.fail, payload: 'Oups it seem that that you entered an invalid email'
-    });
-
+    dispatch({ payload: "Oups it seem that that you entered an invalid email", type: emailActions.fail });
     return false;
-
   };
 
   const sendEmail = async () => {
+    const integrationEndpoint = process.env.NEXT_PUBLIC_INTEGRATION_ENDPOINT;
+
+    if (!integrationEndpoint) {
+      dispatch({ payload: "Missing NEXT_PUBLIC_INTEGRATION_ENDPOINT for contact form delivery.", type: emailActions.fail });
+      return;
+    }
 
     dispatch({ type: emailActions.sending });
+    await delay(3000);
 
-    await setTimeout(async () => {
+    try {
+      const response = await fetch(integrationEndpoint, {
+        body: JSON.stringify({ sender: emailState.sender, transcript: capitalize(transcript) }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
 
-      try {
-
-        await fetch(process.env.INTEGRATION_ENDPOINT, {
-          method : 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            sender: emailState.sender, transcript: capitalize(transcript)
-          }),
-        });
-
-        dispatch({ type: emailActions.success });
-
-      } catch {
-
-        dispatch({
-          type: emailActions.fail, payload: 'Oups something went wrong! You can notify me at bmarquiscom@gmail.com'
-        });
-
+      if (!response.ok) {
+        throw new Error("Contact request failed");
       }
 
-    }, 3000);
-
+      dispatch({ type: emailActions.success });
+    } catch {
+      dispatch({ payload: "Oups something went wrong! You can notify me at bmarquiscom@gmail.com", type: emailActions.fail });
+    }
   };
 
   const handleSendEmail = async () => {
-
     if (transcriptCompleted() && verifyEmail()) {
-
       await sendEmail();
       resetTranscript();
-
     }
-
   };
 
   return (
     <div className="cardBox flexColumnMobile">
       <div className="speechPart">
-        <label
-          htmlFor="from"
-          className="labelFromEmail"
-        >
+        <label className="labelFromEmail" htmlFor="from">
           From:
         </label>
         <input
-          name="from"
+          autoComplete="email"
           className="inputFromEmail"
+          id="from"
+          inputMode="email"
+          name="email"
+          onChange={updateSender}
           placeholder="emailicanrespondto@email.com"
           type="email"
-          onChange={updateSender}
         />
-        <label
-          htmlFor="message"
-          className="labelFromEmail"
-        >
+        <label className="labelFromEmail" htmlFor="message">
           Message:
         </label>
       </div>
       <div className="paper">
         <div className="paper-content">
           <textarea
-            onChange={() => {}}
-            value={capitalize(transcript)}
+            autoComplete="off"
+            id="message"
+            name="message"
             placeholder="Press the start button and let me know if next monday would be a good time to jump on a call?"
+            readOnly
+            value={capitalize(transcript)}
           />
         </div>
       </div>
       <div className="speechButtons speechPart">
+        {emailState.fail ? <div className="emailFeedback emailErrorFeedback">{emailState.errorMessage}</div> : null}
+        {emailState.success ? <div className="emailFeedback emailSuccessFeedback">Thanks! I'll get back to you</div> : null}
 
-        {emailState.fail
-        && <div className="emailFeedback emailErrorFeedback">{emailState.errorMessage}</div>}
-
-        {emailState.success
-        && <div className="emailFeedback emailSuccessFeedback">Thanks! I'll get back to you</div>}
-
-        <button
-          className="speechButton"
-          type="button"
-          onClick={resetTranscript}
-        >
+        <button className="speechButton" onClick={resetTranscript} type="button">
           Reset
         </button>
 
-        <button
-          className="speechButton"
-          type="button"
-          onClick={SpeechRecognition.startListening}
-        >
+        <button className="speechButton" onClick={SpeechRecognition.startListening} type="button">
           Start
         </button>
 
-        {listening && <FontAwesomeIcon icon={faMicrophoneAlt} />}
+        {listening ? <FontAwesomeIcon icon={faMicrophone} /> : null}
 
-        { !emailState.sending
-          ? (
-            <button
-              className="speechButton speechButtonSend"
-              type="button"
-              onClick={handleSendEmail}
-            >
-              Send
-            </button>
-          )
-          : (
-            <div className="speechButtonSend">
-              {' '}
-              <Spinner />
-              {' '}
-            </div>
-          )}
+        {!emailState.sending ? (
+          <button className="speechButton speechButtonSend" onClick={handleSendEmail} type="button">
+            Send
+          </button>
+        ) : (
+          <div className="speechButtonSend">
+            <Spinner />
+          </div>
+        )}
       </div>
-
     </div>
   );
-
-};
-
-export default Speech;
+}

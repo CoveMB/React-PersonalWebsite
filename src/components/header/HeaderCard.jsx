@@ -1,24 +1,17 @@
-import React from 'react';
-import Plx from 'react-plx';
-import Avatar from './Avatar';
-import HeaderCardContent from './HeaderCardContent';
+import ScrollParallax from "../animation/ScrollParallax";
+import { parallaxDataHeader } from "../../parallaxEffects/parallaxEffects";
+import Avatar from "./Avatar";
+import HeaderCardContent from "./HeaderCardContent";
 
-import { parallaxDataHeader } from '../../parallaxEffects/parallaxEffects';
-
-const headerCard = () => (
-  <Plx
-    className="parallaxTitle"
-    parallaxData={parallaxDataHeader}
-  >
-    <div
-      className="header-card scrollbarxcustom animated fadeIn"
-    >
-      <div className="gradient-square-avatar">
-        <Avatar />
+export default function HeaderCard() {
+  return (
+    <ScrollParallax className="parallaxTitle" parallaxData={parallaxDataHeader}>
+      <div className="header-card scrollbarxcustom animated fadeIn">
+        <div className="gradient-square-avatar">
+          <Avatar />
+        </div>
+        <HeaderCardContent />
       </div>
-      <HeaderCardContent />
-    </div>
-  </Plx>
-);
-
-export default headerCard;
+    </ScrollParallax>
+  );
+}

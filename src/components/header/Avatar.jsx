@@ -1,12 +1,7 @@
-import React from 'react';
-import logo from '../../../public/static/images/avatar.jpg';
-
-const avatar = () => {
+export default function Avatar() {
   return (
     <div className="brand">
-      <img className="header-card-avatar" src={logo} alt="VizzMD logo" />
+      <img alt="Portrait of Cove Marquis-Bortoli" className="header-card-avatar" src="/static/images/avatar.jpg" />
     </div>
   );
-};
-
-export default avatar;
+}

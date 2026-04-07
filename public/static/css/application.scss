@@ -1,28 +1,24 @@
-@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
-@import url('https://fonts.googleapis.com/css?family=Lato|Lustria&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css');
-
-@import 'colors';
-@import 'header';
-@import 'headerCard';
-@import 'gradient_square';
-@import 'navbar';
-@import 'cards';
-@import 'scrollbar';
-@import 'spinner';
-@import 'features';
-@import 'projects';
-@import 'text';
-@import 'speech';
-@import 'footer';
-@import 'navBtn';
+@use 'colors';
+@use 'header';
+@use 'headerCard';
+@use 'gradient_square';
+@use 'navbar';
+@use 'cards';
+@use 'scrollbar';
+@use 'spinner';
+@use 'features';
+@use 'projects';
+@use 'text';
+@use 'speech';
+@use 'footer';
+@use 'navBtn';
 
 body {
   margin: 0;
   padding: 0;
-  background-color: $backgroundwhite;
+  background-color: colors.$backgroundwhite;
   width: 100%;
-  color: $textgrey;
+  color: colors.$textgrey;
   font-family: 'Lato', sans-serif;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -37,15 +33,15 @@ body {
 
 .normalizedBackground {
   width: 100%;
-  background-color: $backgroundwhite;
+  background-color: colors.$backgroundwhite;
   margin: -5.5vh 0 0 0;
   padding: 60px 0 100px 0;
-  border: 1px 1px 1px 1px solid $backgroundwhite;
+  border: 1px 1px 1px 1px solid colors.$backgroundwhite;
 }
 
 .normalizedBackgroundWhite {
   width: 100%;
-  background-color: $cardwhite;
+  background-color: colors.$cardwhite;
   margin: 0;
   padding: 100px 0 100px 0;
 }
@@ -53,7 +49,7 @@ body {
 .normalizedBackgroundbig {
   width: 100%;
   height: 200vh;
-  background-color: $backgroundwhite;
+  background-color: colors.$backgroundwhite;
   margin: 0;
   padding-bottom: 65px;
 }

@@ -1,7 +1,6 @@
 version: "2.4"
 services:
 
-  # Client
   client:
     build:
       context: ./
@@ -9,7 +8,7 @@ services:
     container_name: client-${APP_NAME}
     env_file: .env
     environment:
-      - GATSBY_TELEMETRY_DISABLED=1
+      - NEXT_TELEMETRY_DISABLED=1
       - NODE_ENV=development
     ports:
       - 80:${PORT}
@@ -20,7 +19,6 @@ services:
       - ./:/node/app:delegated
       - /node/app/node_modules
 
-#Volumes
 volumes:
   postgres:
   pgadmin:

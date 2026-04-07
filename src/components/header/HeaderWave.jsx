@@ -1,7 +1,3 @@
-import React from 'react';
-
-const headerWave = () => (
-  <img className="header-wave" src="/static/images/vectorheader.svg" alt="svg wave" />
-);
-
-export default headerWave;
+export default function HeaderWave() {
+  return <img alt="svg wave" className="header-wave" src="/static/images/vectorheader.svg" />;
+}

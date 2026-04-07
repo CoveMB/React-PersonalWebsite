@@ -1,3 +1,5 @@
+@use 'colors';
+
 p {
   margin: 0;
   padding: 0;
@@ -11,7 +13,7 @@ p {
   font-weight: bold;
   font-size: 3.6em;
   text-align: center;
-  color: $darkpurple;
+  color: colors.$darkpurple;
 }
 
 .cardListCompetence {
@@ -24,7 +26,7 @@ p {
 }
 
 .cardTitle {
-  color: $darkpurple;
+  color: colors.$darkpurple;
   font-style: normal;
   font-weight: 800;
   font-size: 1.8em;
@@ -39,17 +41,17 @@ p {
   font-size: 1.3em;
   line-height: 40px;
   text-align: justify;
-  color: $textgrey;
+  color: colors.$textgrey;
 }
 
 .blueTitle {
-  color: $lightpurple;
+  color: colors.$lightpurple;
   font-weight: 900;
   font-size: 1.2em;
 }
 
 .darkblueTitle {
-  color: $lightpurple;
+  color: colors.$lightpurple;
   font-weight: 900;
   font-size: 1.05em;
 }

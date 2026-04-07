@@ -1,9 +1,5 @@
-import React from "react";
-import Plx from "react-plx";
-import {
-  parallaxDataProjectLeft,
-  parallaxDataProjectRight,
-} from "../../parallaxEffects/parallaxEffects";
+import ScrollParallax from "../animation/ScrollParallax";
+import { parallaxDataProjectLeft, parallaxDataProjectRight } from "../../parallaxEffects/parallaxEffects";
 import ProjectGitLink from "./ProjectGitLink";
 import ProjectImage from "./ProjectImage";
 import {
@@ -20,190 +16,112 @@ import {
   toolyProjectText,
 } from "./projectText";
 
-const project = ({ projectName, side }) => {
-  const projectNames = {
-    suiTooling: "suiTooling",
-    defender: "defender",
-    astroLight: "astroLight",
-    aldo: "aldo",
-    spockee: "spockee",
-    tooly: "tooly",
-    leWagon: "leWagon",
-    centech: "centech",
-    shareIn: "shareIn",
-    airflow: "airflow",
-    cominity: "cominity",
-  };
+const projectDetailsByName = {
+  airflow: {
+    githubRepository: "https://github.com/CoveMB/Python-AirflowReportPipeline",
+    image: "/static/images/airflow.png",
+    text: airflowProjectText,
+    website: "https://github.com/CoveMB/Python-AirflowReportPipeline",
+  },
+  aldo: {
+    image: "/static/images/aldo.png",
+    text: aldoProjectText,
+    website: "https://www.aldogroup.com/",
+  },
+  astroLight: {
+    githubRepository: "https://github.com/CoveMB/solidity-DEFI-DAO",
+    image: "/static/images/astroLight.svg",
+    text: astroLightProjectText,
+    website: "https://astro-light.on.fleek.co/",
+  },
+  centech: {
+    githubRepository: "https://github.com/CoveMB/Rails-React-VizzMD-App",
+    image: "/static/images/centech.png",
+    text: centechProjectText,
+    website: "https://react-rails-vizzmd-mvp.herokuapp.com",
+  },
+  cominity: {
+    image: "/static/images/cominity.png",
+    text: cominityProjectText,
+    website: "https://cominity.ca/",
+  },
+  defender: {
+    image: "/static/images/defender.png",
+    text: defenderProjectText,
+    website: "https://docs.openzeppelin.com/defender",
+  },
+  leWagon: {
+    image: "/static/images/leWagon.png",
+    text: leWagonProjectText,
+    website: "https://www.lewagon.com/",
+  },
+  shareIn: {
+    githubRepository: "https://github.com/CoveMB/Rails-Share-in-App",
+    image: "/static/images/shareIn.png",
+    text: shareInProjectText,
+    website: "https://ruby-share-in-app.herokuapp.com/",
+  },
+  spockee: {
+    image: "/static/images/spockee.svg",
+    text: spockeeProjectText,
+    website: "https://skeepers.io/en/live-shopping/",
+  },
+  suiTooling: {
+    githubRepository: "https://github.com/OpenZeppelin/openzeppelin-sui-marketplace",
+    image: "/static/images/suiTooling.svg",
+    text: suiToolingProjectText,
+    website: "https://www.sui.io/",
+  },
+  tooly: {
+    image: "/static/images/tooly.png",
+    text: toolyProjectText,
+    website: "https://www.nextcanada.com/next-ai/",
+  },
+};
 
-  const getParallaxData = () => {
-    switch (side) {
-      case "left":
-        return parallaxDataProjectLeft;
-      case "right":
-        return parallaxDataProjectRight;
-      default:
-        return null;
-    }
-  };
+const parallaxDataBySide = {
+  left: parallaxDataProjectLeft,
+  right: parallaxDataProjectRight,
+};
 
-  const getProjectText = () => {
-    switch (projectName) {
-      case projectNames.suiTooling:
-        return suiToolingProjectText;
-      case projectNames.defender:
-        return defenderProjectText;
-      case projectNames.astroLight:
-        return astroLightProjectText;
-      case projectNames.aldo:
-        return aldoProjectText;
-      case projectNames.spockee:
-        return spockeeProjectText;
-      case projectNames.tooly:
-        return toolyProjectText;
-      case projectNames.cominity:
-        return cominityProjectText;
-      case projectNames.centech:
-        return centechProjectText;
-      case projectNames.leWagon:
-        return leWagonProjectText;
-      case projectNames.shareIn:
-        return shareInProjectText;
-      case projectNames.airflow:
-        return airflowProjectText;
-      default:
-        return null;
-    }
-  };
+const renderProjectBody = ({ details, projectName, side }) => {
+  const projectImage = (
+    <div className="project-image-n-details">
+      <ProjectImage hrefSource={details.website} projectImage={details.image} projectName={projectName} side={side} />
+      {details.githubRepository ? <ProjectGitLink hrefSource={details.githubRepository} side={side} /> : null}
+    </div>
+  );
 
-  const getProjectImage = () => {
-    switch (projectName) {
-      case projectNames.suiTooling:
-        return `/static/images/${projectName}.svg`;
-      case projectNames.defender:
-        return `/static/images/${projectName}.png`;
-      case projectNames.astroLight:
-        return `/static/images/${projectName}.svg`;
-      case projectNames.aldo:
-        return `/static/images/${projectName}.png`;
-      case projectNames.spockee:
-        return `/static/images/${projectName}.svg`;
-      case projectNames.tooly:
-        return `/static/images/${projectName}.png`;
-      case projectNames.cominity:
-        return `/static/images/${projectName}.png`;
-      case projectNames.centech:
-        return `/static/images/${projectName}.png`;
-      case projectNames.leWagon:
-        return `/static/images/${projectName}.png`;
-      case projectNames.shareIn:
-        return `/static/images/${projectName}.png`;
-      case projectNames.airflow:
-        return `/static/images/${projectName}.png`;
-      default:
-        return null;
-    }
-  };
-
-  const getGithubRepo = () => {
-    switch (projectName) {
-      case projectNames.suiTooling:
-        return "https://github.com/OpenZeppelin/openzeppelin-sui-marketplace";
-      case projectNames.astroLight:
-        return "https://github.com/CoveMB/solidity-DEFI-DAO";
-      case projectNames.airflow:
-        return "https://github.com/CoveMB/Python-AirflowReportPipeline";
-      case projectNames.shareIn:
-        return "https://github.com/CoveMB/Rails-Share-in-App";
-      case projectNames.centech:
-        return "https://github.com/CoveMB/Rails-React-VizzMD-App";
-      default:
-        return null;
-    }
-  };
-
-  const getWebsite = () => {
-    switch (projectName) {
-      case projectNames.defender:
-        return "https://docs.openzeppelin.com/defender";
-      case projectNames.suiTooling:
-        return "https://www.sui.io/";
-      case projectNames.astroLight:
-        return "https://astro-light.on.fleek.co/";
-      case projectNames.aldo:
-        return "https://www.aldogroup.com/";
-      case projectNames.spockee:
-        return "https://skeepers.io/en/live-shopping/";
-      case projectNames.tooly:
-        return "https://www.nextcanada.com/next-ai/";
-      case projectNames.cominity:
-        return "https://cominity.ca/";
-      case projectNames.centech:
-        return "https://react-rails-vizzmd-mvp.herokuapp.com";
-      case projectNames.leWagon:
-        return "https://www.lewagon.com/";
-      case projectNames.shareIn:
-        return "https://ruby-share-in-app.herokuapp.com/";
-      case projectNames.airflow:
-        return "https://github.com/CoveMB/Python-AirflowReportPipeline";
-      default:
-        return null;
-    }
-  };
-
-  const getSide = () => {
-    if (side === "left") {
-      return (
-        <div className="makeItFlex ongoingRow">
-          <div className="project-image-n-details">
-            <ProjectImage
-              hrefSource={getWebsite()}
-              projectImage={getProjectImage()}
-              side={side}
-              projectName={projectName}
-            />
-            {getGithubRepo() && (
-              <ProjectGitLink
-                hrefSource={getGithubRepo()}
-                side={side}
-                projectName={projectName}
-              />
-            )}
-          </div>
-          {getProjectText()}
-        </div>
-      );
-    }
-
+  if (side === "left") {
     return (
       <div className="makeItFlex ongoingRow">
-        {getProjectText()}
-        <div className="project-image-n-details">
-          <ProjectImage
-            hrefSource={getWebsite()}
-            projectImage={getProjectImage()}
-            side={side}
-            projectName={projectName}
-          />
-          {getGithubRepo() && (
-            <ProjectGitLink
-              hrefSource={getGithubRepo()}
-              side={side}
-              projectName={projectName}
-            />
-          )}
-        </div>
+        {projectImage}
+        {details.text}
       </div>
     );
-  };
+  }
 
   return (
-    <Plx className="parallaxTitle" parallaxData={getParallaxData()}>
-      <>
-        <hr className="ongoingSeparator" />
-        {getSide()}
-      </>
-    </Plx>
+    <div className="makeItFlex ongoingRow">
+      {details.text}
+      {projectImage}
+    </div>
   );
 };
 
-export default project;
+export default function Project({ projectName, side }) {
+  const projectDetails = projectDetailsByName[projectName];
+
+  if (!projectDetails) {
+    return null;
+  }
+
+  return (
+    <ScrollParallax className="parallaxTitle" parallaxData={parallaxDataBySide[side]}>
+      <>
+        <hr className="ongoingSeparator" />
+        {renderProjectBody({ details: projectDetails, projectName, side })}
+      </>
+    </ScrollParallax>
+  );
+}

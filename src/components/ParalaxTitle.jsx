@@ -1,15 +1,10 @@
-import React from 'react';
-import Plx from 'react-plx';
+import ScrollParallax from "./animation/ScrollParallax";
+import { parallaxDataTitle } from "../parallaxEffects/parallaxEffects";
 
-import { parallaxDataTitle } from '../parallaxEffects/parallaxEffects';
-
-const paralaxTitle = (props) => (
-  <Plx
-    className="parallaxTitle"
-    parallaxData={parallaxDataTitle}
-  >
-    <h2 className="sectionTitle" id={props.idElement}>{props.title}</h2>
-  </Plx>
-);
-
-export default paralaxTitle;
+export default function ParallaxTitle({ idElement, title }) {
+  return (
+    <ScrollParallax className="parallaxTitle" parallaxData={parallaxDataTitle}>
+      <h2 className="sectionTitle" id={idElement}>{title}</h2>
+    </ScrollParallax>
+  );
+}
