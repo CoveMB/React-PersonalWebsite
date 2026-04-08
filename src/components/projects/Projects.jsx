@@ -2,27 +2,10 @@
 
 import { useState } from "react";
 import Project from "./Project";
+import { archivedProjects, featuredProjects } from "./projectCatalog";
 
-const projects = [
-  { projectName: "suiTooling", side: "left" },
-  { projectName: "defender", side: "right" },
-  { projectName: "astroLight", side: "left" },
-  { projectName: "aldo", side: "right" },
-  { projectName: "spockee", side: "left" },
-  { projectName: "tooly", side: "right" },
-  { projectName: "cominity", side: "left" },
-  { projectName: "centech", side: "right" },
-  { projectName: "leWagon", side: "left" },
-  { projectName: "shareIn", side: "right" },
-  { projectName: "airflow", side: "left" },
-];
-
-const featuredProjectCount = 4;
-const featuredProjects = projects.slice(0, featuredProjectCount);
-const archivedProjects = projects.slice(featuredProjectCount);
-
-const renderProject = ({ projectName, side }) => (
-  <Project key={projectName} projectName={projectName} side={side} />
+const renderProject = (project) => (
+  <Project key={project.id} project={project} />
 );
 
 export default function Projects() {
@@ -37,11 +20,10 @@ export default function Projects() {
       <div className="projectsSectionIntro">
         <p className="projectsEyebrow">Featured work</p>
         <p className="cardText ongoingIntro">
-          During my personal and professional path I encounter different
-          challenges. Learning new skills led me to turn them into opportunities
-          and build real projects. Here are some of my recent work across
-          blockchain tooling, product engineering, and developer experience
-          sorted with most recent first:
+          These projects show the throughline of my work across developer
+          tooling, product engineering, blockchain systems, and delivery
+          infrastructure. The featured cases are the strongest recent examples,
+          with earlier projects available below in reverse-chronological order.
         </p>
       </div>
 

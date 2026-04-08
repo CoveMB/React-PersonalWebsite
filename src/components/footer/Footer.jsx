@@ -1,15 +1,11 @@
 import {
-  emailLink,
-  githubProfileUrl,
-  linkedinProfileUrl,
   profileAvailability,
-  profileEmailAddress,
   profileLocation,
   profileTimezone,
   resumeDownloadName,
   resumeFilePath,
-  socialLinks,
 } from "../../utils/profile";
+import SocialLinks from "../shared/SocialLinks";
 
 const footerActionLinks = [
   {
@@ -22,9 +18,7 @@ const footerActionLinks = [
 
 const footerMetaItems = [profileLocation, profileTimezone];
 
-const footerNotes = ["Built with Next.js, React, and GSAP."];
-
-const footerSocialLinks = socialLinks.filter(({ href }) => href !== emailLink);
+const footerNotes = ["Built with Next.js, and GSAP."];
 
 const renderActionLink = ({
   className,
@@ -52,18 +46,6 @@ const renderFooterMetaItem = (item) => (
   </li>
 );
 
-const renderFooterSocialLink = ({ alt, href, imagePath, rel, target }) => (
-  <a
-    className="footerIconLink"
-    href={href}
-    key={href}
-    rel={rel}
-    target={target}
-  >
-    <img alt={alt} className="svgFooter" src={imagePath} />
-  </a>
-);
-
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -83,7 +65,10 @@ export default function Footer() {
           <p className="footerConnect">{profileAvailability}</p>
           <p className="footerConnect"> let's connect:</p>
           <div className="footerIconLinks">
-            {socialLinks.map(renderFooterSocialLink)}{" "}
+            <SocialLinks
+              imageClassName="svgFooter"
+              linkClassName="footerIconLink"
+            />
             {footerActionLinks.map(renderActionLink)}
           </div>
         </div>

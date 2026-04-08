@@ -1,9 +1,9 @@
-export const profileEmailAddress = "bmarquiscom@gmail.com";
+export const profileEmailAddress = "marquisbenjamin23@gmail.com";
 export const emailLink = `mailto:${profileEmailAddress}`;
-export const githubProfileUrl = "https://github.com/CoveMB";
-export const linkedinProfileUrl =
+const githubProfileUrl = "https://github.com/CoveMB";
+const linkedinProfileUrl =
   "https://www.linkedin.com/in/cove-marquis-eth/?locale=en_US";
-export const instagramProfileUrl =
+const instagramProfileUrl =
   "https://www.instagram.com/cove.suchness/?hl=en";
 export const profileLocation = "Montreal, Canada";
 export const profileTimezone = "Eastern Time (America/Toronto)";

@@ -4,6 +4,7 @@ import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import Spinner from "../Spinner";
 import { capitalize } from "../../utils/strings";
+import { profileEmailAddress } from "../../utils/profile";
 
 const emailActions = {
   fail: "fail",
@@ -40,6 +41,9 @@ const delay = (duration) => new Promise((resolve) => {
 });
 
 const emailExpression = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+
+const getContactFailureMessage = () =>
+  `Oups something went wrong! You can notify me at ${profileEmailAddress}`;
 
 export default function Speech() {
   const { listening, resetTranscript, transcript } = useSpeechRecognition();
@@ -106,7 +110,7 @@ export default function Speech() {
 
       dispatch({ type: emailActions.success });
     } catch {
-      dispatch({ payload: "Oups something went wrong! You can notify me at bmarquiscom@gmail.com", type: emailActions.fail });
+      dispatch({ payload: getContactFailureMessage(), type: emailActions.fail });
     }
   };
 

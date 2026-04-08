@@ -103,6 +103,22 @@ export default function ScrollParallax({ as: Component = "div", children, classN
     };
   }, [parallaxData]);
 
+  useLayoutEffect(() => {
+    if (!elementReference.current || typeof ResizeObserver === "undefined") {
+      return undefined;
+    }
+
+    const resizeObserver = new ResizeObserver(() => {
+      ScrollTrigger.refresh();
+    });
+
+    resizeObserver.observe(elementReference.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   return (
     <Component className={className} ref={elementReference}>
       {children}

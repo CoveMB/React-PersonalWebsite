@@ -1,254 +1,250 @@
-import React from "react";
+import { Fragment } from "react";
 
-export const suiToolingProjectText = (
+const emphasize = (text) => <strong className="blueTitle">{text}</strong>;
+
+const renderProjectParagraph = (heading, paragraph, index) => (
+  <Fragment key={`${heading}-${index}`}>
+    <br />
+    {paragraph}
+  </Fragment>
+);
+
+const buildProjectText = ({ heading, paragraphs }) => (
   <p className="cardText ongoingText">
-    <strong className="blueTitle">
-      Building the tooling layer for a Sui marketplace dApp:
-    </strong>
-    <br />
-    At OpenZeppelin, I built a{" "}
-    <strong className="blueTitle">full-stack marketplace example</strong> and
-    the surrounding <strong className="blueTitle">tooling layer</strong> to make
-    Move contract development easier across environments.
-    <br />
-    The work covered <strong className="blueTitle">contract publishing</strong>,
-    deployment artifacts,{" "}
-    <strong className="blueTitle">network-aware configuration</strong>,
-    transaction helpers, and an{" "}
-    <strong className="blueTitle">integration test harness</strong> that could
-    deploy contracts, seed state, and validate end-to-end flows.
-    <br />
-    The result was a stronger{" "}
-    <strong className="blueTitle">developer experience</strong> and a more
-    repeatable pipeline for building, testing, and operating{" "}
-    <strong className="blueTitle">Sui applications</strong> with Move smart
-    contracts.
+    {emphasize(heading)}
+    {paragraphs.map((paragraph, index) =>
+      renderProjectParagraph(heading, paragraph, index)
+    )}
   </p>
 );
 
-export const defenderProjectText = (
-  <p className="cardText ongoingText">
-    <strong className="blueTitle">
-      Securing smart contract operations at scale:
-    </strong>
-    <br />I worked on{" "}
-    <strong className="blueTitle">OpenZeppelin Defender</strong>, a platform
-    used by teams to deploy, monitor, and operate smart contracts in production
-    with stronger operational safety.
-    <br />I contributed across the{" "}
-    <strong className="blueTitle">full stack</strong>, from blockchain
-    integration flows to backend services and product-facing UI.
-    <br />
-    We focused on building features around{" "}
-    <strong className="blueTitle">contract administration</strong>,{" "}
-    <strong className="blueTitle">automated operations</strong> and{" "}
-    <strong className="blueTitle">real-time monitoring</strong> so teams could
-    react quickly to on-chain events and reduce manual intervention. I also
-    contributed to the{" "}
-    <strong className="blueTitle">microservice architecture</strong> running on
-    AWS and to features built around triggers, automation bots, and secure
-    operational workflows.
-  </p>
-);
+export const suiToolingProjectText = buildProjectText({
+  heading: "Building the tooling layer for a Sui marketplace dApp:",
+  paragraphs: [
+    <>
+      At OpenZeppelin, I built a {emphasize("full-stack marketplace example")}
+      {" "}and the surrounding {emphasize("tooling layer")} to make Move
+      contract development easier across environments.
+    </>,
+    <>
+      The work covered {emphasize("contract publishing")}, deployment
+      artifacts, {emphasize("network-aware configuration")}, transaction
+      helpers, and an {emphasize("integration test harness")} that could
+      deploy contracts, seed state, and validate end-to-end flows.
+    </>,
+    <>
+      The result was a stronger {emphasize("developer experience")} and a more
+      repeatable pipeline for building, testing, and operating{" "}
+      {emphasize("Sui applications")} with Move smart contracts.
+    </>,
+  ],
+});
 
-export const astroLightProjectText = (
-  <p className="cardText ongoingText">
-    <strong className="blueTitle">
-      A teaching dApp for DeFi and DAO concepts:
-    </strong>
-    <br />I built Astro Light as a hands-on way to teach{" "}
-    <strong className="blueTitle">blockchain fundamentals</strong> beyond slide
-    decks and theory.
-    <br />
-    The project combined a small{" "}
-    <strong className="blueTitle">DeFi and DAO experience</strong> on Ethereum
-    testnet: users could buy a token, swap, stake, and participate in a simple
-    governance flow that updated a UI element through on-chain decisions.
-    <br />
-    It was designed as both a{" "}
-    <strong className="blueTitle">learning sandbox</strong> and a compact{" "}
-    <strong className="blueTitle">smart contract demo</strong>, making it easy
-    to walk people through wallets, contract calls, token flows, and state
-    changes in a single experience.
-    <br />
-    It turned abstract concepts like{" "}
-    <strong className="blueTitle">
-      tokens, staking, governance, and smart contracts
-    </strong>{" "}
-    into something people could actually use, demo, and understand.
-  </p>
-);
+export const defenderProjectText = buildProjectText({
+  heading: "Securing smart contract operations at scale:",
+  paragraphs: [
+    <>
+      I worked on {emphasize("OpenZeppelin Defender")}, a platform teams use to
+      deploy, monitor, and operate smart contracts in production with stronger
+      operational safety.
+    </>,
+    <>
+      My scope spanned {emphasize("full-stack product work")}, from blockchain
+      integration flows to AWS-backed microservices and the user-facing
+      application layer.
+    </>,
+    <>
+      I shipped features around {emphasize("contract administration")},
+      {" "}{emphasize("automation")}, and {emphasize("monitoring")} so teams
+      could react to on-chain events faster and reduce manual operational work.
+    </>,
+  ],
+});
 
-export const aldoProjectText = (
-  <p className="cardText ongoingText">
-    <strong className="blueTitle">
-      Modernizing the core of an e-commerce platform:
-    </strong>
-    <br />
-    At Aldo, I joined the team during the rebuild of the{" "}
-    <strong className="blueTitle">order management system</strong>, one of the
-    most critical systems in the commerce stack.
-    <br />
-    The new platform was built around an{" "}
-    <strong className="blueTitle">
-      event-driven microservice architecture
-    </strong>{" "}
-    using EventBridge and Lambda functions, with the OMS acting as the
-    coordination layer between multiple interconnected services.
-    <br />
-    My work covered{" "}
-    <strong className="blueTitle">tested TypeScript services</strong>, AWS
-    integrations with{" "}
-    <strong className="blueTitle">DynamoDB, SNS, and SQS</strong>, and delivery
-    practices that made changes safer in a high-stakes commerce workflow.
-    <br />
-    Alongside product work, I created a{" "}
-    <strong className="blueTitle">CLI and IDE extension</strong> to streamline
-    developer workflows and reduce the need to jump into the AWS console for
-    common operational tasks. I also helped with{" "}
-    <strong className="blueTitle">onboarding and team enablement</strong> so new
-    developers could ramp into the architecture and delivery flow faster.
-  </p>
-);
+export const astroLightProjectText = buildProjectText({
+  heading: "A teaching dApp for DeFi and DAO concepts:",
+  paragraphs: [
+    <>
+      I built Astro Light as a hands-on way to teach{" "}
+      {emphasize("blockchain fundamentals")} beyond slide decks and theory.
+    </>,
+    <>
+      The project combined a compact {emphasize("DeFi and DAO experience")} on
+      Ethereum testnet where users could buy a token, swap, stake, and
+      participate in a governance flow that changed the UI through on-chain
+      decisions.
+    </>,
+    <>
+      It was designed as both a {emphasize("learning sandbox")} and a compact
+      {" "}{emphasize("smart contract demo")}, turning wallets, contract
+      calls, token flows, and governance into something people could actually
+      use and understand.
+    </>,
+  ],
+});
 
-export const spockeeProjectText = (
-  <p className="cardText ongoingText">
-    <strong className="blueTitle">Getting out off MVP:</strong>
-    <br /> When I joined Spockee, the product was getting some traction but the
-    tech has been a bit left behind.
-    <br />
-    As a lead developer one of my first initiatives was to{" "}
-    <strong className="blueTitle">build proper CI/CD pipelines</strong> to
-    automate the deployment of the applications.
-    <br />I learn{" "}
-    <strong className="blueTitle">
-      Infrastructure as Code and Terraform
-    </strong>{" "}
-    so we could also automate infrastructure management and deployment. Moving
-    the applications from EC2 instance to{" "}
-    <strong className="blueTitle">Fargate containers</strong>.
-    <br />I also passed my{" "}
-    <strong className="blueTitle">scrum master certification</strong> to help
-    the team mature in agile methodologies.
-    <br />I was also there to support the team to grow in those new technologies
-    we were adopting with lunch and learns and pair programming.
-  </p>
-);
+export const aldoProjectText = buildProjectText({
+  heading: "Modernizing the core of an e-commerce platform:",
+  paragraphs: [
+    <>
+      At Aldo, I joined the rebuild of the{" "}
+      {emphasize("order management system")}, one of the most critical systems
+      in the commerce stack.
+    </>,
+    <>
+      The platform was built around an{" "}
+      {emphasize("event-driven microservice architecture")} using EventBridge,
+      Lambda functions, and AWS messaging services, with the OMS coordinating
+      multiple interconnected services.
+    </>,
+    <>
+      Alongside delivery work on {emphasize("tested TypeScript services")}, I
+      created a {emphasize("CLI and IDE extension")} and helped with{" "}
+      {emphasize("onboarding and team enablement")} so developers could move
+      through the architecture and daily workflows faster.
+    </>,
+  ],
+});
 
-export const toolyProjectText = (
-  <p className="cardText ongoingText">
-    <strong className="blueTitle">Growing a product:</strong>
-    <br />
-    During Centech's acceleration program I met with Olivier his goal was to be
-    able to recommend you the best SaaS for your needs, and offered me to hop in
-    the project and lead the development of the Tooly's MVP.
-    <br />
-    With Tooly we enrolled in
-    <strong className="blueTitle"> Next AI's </strong>
-    incubation program. I, of course, had to build the tech side of the project
-    from
-    <strong className="blueTitle"> machine learning models </strong>
-    to an admin panel with
-    <strong className="blueTitle"> Koa and Graphql</strong>
-    .
-    <br />
-    But I also had the opportunity to participate in the development of the
-    whole product from business model to MVP experiments.
-    <br />I followed a{" "}
-    <strong className="blueTitle">product ownership bootcamp</strong> to tace
-    better product decision.
-  </p>
-);
+export const spockeeProjectText = buildProjectText({
+  heading: "Scaling a live-shopping product beyond MVP:",
+  paragraphs: [
+    <>
+      I joined Spockee when the product had traction, but the engineering
+      foundations needed to catch up with the ambition of the business.
+    </>,
+    <>
+      I built {emphasize("Koa and Express services")}, supported{" "}
+      {emphasize("WebSocket flows")}, containerized the stack with Docker, and
+      managed AWS infrastructure through {emphasize("Terraform")}.
+    </>,
+    <>
+      I also introduced {emphasize("CI/CD pipelines")}, {emphasize("CLI tooling")},
+      and more structured {emphasize("Scrum practices")} to help the team ship
+      more reliably and grow into stronger delivery habits.
+    </>,
+  ],
+});
 
-export const cominityProjectText = (
-  <p className="cardText ongoingText">
-    <strong className="blueTitle">Implementing new processes:</strong>
-    <br /> Alongside Tooly, there is another business Cominity, the agency.
-    <br />
-    Being part of an agency has led me to learn a handful of technologies. I was
-    able to engineer the whole CI/CD pipeline for the applications
-    <strong className="blueTitle"> Dockerizing </strong>
-    the app on the way. I learned
-    <strong className="blueTitle"> Kubernetes </strong>
-    and
-    <strong className="blueTitle"> serverless </strong>
-    tools like
-    <strong className="blueTitle"> Lambda </strong>
-    to figure out the best solutions for our multiple needs.
-    <br />I help junior developers in their coding journey.
-  </p>
-);
+export const toolyProjectText = buildProjectText({
+  heading: "Leading the technical direction of an MVP:",
+  paragraphs: [
+    <>
+      At Tooly, I led the technical side of the MVP while the company went
+      through the {emphasize("Next AI")} incubation program.
+    </>,
+    <>
+      I built the stack with {emphasize("TypeScript")},{" "}
+      {emphasize("Node and Koa")}, {emphasize("React")}, and{" "}
+      {emphasize("GraphQL")}, while making architectural decisions for a more
+      scalable product.
+    </>,
+    <>
+      The role also extended into {emphasize("product thinking")}, from MVP
+      experiments to shaping how the solution could better match user and
+      business needs.
+    </>,
+  ],
+});
 
-export const centechProjectText = (
-  <p className="cardText ongoingText">
-    <strong className="blueTitle">Entering the entrepreneur's world:</strong>
-    <br /> At the end of Le Wagon bootcamp, one of the students came to me: his
-    idea has been accepted to the Centech's Acceleration program and he proposed
-    me to be the CTO for the project.
-    <br />
-    Following the training offered by the Centech made me enter the
-    <strong className="blueTitle"> entrepreneur's </strong>
-    world which I have found too thrilling to quit since.
-    <br />
-    The project was a data visualisation tool for physical rehabilitation
-    professionals. I use this opportunity to learn some new technology like
-    <strong className="blueTitle"> React </strong>
-    to quickly build our first MVP.
-  </p>
-);
+export const cominityProjectText = buildProjectText({
+  heading: "Bringing DevOps discipline into agency delivery:",
+  paragraphs: [
+    <>
+      Alongside product work, I supported Cominity&apos;s agency projects and
+      helped bring stronger engineering practices into client delivery.
+    </>,
+    <>
+      I set up {emphasize("CI/CD pipelines")}, containerized applications with
+      {emphasize("Docker")}, used {emphasize("Kubernetes")} where orchestration
+      made sense, and applied {emphasize("serverless patterns")} with AWS
+      Lambda when they were the better fit.
+    </>,
+    <>
+      The work was as much about {emphasize("technical execution")} as it was
+      about helping teams make practical infrastructure decisions and mentoring
+      junior developers along the way.
+    </>,
+  ],
+});
 
-export const leWagonProjectText = (
-  <p className="cardText ongoingText">
-    <strong className="blueTitle">Teaching one's passion:</strong>
-    <br /> After graduating from the Wagon they asked me to join their forces
-    and become a teacher assistant, soon enough I became a teacher.
-    <br />I always liked explaining things to others and finding ways they could
-    understand the same with their own logic. Becoming a teacher for the
-    <strong className="blueTitle"> Javascript </strong>
-    part of the program allowed me to share my passion for the language. Even if
-    I had great confidence in my technology's skill I had to overcome my fear of
-    speaking in front of an audience..
-  </p>
-);
+export const centechProjectText = buildProjectText({
+  heading: "Building an MVP inside an acceleration program:",
+  paragraphs: [
+    <>
+      At Centech, I joined VizzMD as {emphasize("CTO and co-founder")} to help
+      turn a rehabilitation data-visualization idea into a real product.
+    </>,
+    <>
+      I helped shape both the {emphasize("product direction")} and the{" "}
+      {emphasize("technical direction")}, including CRM setup and a first MVP
+      built with {emphasize("Rails and React")}.
+    </>,
+    <>
+      It was my entry point into {emphasize("startup building")} and
+      cross-functional ownership, working close to the business while still
+      building the product itself.
+    </>,
+  ],
+});
 
-export const shareInProjectText = (
-  <p className="cardText ongoingText">
-    <strong className="blueTitle">Beginning the Full-Stack journey:</strong>
-    <br /> After having successfully built a data pipeline to automate my
-    reporting, I realised that I was having more fun developing and coding than
-    building marketing campaigns. I already Learned
-    <strong className="blueTitle"> Javascript and Python </strong>
-    on my own, now it was time to practice my coding skills with a team.
-    <br />
-    The Wagon offered me the opportunity to do just that. My project was
-    selected as a final project. We built an app that would bring people
-    together depending on their cultural interest. The app included a built-in
-    instant messaging service using
-    <strong className="blueTitle"> WebSockets</strong>.
-  </p>
-);
+export const leWagonProjectText = buildProjectText({
+  heading: "Teaching full-stack development in the classroom:",
+  paragraphs: [
+    <>
+      After graduating from Le Wagon, I returned first as a teaching assistant
+      and then as a teacher for the full-stack program.
+    </>,
+    <>
+      I taught {emphasize("JavaScript")} and core development concepts, helped
+      students debug their projects, and adapted explanations to different
+      learning styles.
+    </>,
+    <>
+      That experience strengthened my {emphasize("communication")},
+      {" "}{emphasize("mentorship")}, and {emphasize("public speaking")} skills
+      while keeping me close to the fundamentals of product development.
+    </>,
+  ],
+});
 
-export const airflowProjectText = (
-  <p className="cardText ongoingText">
-    <strong className="blueTitle">Discovering data and data-pipeline:</strong>
-    <br /> Working as a digital marketing specialist, I had a lot of reporting
-    to do, especially because I was in charge of multiple clients. To make this
-    reporting easier, I Learned
-    <strong className="blueTitle"> Python </strong>
-    and used Apache Airflow to build a data pipeline
-    <br />
-    The first part of the pipeline connects to different APIs (Google
-    Ads/Facebook/Google Analytics/CRM) to get the data I need for my reporting.
-    The data is then sent to a<strong className="blueTitle"> Big Query </strong>
-    data warehouse. The second part of the pipeline uses
-    <strong className="blueTitle"> Pandas </strong>
-    to process the data from different sources to get some useful insights. The
-    result is sent by email.
-    <br />
-    To make the development of this app easier I used
-    <strong className="blueTitle"> Docker </strong>
-    so I could
-    <strong className="blueTitle"> Docker-compose </strong>
-    my app anywhere.
-  </p>
-);
+export const shareInProjectText = buildProjectText({
+  heading: "Turning a career pivot into a real product:",
+  paragraphs: [
+    <>
+      Share In was my final project at Le Wagon, built as I shifted from data
+      and marketing work into software development.
+    </>,
+    <>
+      We created a {emphasize("Rails application")} focused on connecting people
+      through shared cultural interests, including{" "}
+      {emphasize("real-time messaging")} powered by WebSockets.
+    </>,
+    <>
+      It was the project that turned self-taught{" "}
+      {emphasize("JavaScript and Python")} into collaborative{" "}
+      {emphasize("full-stack product development")} with a team.
+    </>,
+  ],
+});
+
+export const airflowProjectText = buildProjectText({
+  heading: "Automating reporting with a custom data pipeline:",
+  paragraphs: [
+    <>
+      While working in digital marketing, I built an{" "}
+      {emphasize("Apache Airflow pipeline")} to reduce repetitive reporting work
+      across multiple clients.
+    </>,
+    <>
+      The pipeline pulled data from advertising, analytics, and CRM APIs, loaded
+      it into {emphasize("BigQuery")}, and used {emphasize("Pandas")} to create
+      cleaner performance outputs and send results by email.
+    </>,
+    <>
+      I also packaged the environment with {emphasize("Docker")} and{" "}
+      {emphasize("Docker Compose")} so the workflow was easier to run,
+      reproduce, and improve over time.
+    </>,
+  ],
+});

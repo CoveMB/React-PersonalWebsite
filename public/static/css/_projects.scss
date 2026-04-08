@@ -1,4 +1,5 @@
 @use 'colors';
+@use 'uiPrimitives';
 
 .ongoingIntro {
   width: 70%;
@@ -82,6 +83,10 @@
   gap: clamp(28px, 5vw, 56px);
   width: min(1120px, calc(100vw - 80px));
   margin: 0 auto;
+}
+
+.ongoingRowMediaFirst {
+  flex-direction: row-reverse;
 }
 
 .ongoingText {
@@ -170,21 +175,7 @@
   height: 100%;
   object-fit: contain;
   object-position: center;
-}
-
-.projectMediaImageairflow {
-  transform: scale(0.84);
-}
-
-.projectMediaImagecominity,
-.projectMediaImageleWagon,
-.projectMediaImagespockee,
-.projectMediaImagesuiTooling {
-  transform: scale(0.9);
-}
-
-.projectMediaImagetooly {
-  transform: scale(1.04);
+  transform: scale(var(--project-media-scale, 1));
 }
 
 .projectMediaMeta {
@@ -192,7 +183,7 @@
   flex-direction: column;
   gap: 16px;
   margin-top: 20px;
-  align-items: anchor-center;
+  align-items: center;
 }
 
 .projectMediaTitle {
@@ -203,11 +194,13 @@
   font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.03em;
+  text-align: center;
 }
 
 .projectTechList {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
   margin: 0;
   padding: 0;
@@ -215,39 +208,35 @@
 }
 
 .projectTechBadge {
-  padding: 8px 12px;
-  border: 1px solid rgba(colors.$darkpurple, 0.12);
-  border-radius: 999px;
-  background-color: rgba(colors.$cardwhite, 0.94);
-  color: colors.$darkpurple;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  @include uiPrimitives.chip(
+    $padding-block: 8px,
+    $padding-inline: 12px,
+    $border-radius: 999px,
+    $background-color: rgba(colors.$cardwhite, 0.94),
+    $font-size: 0.8rem,
+    $letter-spacing: 0.06em,
+    $text-transform: uppercase
+  );
   line-height: 1;
-  text-transform: uppercase;
 }
 
 .projectActionLinks {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
 }
 
 .projectActionLink {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 0 18px;
+  @include uiPrimitives.actionButtonBase(
+    $min-height: 44px,
+    $padding-inline: 18px,
+    $font-size: 0.92rem,
+    $letter-spacing: 0.02em
+  );
   border: 1px solid rgba(colors.$darkpurple, 0.16);
-  border-radius: 999px;
   background-color: rgba(colors.$cardwhite, 0.9);
   color: colors.$darkpurple;
-  font-size: 0.92rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .projectActionLink:hover,
@@ -298,22 +287,16 @@
     width: min(100%, 460px);
     max-width: 460px;
   }
-
-  .projectMediaMeta,
-  .projectActionLinks,
-  .projectTechList {
-    justify-content: center;
-  }
-
-  .projectMediaTitle {
-    text-align: center;
-  }
 }
 
 @media only screen and (max-width: 820px) {
   .ongoingRow {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .ongoingRowMediaFirst {
+    flex-direction: column;
   }
 
   .ongoingText {

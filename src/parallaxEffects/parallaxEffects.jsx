@@ -73,36 +73,6 @@ export const parallaxDataHeader = [
   },
 ];
 
-export const parallaxDataProjectLeft = [
-  {
-    start: "self",
-    duration: 250,
-    easing: "linear",
-    properties: [
-      {
-        startValue: -0,
-        endValue: 0,
-        property: "translateX",
-      },
-    ],
-  },
-];
-
-export const parallaxDataProjectRight = [
-  {
-    start: "self",
-    duration: 250,
-    easing: "linear",
-    properties: [
-      {
-        startValue: 0,
-        endValue: 0,
-        property: "translateX",
-      },
-    ],
-  },
-];
-
 export const parallaxDataLN = [
   {
     start: "self",

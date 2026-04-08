@@ -1,28 +1,15 @@
 import ScrollParallax from "../animation/ScrollParallax";
-import { parallaxDataProjectImageLeft, parallaxDataProjectImageRight } from "../../parallaxEffects/parallaxEffects";
+import {
+  parallaxDataProjectImageLeft,
+  parallaxDataProjectImageRight,
+} from "../../parallaxEffects/parallaxEffects";
+
+const maxVisibleTechBadges = 6;
 
 const parallaxDataBySide = {
   left: parallaxDataProjectImageLeft,
   right: parallaxDataProjectImageRight,
 };
-
-const renderTechBadge = (technology) => (
-  <li className="projectTechBadge" key={technology}>
-    {technology}
-  </li>
-);
-
-const renderProjectActionLink = ({ href, isPrimary, label }) => (
-  <a
-    className={`projectActionLink ${isPrimary ? "projectActionPrimary" : "projectActionSecondary"}`}
-    href={href}
-    key={`${label}-${href}`}
-    rel="noreferrer"
-    target="_blank"
-  >
-    {label}
-  </a>
-);
 
 const getProjectActionLinks = ({ primaryHref, primaryLabel, sourceHref }) => {
   const primaryAction = {
@@ -32,7 +19,7 @@ const getProjectActionLinks = ({ primaryHref, primaryLabel, sourceHref }) => {
   };
 
   if (!sourceHref || sourceHref === primaryHref) {
-    return [ primaryAction ];
+    return [primaryAction];
   }
 
   return [
@@ -45,26 +32,76 @@ const getProjectActionLinks = ({ primaryHref, primaryLabel, sourceHref }) => {
   ];
 };
 
+const getProjectActionLinkClassName = (isPrimary) => {
+  if (isPrimary) {
+    return "projectActionLink projectActionPrimary";
+  }
+
+  return "projectActionLink";
+};
+
+const getProjectMediaImageStyle = (mediaScale) => {
+  if (!mediaScale || mediaScale === 1) {
+    return undefined;
+  }
+
+  return {
+    "--project-media-scale": mediaScale,
+  };
+};
+
+const getVisibleTechBadges = (techStack) =>
+  techStack.slice(0, maxVisibleTechBadges);
+
+const renderTechBadge = (technology) => (
+  <li className="projectTechBadge" key={technology}>
+    {technology}
+  </li>
+);
+
+const renderProjectActionLink = ({ href, isPrimary, label }) => (
+  <a
+    className={getProjectActionLinkClassName(isPrimary)}
+    href={href}
+    key={`${label}-${href}`}
+    rel="noreferrer"
+    target="_blank"
+  >
+    {label}
+  </a>
+);
+
 export default function ProjectImage({
   imageAlt,
+  mediaScale,
   primaryHref,
   primaryLabel,
   projectImage,
-  projectName,
   projectTitle,
   side,
   sourceHref,
   techStack,
 }) {
-  const projectActionLinks = getProjectActionLinks({ primaryHref, primaryLabel, sourceHref });
+  const projectActionLinks = getProjectActionLinks({
+    primaryHref,
+    primaryLabel,
+    sourceHref,
+  });
+  const projectMediaImageStyle = getProjectMediaImageStyle(mediaScale);
+  const visibleTechBadges = getVisibleTechBadges(techStack);
 
   return (
     <ScrollParallax
-      className={`parallaxImage${projectName} projectMediaCard`}
+      className="projectMediaCard"
       parallaxData={parallaxDataBySide[side]}
     >
       <article>
-        <a className="projectMediaFrameLink" href={primaryHref} rel="noreferrer" target="_blank">
+        <a
+          className="projectMediaFrameLink"
+          href={primaryHref}
+          rel="noreferrer"
+          target="_blank"
+        >
           <div className="projectMediaFrame">
             <div className="projectMediaFrameBar">
               <span className="projectMediaFrameDot" />
@@ -72,7 +109,12 @@ export default function ProjectImage({
               <span className="projectMediaFrameDot" />
             </div>
             <div className="projectMediaViewport">
-              <img alt={imageAlt} className={`projectMediaImage projectMediaImage${projectName}`} src={projectImage} />
+              <img
+                alt={imageAlt}
+                className="projectMediaImage"
+                src={projectImage}
+                style={projectMediaImageStyle}
+              />
             </div>
           </div>
         </a>
@@ -81,7 +123,7 @@ export default function ProjectImage({
           <h3 className="projectMediaTitle">{projectTitle}</h3>
 
           <ul className="projectTechList">
-            {techStack.map(renderTechBadge)}
+            {visibleTechBadges.map(renderTechBadge)}
           </ul>
 
           <div className="projectActionLinks">

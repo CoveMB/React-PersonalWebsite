@@ -27,6 +27,46 @@ const getSectionOffsets = ({
   top: 0,
 });
 
+const observeSectionOffsets = ({
+  cardsElement,
+  dispatch,
+  featuresElement,
+  ongoingElement,
+}) => {
+  const updateOffsets = () => {
+    dispatch(
+      "SET_REFS",
+      getSectionOffsets({
+        cardsElement,
+        featuresElement,
+        ongoingElement,
+      }),
+    );
+  };
+
+  updateOffsets();
+  window.addEventListener("resize", updateOffsets);
+
+  if (typeof ResizeObserver === "undefined") {
+    return () => {
+      window.removeEventListener("resize", updateOffsets);
+    };
+  }
+
+  const resizeObserver = new ResizeObserver(updateOffsets);
+
+  [cardsElement, featuresElement, ongoingElement]
+    .filter(Boolean)
+    .forEach((sectionElement) => {
+      resizeObserver.observe(sectionElement);
+    });
+
+  return () => {
+    window.removeEventListener("resize", updateOffsets);
+    resizeObserver.disconnect();
+  };
+};
+
 export default function App() {
   const cardsReference = useRef(null);
   const featuresReference = useRef(null);
@@ -34,23 +74,12 @@ export default function App() {
   const [, dispatch] = useStore(false);
 
   useEffect(() => {
-    const updateOffsets = () => {
-      dispatch(
-        "SET_REFS",
-        getSectionOffsets({
-          cardsElement: cardsReference.current,
-          featuresElement: featuresReference.current,
-          ongoingElement: ongoingReference.current,
-        }),
-      );
-    };
-
-    updateOffsets();
-    window.addEventListener("resize", updateOffsets);
-
-    return () => {
-      window.removeEventListener("resize", updateOffsets);
-    };
+    return observeSectionOffsets({
+      cardsElement: cardsReference.current,
+      dispatch,
+      featuresElement: featuresReference.current,
+      ongoingElement: ongoingReference.current,
+    });
   }, [dispatch]);
 
   return (

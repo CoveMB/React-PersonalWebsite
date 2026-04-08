@@ -1,4 +1,5 @@
 @use 'colors';
+@use 'uiPrimitives';
 
 .footer {
   width: 100%;
@@ -21,15 +22,6 @@
   min-width: 0;
 }
 
-.footerEyebrow {
-  margin: 0 0 12px 0;
-  color: colors.$lightpurple;
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
 .footerTitle {
   margin: 0;
   color: colors.$darkpurple;
@@ -38,22 +30,6 @@
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.03em;
-}
-
-.footerEmailLink {
-  display: inline-flex;
-  margin-top: 20px;
-  color: colors.$darkpurple;
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-decoration: none;
-}
-
-.footerEmailLink:hover,
-.footerEmailLink:focus-visible {
-  color: colors.$lightpurple;
-  text-decoration: none;
 }
 
 .footerConnect {
@@ -71,14 +47,11 @@
 }
 
 .footerMetaItem {
-  padding: 10px 14px;
-  border: 1px solid rgba(colors.$darkpurple, 0.12);
-  border-radius: 16px;
-  background-color: rgba(colors.$cardwhite, 0.92);
-  color: colors.$darkpurple;
-  font-size: 0.84rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  @include uiPrimitives.chip(
+    $padding-block: 10px,
+    $padding-inline: 14px,
+    $background-color: rgba(colors.$cardwhite, 0.92)
+  );
 }
 
 .footerActions {
@@ -94,27 +67,11 @@
   box-shadow: 0 18px 42px rgba(colors.$darkpurple, 0.08);
 }
 
-.footerActionGroup {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
 .footerActionLink {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 18px;
+  @include uiPrimitives.actionButtonBase();
   border: 1px solid rgba(colors.$darkpurple, 0.16);
-  border-radius: 999px;
   background-color: rgba(colors.$backgroundwhite, 0.9);
   color: colors.$darkpurple;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .footerActionPrimary {
@@ -166,10 +123,6 @@
   transform: translateY(-2px);
 }
 
-.footerLink {
-  color: colors.$darkpurple;
-}
-
 .footerBottom {
   width: min(1120px, calc(100vw - 48px));
   margin: 28px auto 0 auto;
@@ -212,10 +165,6 @@
   .footerActions {
     align-items: stretch;
     padding: 22px 18px;
-  }
-
-  .footerActionGroup {
-    flex-direction: column;
   }
 
   .footerActionLink {

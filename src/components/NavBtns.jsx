@@ -24,24 +24,24 @@ const navigationButtons = [
   },
 ];
 
-const getCurrentSection = ({ currentPosition, refsOffsets }) => {
+const sectionViewportRatio = 0.4;
+
+const getCurrentSection = ({ currentPosition, refsOffsets, viewportHeight }) => {
   if (!refsOffsets) {
     return "top";
   }
 
-  if (currentPosition > refsOffsets.ongoing - 400) {
-    return "ongoing";
-  }
+  const viewportCheckpoint = currentPosition + viewportHeight * sectionViewportRatio;
 
-  if (currentPosition > refsOffsets.features - 400) {
-    return "features";
-  }
+  return navigationButtons.reduce((currentSection, { id }) => {
+    const sectionOffset = refsOffsets[id] ?? 0;
 
-  if (currentPosition > refsOffsets.cards - 400) {
-    return "cards";
-  }
+    if (viewportCheckpoint >= sectionOffset) {
+      return id;
+    }
 
-  return "top";
+    return currentSection;
+  }, "top");
 };
 
 export default function NavBtns() {
@@ -52,6 +52,7 @@ export default function NavBtns() {
       const nextPosition = getCurrentSection({
         currentPosition: window.scrollY,
         refsOffsets: state.refsOffsets,
+        viewportHeight: window.innerHeight,
       });
 
       if (state.position !== nextPosition) {

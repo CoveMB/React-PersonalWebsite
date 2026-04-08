@@ -1,15 +1,14 @@
-import React from "react";
 import {
   resumeDownloadName,
   resumeFilePath,
-  socialLinks,
 } from "../../utils/profile";
+import SocialLinks from "../shared/SocialLinks";
 
 const doneImagePath = "/static/images/donesvg.svg";
 
 const focusAreas = [
   "Full-stack delivery",
-  "Processes improvement",
+  "Process improvement",
   "Developer tooling",
 ];
 
@@ -74,26 +73,6 @@ const renderMilestone = ({ label, organization }) => (
   </div>
 );
 
-const renderContactLink = ({
-  alt,
-  href,
-  imagePath,
-  rel,
-  target,
-  style = {},
-}) => (
-  <a
-    className="footerLink"
-    href={href}
-    key={href}
-    rel={rel}
-    target={target}
-    style={style}
-  >
-    <img className="svgSocialHeader" src={imagePath} alt={alt} />
-  </a>
-);
-
 const renderHeroActionLink = ({
   className,
   download,
@@ -130,8 +109,10 @@ const HeaderCardContent = () => (
       <h1 className="headerCardTitle">Cove Marquis-Bortoli</h1>
       <p className="headerCardSummary">
         I build secure product platforms and developer tooling across smart
-        contracts, backend systems, and modern frontend applications. Most
-        recently, I worked on blockchain tooling and product engineering at
+        contracts, backend systems, and modern frontend applications, with a
+        strong focus on process improvement and delivery quality. Most
+        recently, I worked on blockchain tooling and full-stack product
+        engineering at
         <strong> OpenZeppelin</strong>.
       </p>
       <div className="headerCardActions">
@@ -152,7 +133,10 @@ const HeaderCardContent = () => (
       <div className="headerCardBottomBlock">
         <p className="cardListCompetenceTitle headerCardActionTitle">Connect</p>
         <div className="social-icons-header">
-          {socialLinks.map(renderContactLink)}
+          <SocialLinks
+            imageClassName="svgSocialHeader"
+            linkClassName="headerSocialLink"
+          />
         </div>
       </div>
       <div className="headerCardBottomBlock headerCardResumeBlock">
