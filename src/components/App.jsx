@@ -104,10 +104,9 @@ export default function App() {
           <Projects />
         </div>
       </OpacityParallax>
-      {/* TODO replace with AI am I a good fit <div className="normalizedBackgroundWhite" ref={ongoingReference}>
-        <ParallaxTitle idElement="story" title="Speech me an email!" />
-        <Story />
-      </div> */}
+      <div className="normalizedBackgroundWhite" ref={ongoingReference}>
+        <ParallaxTitle idElement="story" title="What will be next?" />
+      </div>
       <Footer />
     </>
   );

@@ -18,18 +18,21 @@ const getProjectActionLinks = ({ primaryHref, primaryLabel, sourceHref }) => {
     label: primaryLabel,
   };
 
-  if (!sourceHref || sourceHref === primaryHref) {
+  if (!sourceHref) {
     return [primaryAction];
   }
 
-  return [
-    primaryAction,
-    {
-      href: sourceHref,
-      isPrimary: false,
-      label: "Source",
-    },
-  ];
+  const sourceAction = {
+    href: sourceHref,
+    isPrimary: false,
+    label: "Source",
+  };
+
+  if (!primaryHref) {
+    return [sourceAction];
+  }
+
+  return [primaryAction, sourceAction];
 };
 
 const getProjectActionLinkClassName = (isPrimary) => {
