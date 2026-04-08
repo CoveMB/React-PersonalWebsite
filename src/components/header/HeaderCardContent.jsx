@@ -4,9 +4,9 @@ import SocialLinks from "../shared/SocialLinks";
 const doneImagePath = "/static/images/donesvg.svg";
 
 const focusAreas = [
-  "Full-stack delivery",
+  "Product development",
   "Process improvement",
-  "Developer tooling",
+  "Developer experience",
 ];
 
 const milestoneItems = [
@@ -105,11 +105,10 @@ const HeaderCardContent = () => (
       </p>
       <h1 className="headerCardTitle">Cove Marquis-Bortoli</h1>
       <p className="headerCardSummary">
-        I build secure product applications and developer tooling across backend
-        systems, modern frontend, and smart contracts. With a strong focus on
-        product research and development, process improvement and delivery
-        quality. Most recently, I worked on blockchain tooling and full-stack
-        product engineering at
+        I build secure product applications and developer tooling across the
+        full-stack. With a strong focus on product research and development,
+        process improvement and delivery quality. Most recently, I worked on
+        blockchain tooling and full-stack product engineering at
         <strong> OpenZeppelin</strong>.
       </p>
       <div className="headerCardActions">
