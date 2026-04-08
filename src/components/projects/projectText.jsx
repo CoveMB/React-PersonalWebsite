@@ -39,14 +39,12 @@ export const defenderProjectText = (
     <strong className="blueTitle">full stack</strong>, from blockchain
     integration flows to backend services and product-facing UI.
     <br />
-    To improve
+    We focused on building features around{" "}
     <strong className="blueTitle">contract administration</strong>,{" "}
     <strong className="blueTitle">automated operations</strong> and{" "}
     <strong className="blueTitle">real-time monitoring</strong> so teams could
-    react quickly to on-chain events and reduce manual intervention.
-    <strong className="blueTitle">contract administration</strong>, automation,
-    monitoring, and workflows that help teams react to on-chain activity with
-    less manual intervention. I also contributed to the{" "}
+    react quickly to on-chain events and reduce manual intervention. I also
+    contributed to the{" "}
     <strong className="blueTitle">microservice architecture</strong> running on
     AWS and to features built around triggers, automation bots, and secure
     operational workflows.
@@ -67,11 +65,17 @@ export const astroLightProjectText = (
     testnet: users could buy a token, swap, stake, and participate in a simple
     governance flow that updated a UI element through on-chain decisions.
     <br />
+    It was designed as both a{" "}
+    <strong className="blueTitle">learning sandbox</strong> and a compact{" "}
+    <strong className="blueTitle">smart contract demo</strong>, making it easy
+    to walk people through wallets, contract calls, token flows, and state
+    changes in a single experience.
+    <br />
     It turned abstract concepts like{" "}
     <strong className="blueTitle">
       tokens, staking, governance, and smart contracts
     </strong>{" "}
-    into something people could actually use and understand.
+    into something people could actually use, demo, and understand.
   </p>
 );
 
@@ -92,10 +96,18 @@ export const aldoProjectText = (
     using EventBridge and Lambda functions, with the OMS acting as the
     coordination layer between multiple interconnected services.
     <br />
+    My work covered{" "}
+    <strong className="blueTitle">tested TypeScript services</strong>, AWS
+    integrations with{" "}
+    <strong className="blueTitle">DynamoDB, SNS, and SQS</strong>, and delivery
+    practices that made changes safer in a high-stakes commerce workflow.
+    <br />
     Alongside product work, I created a{" "}
     <strong className="blueTitle">CLI and IDE extension</strong> to streamline
     developer workflows and reduce the need to jump into the AWS console for
-    common operational tasks.
+    common operational tasks. I also helped with{" "}
+    <strong className="blueTitle">onboarding and team enablement</strong> so new
+    developers could ramp into the architecture and delivery flow faster.
   </p>
 );
 
