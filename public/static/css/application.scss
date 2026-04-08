@@ -9,7 +9,7 @@
 @use 'features';
 @use 'projects';
 @use 'text';
-@use 'speech';
+@use 'ai';
 @use 'trustSignals';
 @use 'footer';
 @use 'navBtn';
@@ -54,7 +54,7 @@ button {
   width: 100%;
   background-color: colors.$backgroundwhite;
   margin: -5.5vh 0 0 0;
-  padding: 60px 0 100px 0;
+  padding: 100px 0 100px 0;
   border: 1px 1px 1px 1px solid colors.$backgroundwhite;
 }
 

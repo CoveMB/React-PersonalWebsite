@@ -1,0 +1,277 @@
+@use 'colors';
+
+.aiPart {
+  width: 100%;
+  max-width: 760px;
+  min-width: 0;
+  margin: 0 auto;
+}
+
+.roleFitIntro {
+  margin-bottom: 24px;
+}
+
+.roleFitLead {
+  margin: 0 0 10px 0;
+  color: colors.$darkpurple;
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+}
+
+.roleFitMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: rgba(72, 72, 72, 0.84);
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+.roleFitBadge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(82, 2, 27, 0.1);
+  border-radius: 999px;
+  padding: 0.28rem 0.65rem;
+  background-color: rgba(82, 2, 27, 0.04);
+  color: colors.$darkpurple;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.roleFitForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.roleFitInputCard,
+.roleFitResultCard {
+  border: 1px solid rgba(82, 2, 27, 0.08);
+  border-radius: 24px;
+  background-color: colors.$cardwhite;
+  box-shadow: 0 10px 26px rgba(82, 2, 27, 0.06);
+}
+
+.roleFitInputCard {
+  padding: 24px;
+}
+
+.roleFitFieldHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.roleFitFieldLabel {
+  color: colors.$darkpurple;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.roleFitFieldHint {
+  margin: 8px 0 14px 0;
+  color: rgba(72, 72, 72, 0.78);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.roleFitCounter {
+  flex-shrink: 0;
+  color: rgba(72, 72, 72, 0.62);
+  font-size: 0.84rem;
+}
+
+.roleFitTextarea {
+  width: 100%;
+  min-height: 240px;
+  box-sizing: border-box;
+  padding: 18px 20px;
+  border: 1px solid rgba(82, 2, 27, 0.12);
+  border-radius: 18px;
+  background-color: #fff;
+  color: colors.$textgrey;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  resize: vertical;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.roleFitTextarea:focus {
+  outline: none;
+  border-color: rgba(82, 2, 27, 0.28);
+  box-shadow: 0 0 0 4px rgba(82, 2, 27, 0.06);
+}
+
+.roleFitTextarea::placeholder {
+  color: rgba(72, 72, 72, 0.46);
+}
+
+.roleFitStatusRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.roleFitStatusText {
+  flex: 1 1 320px;
+  min-width: 240px;
+  color: rgba(72, 72, 72, 0.82);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.roleFitActions {
+  margin-top: 16px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.aiButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0 1rem;
+  background-color: colors.$darkpurple;
+  color: colors.$backgroundwhite;
+  font-size: 0.96rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: background-color 0.16s ease, border-color 0.16s ease,
+    box-shadow 0.16s ease, opacity 0.16s ease;
+}
+
+.aiButton:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.roleFitSecondaryButton {
+  background-color: transparent;
+  border-color: rgba(82, 2, 27, 0.12);
+  color: colors.$darkpurple;
+}
+
+.roleFitPrimaryButton {
+  min-width: 168px;
+  box-shadow: 0 8px 18px rgba(82, 2, 27, 0.14);
+}
+
+.roleFitButtonContent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.roleFitButtonContent .sk-cube-grid {
+  width: 16px;
+  height: 16px;
+}
+
+.roleFitButtonContent .sk-cube-grid .sk-cube {
+  background-color: colors.$backgroundwhite;
+}
+
+.roleFitError {
+  border: 1px solid rgba(189, 46, 75, 0.14);
+  border-radius: 16px;
+  padding: 12px 14px;
+  background-color: rgba(189, 46, 75, 0.06);
+  color: #8f2439;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.roleFitResultCard {
+  margin-top: 24px;
+  padding: 24px;
+}
+
+.roleFitResultEyebrow {
+  margin: 0 0 12px 0;
+  color: rgba(82, 2, 27, 0.7);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.roleFitOutput {
+  margin: 0;
+  color: colors.$textgrey;
+  white-space: pre-wrap;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.roleFitFooter {
+  margin-top: 16px;
+}
+
+.roleFitFooterText,
+.roleFitFooterMeta {
+  margin: 5px 8px 0 8px;
+  color: rgba(72, 72, 72, 0.84);
+  line-height: 1.65;
+}
+
+.roleFitFooterMeta {
+  margin-top: 4px;
+  font-size: 0.88rem;
+}
+
+.roleFitContactLink {
+  color: colors.$darkpurple;
+  font-weight: 700;
+}
+
+@media only screen and (max-width: 640px) {
+  .roleFitInputCard,
+  .roleFitResultCard {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .roleFitFieldHeader,
+  .roleFitStatusRow {
+    align-items: stretch;
+  }
+
+  .roleFitFieldHeader,
+  .roleFitActions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .roleFitActions {
+    width: 100%;
+  }
+
+  .roleFitActions .aiButton {
+    width: 100%;
+  }
+
+  .roleFitTextarea {
+    min-height: 220px;
+  }
+}

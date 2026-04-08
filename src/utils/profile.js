@@ -4,6 +4,10 @@ const githubProfileUrl = "https://github.com/CoveMB";
 const linkedinProfileUrl =
   "https://www.linkedin.com/in/cove-marquis-eth/?locale=en_US";
 const instagramProfileUrl = "https://www.instagram.com/cove.suchness/?hl=en";
+export const profileName = "Cove Marquis-Bortoli";
+export const profileHeadline = "Senior full-stack blockchain developer";
+export const profileSummary =
+  "I build secure product applications and developer tooling across the full-stack. With a strong focus on product research and development, process improvement and delivery quality. Most recently, I worked on blockchain tooling and full-stack product engineering at OpenZeppelin.";
 export const profileLocation = "Montreal, Canada";
 export const profileTimezone = "Eastern Time (America/Toronto)";
 export const profileAvailability = "Open to selected opportunities";
@@ -41,6 +45,55 @@ export const socialLinks = [
     imagePath: "/static/images/instagram.svg",
     rel: "noopener noreferrer",
     target: "_blank",
+  },
+];
+
+export const focusAreas = [
+  "Product development",
+  "Process improvement",
+  "Developer experience",
+];
+
+export const milestoneItems = [
+  {
+    label: "Senior Full Stack Blockchain Developer",
+    organization: "OpenZeppelin",
+  },
+  {
+    label: "Professional Scrum Master",
+    organization: "PSMI",
+  },
+  {
+    label: "Tech Mentor",
+    organization: "QueerTech Montreal",
+  },
+  {
+    label: "Lead Full Stack Developer",
+    organization: "Skeepers",
+  },
+  {
+    label: "Product Ownership Bootcamp",
+    organization: "Linky",
+  },
+  {
+    label: "Montreal cohort Tech Track",
+    organization: "Next AI",
+  },
+  {
+    label: "Entrepreneur in Acceleration",
+    organization: "Centech",
+  },
+  {
+    label: "CTO & Co-founder",
+    organization: "VizzMD",
+  },
+  {
+    label: "Full Stack Teacher and Mentor",
+    organization: "Le Wagon",
+  },
+  {
+    label: "Marketing and Data Pipelines",
+    organization: "LCI Education",
   },
 ];
 

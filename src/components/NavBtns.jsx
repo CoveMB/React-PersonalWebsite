@@ -18,9 +18,9 @@ const navigationButtons = [
     label: "Projects",
   },
   {
-    ariaLabel: "Go to email section",
+    ariaLabel: "Go to role fit section",
     id: "ongoing",
-    label: "Contact",
+    label: "Role Fit",
   },
 ];
 

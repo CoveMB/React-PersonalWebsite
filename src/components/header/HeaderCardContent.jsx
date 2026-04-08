@@ -1,56 +1,15 @@
-import { resumeDownloadName, resumeFilePath } from "../../utils/profile";
+import {
+  focusAreas,
+  milestoneItems,
+  profileHeadline,
+  profileName,
+  profileSummary,
+  resumeDownloadName,
+  resumeFilePath,
+} from "../../utils/profile";
 import SocialLinks from "../shared/SocialLinks";
 
 const doneImagePath = "/static/images/donesvg.svg";
-
-const focusAreas = [
-  "Product development",
-  "Process improvement",
-  "Developer experience",
-];
-
-const milestoneItems = [
-  {
-    label: "Senior Full Stack Blockchain Developer",
-    organization: "OpenZeppelin",
-  },
-  {
-    label: "Professional Scrum Master",
-    organization: "PSMI",
-  },
-  {
-    label: "Tech Mentor",
-    organization: "QueerTech Montreal",
-  },
-  {
-    label: "Lead Full Stack Developer",
-    organization: "Skeepers",
-  },
-  {
-    label: "Product Ownership Bootcamp",
-    organization: "Linky",
-  },
-  {
-    label: "Montreal cohort Tech Track",
-    organization: "Next AI",
-  },
-  {
-    label: "Entrepreneur in Acceleration",
-    organization: "Centech",
-  },
-  {
-    label: "CTO & Co-founder",
-    organization: "VizzMD",
-  },
-  {
-    label: "Full Stack Teacher and Mentor",
-    organization: "Le Wagon",
-  },
-  {
-    label: "Marketing and Data Pipelines",
-    organization: "LCI Education",
-  },
-];
 
 const heroActionLinks = [
   {
@@ -100,17 +59,9 @@ const renderFocusArea = (focusArea) => (
 const HeaderCardContent = () => (
   <>
     <div className="headerCardText">
-      <p className="card-header-welcome">
-        Senior full-stack blockchain developer
-      </p>
-      <h1 className="headerCardTitle">Cove Marquis-Bortoli</h1>
-      <p className="headerCardSummary">
-        I build secure product applications and developer tooling across the
-        full-stack. With a strong focus on product research and development,
-        process improvement and delivery quality. Most recently, I worked on
-        blockchain tooling and full-stack product engineering at
-        <strong> OpenZeppelin</strong>.
-      </p>
+      <p className="card-header-welcome">{profileHeadline}</p>
+      <h1 className="headerCardTitle">{profileName}</h1>
+      <p className="headerCardSummary">{profileSummary}</p>
       <div className="headerCardActions">
         {heroActionLinks.map(renderHeroActionLink)}
       </div>

@@ -8,7 +8,7 @@ import NavBtns from "./NavBtns";
 import ParallaxTitle from "./ParalaxTitle";
 import Projects from "./projects/Projects";
 import QualificationContainer from "./qualifications/QualificationContainer";
-import Story from "./speech/Speech";
+import RoleFitSection from "./ai/AI";
 import TrustSignals from "./trust/TrustSignals";
 import NavBar from "./navbar/NavBar";
 import { initializeStores } from "../store/initializeStores";
@@ -98,14 +98,15 @@ export default function App() {
           <QualificationContainer />
         </div>
       </OpacityParallax>
-      <OpacityParallax nextId="#story">
+      <OpacityParallax nextId="#role-fit">
         <div className="normalizedBackgroundWhite" ref={featuresReference}>
           <ParallaxTitle idElement="projects" title="Some Of My Projects" />
           <Projects />
         </div>
       </OpacityParallax>
       <div className="normalizedBackgroundWhite" ref={ongoingReference}>
-        <ParallaxTitle idElement="story" title="What will be next?" />
+        <ParallaxTitle idElement="role-fit" title="Am I a good fit for your role?" />
+        <RoleFitSection />
       </div>
       <Footer />
     </>
