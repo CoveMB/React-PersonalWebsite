@@ -1,7 +1,4 @@
-import {
-  resumeDownloadName,
-  resumeFilePath,
-} from "../../utils/profile";
+import { resumeDownloadName, resumeFilePath } from "../../utils/profile";
 import SocialLinks from "../shared/SocialLinks";
 
 const doneImagePath = "/static/images/donesvg.svg";
@@ -18,10 +15,6 @@ const milestoneItems = [
     organization: "OpenZeppelin",
   },
   {
-    label: "Certified Ethereum Developer",
-    organization: "Blockchain Council",
-  },
-  {
     label: "Professional Scrum Master",
     organization: "PSMI",
   },
@@ -31,11 +24,11 @@ const milestoneItems = [
   },
   {
     label: "Lead Full Stack Developer",
-    organization: "Spockee",
+    organization: "Skeepers",
   },
   {
-    label: "Lead Full Stack Developer",
-    organization: "Tooly",
+    label: "Product Ownership Bootcamp",
+    organization: "Linky",
   },
   {
     label: "Montreal cohort Tech Track",
@@ -52,6 +45,10 @@ const milestoneItems = [
   {
     label: "Full Stack Teacher and Mentor",
     organization: "Le Wagon",
+  },
+  {
+    label: "Marketing and Data Pipelines",
+    organization: "LCI Education",
   },
 ];
 
@@ -108,11 +105,11 @@ const HeaderCardContent = () => (
       </p>
       <h1 className="headerCardTitle">Cove Marquis-Bortoli</h1>
       <p className="headerCardSummary">
-        I build secure product platforms and developer tooling across smart
-        contracts, backend systems, and modern frontend applications, with a
-        strong focus on process improvement and delivery quality. Most
-        recently, I worked on blockchain tooling and full-stack product
-        engineering at
+        I build secure product applications and developer tooling across backend
+        systems, modern frontend, and smart contracts. With a strong focus on
+        product research and development, process improvement and delivery
+        quality. Most recently, I worked on blockchain tooling and full-stack
+        product engineering at
         <strong> OpenZeppelin</strong>.
       </p>
       <div className="headerCardActions">

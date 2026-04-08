@@ -13,7 +13,7 @@ const buildProjectText = ({ heading, paragraphs }) => (
   <p className="cardText ongoingText">
     {emphasize(heading)}
     {paragraphs.map((paragraph, index) =>
-      renderProjectParagraph(heading, paragraph, index)
+      renderProjectParagraph(heading, paragraph, index),
     )}
   </p>
 );
@@ -22,15 +22,15 @@ export const suiToolingProjectText = buildProjectText({
   heading: "Building the tooling layer for a Sui marketplace dApp:",
   paragraphs: [
     <>
-      At OpenZeppelin, I built a {emphasize("full-stack marketplace example")}
-      {" "}and the surrounding {emphasize("tooling layer")} to make Move
-      contract development easier across environments.
+      At OpenZeppelin, I built a {emphasize("full-stack marketplace example")}{" "}
+      and the surrounding {emphasize("tooling layer")} to make Move contract
+      development easier across environments.
     </>,
     <>
-      The work covered {emphasize("contract publishing")}, deployment
-      artifacts, {emphasize("network-aware configuration")}, transaction
-      helpers, and an {emphasize("integration test harness")} that could
-      deploy contracts, seed state, and validate end-to-end flows.
+      The work covered {emphasize("contract publishing")}, deployment artifacts,{" "}
+      {emphasize("network-aware configuration")}, transaction helpers, and an{" "}
+      {emphasize("integration test harness")} that could deploy contracts, seed
+      state, and validate end-to-end flows.
     </>,
     <>
       The result was a stronger {emphasize("developer experience")} and a more
@@ -54,9 +54,9 @@ export const defenderProjectText = buildProjectText({
       application layer.
     </>,
     <>
-      I shipped features around {emphasize("contract administration")},
-      {" "}{emphasize("automation")}, and {emphasize("monitoring")} so teams
-      could react to on-chain events faster and reduce manual operational work.
+      I shipped features around {emphasize("contract administration")},{" "}
+      {emphasize("automation")}, and {emphasize("monitoring")} so teams could
+      react to on-chain events faster and reduce manual operational work.
     </>,
   ],
 });
@@ -75,10 +75,10 @@ export const astroLightProjectText = buildProjectText({
       decisions.
     </>,
     <>
-      It was designed as both a {emphasize("learning sandbox")} and a compact
-      {" "}{emphasize("smart contract demo")}, turning wallets, contract
-      calls, token flows, and governance into something people could actually
-      use and understand.
+      It was designed as both a {emphasize("learning sandbox")} and a compact{" "}
+      {emphasize("smart contract demo")}, turning wallets, contract calls, token
+      flows, and governance into something people could actually use and
+      understand.
     </>,
   ],
 });
@@ -106,11 +106,11 @@ export const aldoProjectText = buildProjectText({
   ],
 });
 
-export const spockeeProjectText = buildProjectText({
+export const skeepersProjectText = buildProjectText({
   heading: "Scaling a live-shopping product beyond MVP:",
   paragraphs: [
     <>
-      I joined Spockee when the product had traction, but the engineering
+      I joined Skeepers when the product had traction, but the engineering
       foundations needed to catch up with the ambition of the business.
     </>,
     <>
@@ -119,9 +119,10 @@ export const spockeeProjectText = buildProjectText({
       managed AWS infrastructure through {emphasize("Terraform")}.
     </>,
     <>
-      I also introduced {emphasize("CI/CD pipelines")}, {emphasize("CLI tooling")},
-      and more structured {emphasize("Scrum practices")} to help the team ship
-      more reliably and grow into stronger delivery habits.
+      I also introduced {emphasize("CI/CD pipelines")},{" "}
+      {emphasize("CLI tooling")}, and more structured{" "}
+      {emphasize("Scrum practices")} to help the team ship more reliably and
+      grow into stronger delivery habits.
     </>,
   ],
 });
@@ -157,8 +158,8 @@ export const cominityProjectText = buildProjectText({
     <>
       I set up {emphasize("CI/CD pipelines")}, containerized applications with
       {emphasize("Docker")}, used {emphasize("Kubernetes")} where orchestration
-      made sense, and applied {emphasize("serverless patterns")} with AWS
-      Lambda when they were the better fit.
+      made sense, and applied {emphasize("serverless patterns")} with AWS Lambda
+      when they were the better fit.
     </>,
     <>
       The work was as much about {emphasize("technical execution")} as it was
@@ -201,9 +202,9 @@ export const leWagonProjectText = buildProjectText({
       learning styles.
     </>,
     <>
-      That experience strengthened my {emphasize("communication")},
-      {" "}{emphasize("mentorship")}, and {emphasize("public speaking")} skills
-      while keeping me close to the fundamentals of product development.
+      That experience strengthened my {emphasize("communication")},{" "}
+      {emphasize("mentorship")}, and {emphasize("public speaking")} skills while
+      keeping me close to the fundamentals of product development.
     </>,
   ],
 });

@@ -50,7 +50,7 @@ Languages: English, French
 *   In charge of onboarding and training process for new developers to the team
 *   Create a CLI and IDE extension to smooth out development
 
-**Full Stack Developer and Scrum Master - Spockee | Montreal, Canada |** **2021**
+**Full Stack Developer and Scrum Master - Skeepers | Montreal, Canada |** **2021**
 
 *   Develop REST and Websockets with Koa, Express applications with Javascript and Typescript
 *   Orchestrate Docker containers

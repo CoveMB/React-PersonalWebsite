@@ -7,7 +7,7 @@ import {
   defenderProjectText,
   leWagonProjectText,
   shareInProjectText,
-  spockeeProjectText,
+  skeepersProjectText,
   suiToolingProjectText,
   toolyProjectText,
 } from "./projectText";
@@ -140,9 +140,9 @@ export const projectCatalog = [
     title: "Aldo OMS Modernization",
   }),
   createProject({
-    id: "spockee",
-    image: "/static/images/spockee.svg",
-    imageAlt: "Spockee platform preview",
+    id: "skeepers",
+    image: "/static/images/skeepers.svg",
+    imageAlt: "Skeepers platform preview",
     mediaScale: 0.9,
     primaryHref: "https://skeepers.io/en/live-shopping/",
     primaryLabel: "Visit site",
@@ -161,8 +161,8 @@ export const projectCatalog = [
       "Scrum",
       "Leadership",
     ],
-    text: spockeeProjectText,
-    title: "Spockee",
+    text: skeepersProjectText,
+    title: "Skeepers",
   }),
   createProject({
     id: "tooly",

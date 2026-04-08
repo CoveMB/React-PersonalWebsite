@@ -3,8 +3,7 @@ export const emailLink = `mailto:${profileEmailAddress}`;
 const githubProfileUrl = "https://github.com/CoveMB";
 const linkedinProfileUrl =
   "https://www.linkedin.com/in/cove-marquis-eth/?locale=en_US";
-const instagramProfileUrl =
-  "https://www.instagram.com/cove.suchness/?hl=en";
+const instagramProfileUrl = "https://www.instagram.com/cove.suchness/?hl=en";
 export const profileLocation = "Montreal, Canada";
 export const profileTimezone = "Eastern Time (America/Toronto)";
 export const profileAvailability = "Open to selected opportunities";
@@ -48,7 +47,14 @@ export const socialLinks = [
 export const trustSignalGroups = [
   {
     label: "Worked with",
-    items: ["OpenZeppelin", "Aldo Group", "Next AI", "Centech", "Le Wagon"],
+    items: [
+      "OpenZeppelin",
+      "Aldo Group",
+      "Next AI",
+      "Centech",
+      "Le Wagon",
+      "LCI Education",
+    ],
   },
   {
     label: "Learned from",
