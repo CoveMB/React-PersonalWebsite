@@ -219,7 +219,6 @@ export const projectCatalog = [
       "Rails",
       "React",
       "MVP",
-      "CTO",
       "Product",
       "CRM",
       "Healthcare",
