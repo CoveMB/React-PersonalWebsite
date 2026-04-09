@@ -75,13 +75,15 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  margin: 0 10px;
 }
 
 .roleFitFieldHint {
-  margin: 8px 0 14px 0;
+  margin: 8px 0 14px 10px;
   color: rgba(72, 72, 72, 0.78);
   font-size: 0.94rem;
   line-height: 1.55;
+  margin: 0 10px;
 }
 
 .roleFitCounter {
@@ -133,7 +135,7 @@
 }
 
 .roleFitActions {
-  margin-top: 16px;
+  margin: 10px 16px 10px 0;
   width: 100%;
   display: flex;
   align-items: center;
