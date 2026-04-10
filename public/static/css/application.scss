@@ -55,7 +55,17 @@ button {
   background-color: colors.$backgroundwhite;
   margin: -5.5vh 0 0 0;
   padding: 100px 0 100px 0;
-  border: 1px 1px 1px 1px solid colors.$backgroundwhite;
+  // border: 1px 1px 1px 1px solid colors.$backgroundwhite;
+}
+
+.normalizedBackgroundToWhite {
+  background-image:
+    linear-gradient(
+      180deg,
+      colors.$backgroundwhite 0%,
+      colors.$backgroundwhite calc(100% - 88px),
+      colors.$cardwhite 100%
+    );
 }
 
 .normalizedBackgroundWhite {

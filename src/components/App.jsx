@@ -89,7 +89,7 @@ export default function App() {
       <Header />
       <OpacityParallax nextId="#projects">
         <div
-          className="normalizedBackground"
+          className="normalizedBackground normalizedBackgroundToWhite"
           id="cardsDiv"
           ref={cardsReference}
         >

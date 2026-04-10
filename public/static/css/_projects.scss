@@ -3,7 +3,7 @@
 
 .ongoingIntro {
   width: 70%;
-  margin: 60px auto 60px auto;
+  margin: 60px auto 0 auto;
 }
 
 .projectsSectionIntro {
@@ -73,14 +73,14 @@
 .ongoingSeparator {
   width: 10%;
   border-top: 1.5px solid colors.$darkpurple;
-  margin: 50px auto;
+  margin: 100px auto;
 }
 
 .ongoingRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(28px, 5vw, 56px);
+  gap: clamp(28px, 5vw, 60px);
   width: min(1120px, calc(100vw - 80px));
   margin: 0 auto;
 }

@@ -161,11 +161,11 @@ export const parallaxDataMockup = [
 export const parallaxDataProjectImageRight = [
   {
     start: "self",
-    duration: 350,
+    duration: 650,
     easing: "linear",
     properties: [
       {
-        startValue: 400,
+        startValue: 600,
         endValue: 0,
         property: "translateX",
       },
@@ -176,11 +176,11 @@ export const parallaxDataProjectImageRight = [
 export const parallaxDataProjectImageLeft = [
   {
     start: "self",
-    duration: 350,
+    duration: 650,
     easing: "linear",
     properties: [
       {
-        startValue: -400,
+        startValue: -600,
         endValue: 0,
         property: "translateX",
       },
