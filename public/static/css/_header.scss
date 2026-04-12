@@ -2,10 +2,16 @@
 @use 'uiPrimitives';
 
 .headerSection {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
   padding: clamp(48px, 6vw, 72px) 0 clamp(72px, 9vw, 100px) 0;
   background-color: colors.$cardwhite;
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 .headerBackdrop {
@@ -15,9 +21,9 @@
   background:
     linear-gradient(
       180deg,
-      rgba(17, 27, 44, 0.58) 0%,
-      rgba(32, 48, 74, 0.36) 24%,
-      rgba(colors.$backgroundwhite, 0.74) 70%,
+      rgba(17, 27, 44, 0.58) 15%,
+      rgba(32, 48, 74, 0.36) 40%,
+      rgba(colors.$backgroundwhite, 0.74) 80%,
       rgba(colors.$cardwhite, 0.96) 100%
     ),
     url("/static/images/header-min.jpg");
@@ -32,11 +38,14 @@
   position: relative;
   z-index: 1;
   @include uiPrimitives.responsiveContainer(1240px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0 auto;
 }
 
 @media only screen and (max-width: 870px) {
   .headerSection {
-    padding: 32px 0 52px 0;
+    padding: 24px 0 32px 0;
   }
 }

@@ -84,7 +84,6 @@ export default function Project({
 
   return (
     <>
-      <hr className="ongoingSeparator" />
       <article className="projectCaseStudy">
         <div className="projectCaseStudyContent">
           <header className="projectCaseStudyHeader">
@@ -131,6 +130,7 @@ export default function Project({
           />
         </div>
       </article>
+      <hr className="ongoingSeparator" />
     </>
   );
 }

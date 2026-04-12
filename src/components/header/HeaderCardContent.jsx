@@ -1,5 +1,4 @@
 import {
-  focusAreas,
   heroProofItems,
   profileHeadline,
   profileName,
@@ -7,22 +6,49 @@ import {
   resumeDownloadName,
   resumeFilePath,
 } from "../../utils/profile";
+import { getSiteSection } from "../../content/siteContent";
 import SocialLinks from "../shared/SocialLinks";
 import Avatar from "./Avatar";
 
-const heroActionLinks = [
-  {
-    className: "headerCardPrimaryLink",
-    download: resumeDownloadName,
-    href: resumeFilePath,
-    label: "Download resume",
-  },
-  {
+const buildSectionJumpLink = ({ label, sectionId }) => {
+  const sectionElementId = getSiteSection(sectionId)?.elementId;
+
+  if (!sectionElementId) {
+    return null;
+  }
+
+  return {
     className: "headerCardSecondaryLink",
-    href: "#projects",
-    label: "View selected work",
-  },
-];
+    href: `#${sectionElementId}`,
+    label,
+  };
+};
+
+const jumpInLinks = [
+  buildSectionJumpLink({
+    label: "Work Style",
+    sectionId: "cards",
+  }),
+  buildSectionJumpLink({
+    label: "Career Path",
+    sectionId: "chronology",
+  }),
+  buildSectionJumpLink({
+    label: "Projects",
+    sectionId: "features",
+  }),
+  buildSectionJumpLink({
+    label: "Role-Fit AI",
+    sectionId: "ongoing",
+  }),
+].filter(Boolean);
+
+const resumeActionLink = {
+  className: "headerCardPrimaryLink",
+  download: resumeDownloadName,
+  href: resumeFilePath,
+  label: "Download resume",
+};
 
 const renderHeroActionLink = ({
   className,
@@ -45,16 +71,9 @@ const renderHeroActionLink = ({
   </a>
 );
 
-const renderFocusArea = (focusArea) => (
-  <li className="headerCardFocusItem" key={focusArea}>
-    {focusArea}
-  </li>
-);
-
-const renderHeroProofItem = ({ category, summary, title }) => (
+const renderHeroProofItem = ({ category, summary }) => (
   <li className="headerCardProofItem" key={category}>
     <p className="headerCardProofCategory">{category}</p>
-    <p className="headerCardProofTitle">{title}</p>
     <p className="headerCardProofSummary">{summary}</p>
   </li>
 );
@@ -67,36 +86,35 @@ const HeaderCardContent = () => (
       </div>
 
       <div className="headerCardSidebarBlock">
-        <p className="cardListCompetenceTitle headerCardActionTitle">Connect</p>
+        {/* <p className="cardListCompetenceTitle headerCardActionTitle">Connect</p> */}
         <div className="social-icons-header">
           <SocialLinks
             imageClassName="svgSocialHeader"
             linkClassName="headerSocialLink"
           />
         </div>
+        <div className="headerCardJumpList">
+          {renderHeroActionLink(resumeActionLink)}
+        </div>
       </div>
 
-      <div className="headerCardSidebarBlock">
-        <p className="cardListCompetenceTitle headerCardActionTitle">Focus</p>
-        <ul className="headerCardFocusList">
-          {focusAreas.map(renderFocusArea)}
-        </ul>
-      </div>
+      {/* <div className="headerCardSidebarBlock">
+        <p className="cardListCompetenceTitle headerCardActionTitle">Jump In</p>
+        <div className="headerCardJumpList">
+          {jumpInLinks.map(renderHeroActionLink)}
+        </div>
+      </div> */}
     </aside>
 
     <div className="headerCardMain">
-      <div className="headerCardIntro">
+      {/* <div className="headerCardIntro"> */}
         <p className="card-header-welcome">{profileHeadline}</p>
         <h1 className="headerCardTitle">{profileName}</h1>
         <p className="headerCardSummary">{profileSummary}</p>
-      </div>
-
-      <div className="headerCardActions">
-        {heroActionLinks.map(renderHeroActionLink)}
-      </div>
+      {/* </div> */}
     </div>
 
-    <section
+    <div
       aria-labelledby="header-card-proof-title"
       className="headerCardProofPanel"
     >
@@ -104,12 +122,12 @@ const HeaderCardContent = () => (
         className="cardListCompetenceTitle headerCardSectionTitle"
         id="header-card-proof-title"
       >
-        Selected work
+        Expertise
       </p>
       <ul className="headerCardProofList">
         {heroProofItems.map(renderHeroProofItem)}
       </ul>
-    </section>
+    </div>
   </>
 );
 

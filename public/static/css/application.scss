@@ -33,6 +33,10 @@ select {
   font-family: inherit;
 }
 
+a {
+  text-align: center;
+}
+
 button {
   cursor: pointer;
   appearance: none;
@@ -55,7 +59,6 @@ button {
   background-color: colors.$backgroundwhite;
   margin: -5.5vh 0 0 0;
   padding: 100px 0 100px 0;
-  // border: 1px 1px 1px 1px solid colors.$backgroundwhite;
 }
 
 .normalizedBackgroundToWhite {

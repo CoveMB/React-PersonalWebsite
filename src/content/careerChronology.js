@@ -16,7 +16,7 @@ const createCareerChronologyItem = ({
 
 export const careerChronologySectionContent = {
   summary:
-    "A dated path through roles, certifications, and education from the resume.",
+    "A dated path through roles, certifications, and education.",
 };
 
 export const careerChronologyItems = [

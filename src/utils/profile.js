@@ -4,10 +4,10 @@ const githubProfileUrl = "https://github.com/CoveMB";
 const linkedinProfileUrl =
   "https://www.linkedin.com/in/cove-marquis-eth/?locale=en_US";
 const instagramProfileUrl = "https://www.instagram.com/cove.suchness/?hl=en";
-export const profileName = "Cove Marquis-Bortoli";
+export const profileName = "Cove Marquis";
 export const profileHeadline = "Senior full-stack blockchain developer";
 export const profileSummary =
-  "I build secure product applications and developer tooling across the full-stack. With a strong focus on product research and development, process improvement and delivery quality. Most recently, I worked on blockchain tooling and full-stack product engineering at OpenZeppelin.";
+  "I build secure product applications and tooling across the full-stack. With a strong focus on product research and development and delivery quality. I value team collaboration and process improvement. Most recently, I worked on blockchain tooling and full-stack product engineering at OpenZeppelin.";
 export const profileLocation = "Montreal, Canada";
 export const profileTimezone = "Eastern Time (America/Toronto)";
 export const profileAvailability = "Open to selected opportunities";
@@ -23,7 +23,6 @@ export const socialLinks = [
     href: emailLink,
     imagePath: "/static/images/email.svg",
     target: "_top",
-    style: { marginTop: "5px" },
   },
   {
     alt: "LinkedIn Icon",
@@ -51,6 +50,7 @@ export const socialLinks = [
 export const focusAreas = [
   "Product development",
   "Process improvement",
+  "Team support",
   "Developer experience",
 ];
 
@@ -68,20 +68,17 @@ export const heroProofItems = [
   createHeroProofItem({
     category: "Engineering",
     summary:
-      "Built Sui tooling, contract operations flows, AWS-backed services, and CI/CD pipelines for production delivery.",
-    title: "OpenZeppelin and Aldo",
+      "Built full-stack applications on AWS-backed services, and CI/CD pipelines."
   }),
   createHeroProofItem({
     category: "Product",
     summary:
-      "Led architecture, MVP scope, and product-fit decisions while shipping full-stack applications close to business needs.",
-    title: "Tooly and VizzMD",
+      "Led architecture, MVP scope, user research, and product-market fit decisions.",
   }),
   createHeroProofItem({
-    category: "Leadership",
+    category: "Team",
     summary:
       "Owned onboarding, facilitated Scrum, mentored developers, and improved daily workflows across delivery teams.",
-    title: "Aldo, Skeepers, and Le Wagon",
   }),
 ];
 

@@ -3,11 +3,11 @@
 
 .header-card {
   box-sizing: border-box;
-  display: grid;
-  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr) minmax(280px, 320px);
-  gap: clamp(24px, 3vw, 40px);
+  display: flex;
+  justify-content: center;
+  gap: clamp(24px, 4vw, 56px);
   align-items: stretch;
-  width: 100%;
+  width: 85%;
   margin: 0;
   padding: clamp(28px, 4vw, 42px);
   border: 1px solid rgba(colors.$darkpurple, 0.1);
@@ -24,16 +24,21 @@
 .headerCardMain,
 .headerCardProofPanel {
   min-width: 0;
+  width: auto;
 }
 
 .headerCardSidebar {
+  --header-sidebar-content-width: min(100%, 176px);
+  flex: 0 0 176px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 30px;
+  align-items: center;
+ justify-content: space-between;
 }
 
 .headerCardAvatarFrame {
-  width: min(100%, 176px);
+  width: var(--header-sidebar-content-width);
 }
 
 .headerCardSidebarBlock,
@@ -43,11 +48,15 @@
 }
 
 .headerCardSidebarBlock {
-  gap: 14px;
+  gap: 30px;
+  width: var(--header-sidebar-content-width);
+  align-items: center;
 }
 
 .headerCardMain {
-  justify-content: center;
+  flex: 1 1 0;
+  max-width: 36rem;
+   justify-content: space-between;
   gap: 24px;
 }
 
@@ -92,20 +101,13 @@
   text-wrap: pretty;
 }
 
-.headerCardActions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 14px;
-}
-
 .headerCardPrimaryLink,
 .headerCardSecondaryLink {
   box-sizing: border-box;
   @include uiPrimitives.actionButtonBase(
     $min-height: 52px,
     $padding-inline: 24px,
-    $border-radius: 999px,
+    $border-radius: 16px,
     $font-size: 0.96rem,
     $font-weight: 700,
     $letter-spacing: 0.02em
@@ -171,15 +173,19 @@
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.12em;
-  text-align: left;
+  text-align: center;
   text-transform: uppercase;
 }
 
 .social-icons-header {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 52px));
+  grid-template-columns: repeat(2, 52px);
   gap: 12px;
-  justify-content: flex-start;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .headerSocialLink {
@@ -205,32 +211,24 @@
 
 .svgSocialHeader {
   width: 20px;
+  height: 20px;
+  display: block;
 }
 
-.headerCardFocusList {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+.headerCardJumpList {
+  display: grid;
   gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  width: 80%;
 }
 
-.headerCardFocusItem {
-  @include uiPrimitives.chip(
-    $padding-block: 8px,
-    $padding-inline: 14px,
-    $border-radius: 999px,
-    $background-color: rgba(colors.$cardwhite, 0.82),
-    $font-size: 0.74rem,
-    $font-weight: 700,
-    $letter-spacing: 0.08em,
-    $text-transform: uppercase
-  );
+.headerCardJumpList .headerCardPrimaryLink,
+.headerCardJumpList .headerCardSecondaryLink {
+  width: 100%;
+  justify-content: center;
 }
 
 .headerCardProofPanel {
+  flex: 0 1 320px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -300,19 +298,41 @@
 
 @media only screen and (max-width: 1100px) {
   .header-card {
-    grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .headerCardSidebar {
+    flex: 0 0 min(100%, 220px);
+    width: min(100%, 220px);
+  }
+
+  .headerCardMain {
+    flex: 1 1 320px;
+    width: auto;
+    max-width: none;
   }
 
   .headerCardProofPanel {
-    grid-column: 1 / -1;
+    flex: 1 1 100%;
+    width: 100%;
   }
 }
 
 @media only screen and (max-width: 870px) {
   .header-card {
-    grid-template-columns: 1fr;
-    padding: 24px 20px;
-    border-radius: 30px;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 18px;
+    border-radius: 28px;
+  }
+
+  .headerCardSidebar,
+  .headerCardMain,
+  .headerCardProofPanel {
+    flex: none;
+    width: 100%;
   }
 
   .headerCardAvatarFrame {
@@ -321,6 +341,11 @@
 
   .headerCardSidebar {
     gap: 18px;
+  }
+
+  .headerCardProofPanel {
+    padding: 20px;
+    border-radius: 24px;
   }
 }
 
@@ -335,9 +360,8 @@
     line-height: 1.68;
   }
 
-  .headerCardActions {
-    width: 100%;
-    flex-direction: column;
+  .headerCardSidebar {
+    --header-sidebar-content-width: min(100%, 164px);
   }
 
   .headerCardPrimaryLink,
@@ -345,13 +369,8 @@
     width: 100%;
   }
 
-  .headerCardFocusItem {
-    font-size: 0.68rem;
-    letter-spacing: 0.06em;
-  }
-
   .social-icons-header {
-    grid-template-columns: repeat(2, minmax(0, 48px));
+    grid-template-columns: repeat(2, 48px);
   }
 
   .headerSocialLink {

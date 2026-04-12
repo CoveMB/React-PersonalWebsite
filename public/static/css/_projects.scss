@@ -8,12 +8,12 @@
   font-weight: var(--body-copy-weight);
   line-height: var(--body-copy-line-height);
   text-align: left;
+  margin-bottom: 50px;
 }
 
 .projectsSectionIntro {
   display: flex;
   flex-direction: column;
-  gap: 14px;
   margin-bottom: clamp(40px, 8vw, 72px);
 }
 
@@ -318,7 +318,7 @@
   .projectsArchiveTitle,
   .ongoingSeparator,
   .projectCaseStudy {
-    width: calc(100vw - 32px);
+    width: calc(100vw - 82px);
   }
 }
 
