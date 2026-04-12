@@ -1,9 +1,12 @@
 import ScrollParallax from "./animation/ScrollParallax";
-import { parallaxDataTitle } from "../parallaxEffects/parallaxEffects";
+import { subtleRevealParallaxData } from "../parallaxEffects/parallaxEffects";
 
 export default function ParallaxTitle({ idElement, title }) {
   return (
-    <ScrollParallax className="parallaxTitle" parallaxData={parallaxDataTitle}>
+    <ScrollParallax
+      className="parallaxTitle"
+      parallaxData={subtleRevealParallaxData}
+    >
       <h2 className="sectionTitle" id={idElement}>{title}</h2>
     </ScrollParallax>
   );

@@ -1,33 +1,61 @@
 @use 'colors';
+@use 'uiPrimitives';
+
+.roleFitLabSection {
+  background:
+    linear-gradient(180deg, rgba(colors.$cardwhite, 1) 0%, rgba(colors.$backgroundwhite, 0.98) 100%);
+}
+
+.roleFitLabShell {
+  @include uiPrimitives.responsiveContainer(1120px);
+  margin: 0 auto;
+}
 
 .aiPart {
-  width: 100%;
-  max-width: 760px;
+  @include uiPrimitives.responsiveContainer(760px);
   min-width: 0;
   margin: 0 auto;
 }
 
-.roleFitIntro {
-  margin-bottom: 24px;
+.roleFitLabIntro {
+  @include uiPrimitives.responsiveContainer(760px);
+  margin: 0 auto 28px auto;
+}
+
+.roleFitSectionEyebrow {
+  @include uiPrimitives.eyebrowLabel(
+    $margin: 0 0 12px 0,
+    $font-size: 0.78rem
+  );
 }
 
 .roleFitLead {
-  margin: 0 0 10px 0;
+  margin: 14px 0 0 0;
   color: colors.$darkpurple;
-  font-size: 1.08rem;
-  font-weight: 600;
-  line-height: 1.65;
-  letter-spacing: -0.01em;
+  font-size: var(--body-copy-size);
+  font-weight: var(--body-copy-weight);
+  line-height: var(--body-copy-line-height);
+  letter-spacing: var(--body-copy-tracking);
+  text-wrap: pretty;
 }
 
 .roleFitMeta {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
+  margin-top: 14px;
   color: rgba(72, 72, 72, 0.84);
   font-size: 0.94rem;
   line-height: 1.6;
+}
+
+.roleFitMetaLabel {
+  @include uiPrimitives.metaLabel(
+    $color: rgba(colors.$darkpurple, 0.76),
+    $font-size: 0.74rem,
+    $letter-spacing: 0.12em
+  );
 }
 
 .roleFitBadge {
@@ -54,8 +82,8 @@
 .roleFitResultCard {
   border: 1px solid rgba(colors.$darkpurple, 0.08);
   border-radius: 24px;
-  background-color: colors.$cardwhite;
-  box-shadow: 0 10px 26px rgba(colors.$darkpurple, 0.06);
+  background-color: rgba(colors.$cardwhite, 0.88);
+  box-shadow: 0 8px 20px rgba(colors.$darkpurple, 0.05);
 }
 
 .roleFitInputCard {
@@ -70,20 +98,20 @@
 }
 
 .roleFitFieldLabel {
-  color: colors.$darkpurple;
-  font-size: 0.84rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin: 0 10px;
+  @include uiPrimitives.metaLabel(
+    $margin: 0 10px,
+    $color: colors.$darkpurple,
+    $font-size: 0.84rem,
+    $font-weight: 700,
+    $letter-spacing: 0.08em
+  );
 }
 
 .roleFitFieldHint {
-  margin: 8px 0 14px 10px;
   color: rgba(72, 72, 72, 0.78);
-  font-size: 0.94rem;
-  line-height: 1.55;
-  margin: 0 10px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 8px 10px 0 10px;
 }
 
 .roleFitCounter {
@@ -116,22 +144,6 @@
 
 .roleFitTextarea::placeholder {
   color: rgba(72, 72, 72, 0.46);
-}
-
-.roleFitStatusRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.roleFitStatusText {
-  flex: 1 1 320px;
-  min-width: 240px;
-  color: rgba(72, 72, 72, 0.82);
-  font-size: 0.95rem;
-  line-height: 1.6;
 }
 
 .roleFitActions {
@@ -209,12 +221,13 @@
 }
 
 .roleFitResultEyebrow {
-  margin: 0 0 12px 0;
-  color: rgba(colors.$darkpurple, 0.7);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  @include uiPrimitives.metaLabel(
+    $margin: 0 0 12px 0,
+    $color: rgba(colors.$darkpurple, 0.7),
+    $font-size: 0.76rem,
+    $font-weight: 700,
+    $letter-spacing: 0.1em
+  );
 }
 
 .roleFitOutput {
@@ -222,19 +235,24 @@
   color: colors.$textgrey;
   white-space: pre-wrap;
   font-family: var(--font-sans), sans-serif;
-  font-size: 1rem;
-  line-height: 1.75;
+  font-size: var(--body-copy-size);
+  font-weight: var(--body-copy-weight);
+  line-height: var(--body-copy-line-height);
+  letter-spacing: var(--body-copy-tracking);
 }
 
 .roleFitFooter {
-  margin-top: 16px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(colors.$darkpurple, 0.08);
 }
 
 .roleFitFooterText,
 .roleFitFooterMeta {
   margin: 5px 8px 0 8px;
   color: rgba(72, 72, 72, 0.84);
-  line-height: 1.65;
+  font-weight: var(--body-copy-weight);
+  line-height: 1.62;
 }
 
 .roleFitFooterMeta {
@@ -248,14 +266,17 @@
 }
 
 @media only screen and (max-width: 640px) {
+  .roleFitLabShell {
+    width: calc(100vw - 24px);
+  }
+
   .roleFitInputCard,
   .roleFitResultCard {
     padding: 20px;
     border-radius: 20px;
   }
 
-  .roleFitFieldHeader,
-  .roleFitStatusRow {
+  .roleFitFieldHeader {
     align-items: stretch;
   }
 

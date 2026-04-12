@@ -1,16 +1,16 @@
-import {
-  airflowProjectText,
-  aldoProjectText,
-  astroLightProjectText,
-  centechProjectText,
-  cominityProjectText,
-  defenderProjectText,
-  leWagonProjectText,
-  shareInProjectText,
-  skeepersProjectText,
-  suiToolingProjectText,
-  toolyProjectText,
-} from "./projectText";
+import { projectCaseStudiesById } from "./projectText";
+
+const maximumFeaturedProjectCount = 3;
+
+const getRequiredProjectCaseStudy = (projectId) => {
+  const projectCaseStudy = projectCaseStudiesById[projectId];
+
+  if (!projectCaseStudy) {
+    throw new Error(`Missing project case study for "${projectId}".`);
+  }
+
+  return projectCaseStudy;
+};
 
 const createProject = ({
   id,
@@ -20,12 +20,11 @@ const createProject = ({
   mediaScale = 1,
   primaryHref,
   primaryLabel,
-  side,
   sourceHref,
   techStack,
-  text,
   title,
 }) => ({
+  caseStudy: getRequiredProjectCaseStudy(id),
   id,
   image,
   imageAlt,
@@ -33,12 +32,31 @@ const createProject = ({
   mediaScale,
   primaryHref,
   primaryLabel,
-  side,
   sourceHref,
   techStack,
-  text,
   title,
 });
+
+const splitProjectsByFeaturedState = (
+  projects,
+  featuredProjectCountLimit = maximumFeaturedProjectCount,
+) => {
+  const preferredFeaturedProjects = projects.filter(
+    ({ isFeatured }) => isFeatured,
+  );
+  const earlierProjects = projects.filter(({ isFeatured }) => !isFeatured);
+
+  return {
+    archivedProjects: [
+      ...preferredFeaturedProjects.slice(featuredProjectCountLimit),
+      ...earlierProjects,
+    ],
+    featuredProjects: preferredFeaturedProjects.slice(
+      0,
+      featuredProjectCountLimit,
+    ),
+  };
+};
 
 export const projectCatalog = [
   createProject({
@@ -49,7 +67,6 @@ export const projectCatalog = [
     mediaScale: 0.9,
     primaryHref: "https://www.sui.io/",
     primaryLabel: "View ecosystem",
-    side: "left",
     sourceHref: "https://github.com/OpenZeppelin/openzeppelin-sui-marketplace",
     techStack: [
       "TypeScript",
@@ -63,7 +80,6 @@ export const projectCatalog = [
       "Test Harness",
       "Developer Experience",
     ],
-    text: suiToolingProjectText,
     title: "Sui Marketplace Tooling",
   }),
   createProject({
@@ -73,7 +89,6 @@ export const projectCatalog = [
     isFeatured: true,
     primaryHref: "https://docs.openzeppelin.com/defender",
     primaryLabel: "View docs",
-    side: "right",
     techStack: [
       "TypeScript",
       "Node.js",
@@ -88,7 +103,6 @@ export const projectCatalog = [
       "Smart Contracts",
       "Blockchain",
     ],
-    text: defenderProjectText,
     title: "OpenZeppelin Defender",
   }),
   createProject({
@@ -96,7 +110,6 @@ export const projectCatalog = [
     image: "/static/images/astroLight.svg",
     imageAlt: "Astro Light dApp preview",
     isFeatured: true,
-    side: "left",
     sourceHref: "https://github.com/CoveMB/solidity-DEFI-DAO",
     techStack: [
       "Solidity",
@@ -110,7 +123,6 @@ export const projectCatalog = [
       "Teaching dApp",
       "Testnet",
     ],
-    text: astroLightProjectText,
     title: "Astro Light",
   }),
   createProject({
@@ -120,7 +132,6 @@ export const projectCatalog = [
     isFeatured: true,
     primaryHref: "https://www.aldogroup.com/",
     primaryLabel: "Company site",
-    side: "right",
     techStack: [
       "TypeScript",
       "Functional",
@@ -136,7 +147,6 @@ export const projectCatalog = [
       "IDE Extension",
       "Scrum",
     ],
-    text: aldoProjectText,
     title: "Aldo OMS Modernization",
   }),
   createProject({
@@ -146,7 +156,6 @@ export const projectCatalog = [
     mediaScale: 0.9,
     primaryHref: "https://skeepers.io/en/live-shopping/",
     primaryLabel: "Visit site",
-    side: "left",
     techStack: [
       "TypeScript",
       "JavaScript",
@@ -161,7 +170,6 @@ export const projectCatalog = [
       "Scrum",
       "Leadership",
     ],
-    text: skeepersProjectText,
     title: "Skeepers",
   }),
   createProject({
@@ -171,7 +179,6 @@ export const projectCatalog = [
     mediaScale: 1.04,
     primaryHref: "https://www.nextcanada.com/next-ai/",
     primaryLabel: "Visit program",
-    side: "right",
     techStack: [
       "TypeScript",
       "Node.js",
@@ -184,7 +191,6 @@ export const projectCatalog = [
       "Docker",
       "Next AI",
     ],
-    text: toolyProjectText,
     title: "Tooly",
   }),
   createProject({
@@ -194,7 +200,6 @@ export const projectCatalog = [
     mediaScale: 0.9,
     primaryHref: "https://cominity.ca/",
     primaryLabel: "Visit site",
-    side: "left",
     techStack: [
       "Docker",
       "Kubernetes",
@@ -206,14 +211,12 @@ export const projectCatalog = [
       "Agency Delivery",
       "Mentoring",
     ],
-    text: cominityProjectText,
     title: "Cominity",
   }),
   createProject({
     id: "centech",
     image: "/static/images/centech.png",
     imageAlt: "VizzMD MVP preview",
-    side: "right",
     sourceHref: "https://github.com/CoveMB/Rails-React-VizzMD-App",
     techStack: [
       "Rails",
@@ -225,7 +228,6 @@ export const projectCatalog = [
       "Data Visualization",
       "Startup",
     ],
-    text: centechProjectText,
     title: "VizzMD",
   }),
   createProject({
@@ -235,7 +237,6 @@ export const projectCatalog = [
     mediaScale: 0.9,
     primaryHref: "https://www.lewagon.com/",
     primaryLabel: "Visit site",
-    side: "left",
     techStack: [
       "JavaScript",
       "Teaching",
@@ -244,14 +245,12 @@ export const projectCatalog = [
       "Curriculum",
       "Public Speaking",
     ],
-    text: leWagonProjectText,
     title: "Le Wagon",
   }),
   createProject({
     id: "shareIn",
     image: "/static/images/shareIn.png",
     imageAlt: "Share In app preview",
-    side: "right",
     sourceHref: "https://github.com/CoveMB/Rails-Share-in-App",
     techStack: [
       "Rails",
@@ -262,7 +261,6 @@ export const projectCatalog = [
       "MVP",
       "Full-Stack",
     ],
-    text: shareInProjectText,
     title: "Share In",
   }),
   createProject({
@@ -270,7 +268,6 @@ export const projectCatalog = [
     image: "/static/images/airflow.png",
     imageAlt: "Airflow reporting pipeline preview",
     mediaScale: 0.84,
-    side: "left",
     sourceHref: "https://github.com/CoveMB/Python-AirflowReportPipeline",
     techStack: [
       "Python",
@@ -282,15 +279,9 @@ export const projectCatalog = [
       "Docker Compose",
       "Reporting",
     ],
-    text: airflowProjectText,
     title: "Airflow Reporting Pipeline",
   }),
 ];
 
-export const featuredProjects = projectCatalog.filter(
-  ({ isFeatured }) => isFeatured,
-);
-
-export const archivedProjects = projectCatalog.filter(
-  ({ isFeatured }) => !isFeatured,
-);
+export const { archivedProjects, featuredProjects } =
+  splitProjectsByFeaturedState(projectCatalog);

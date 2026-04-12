@@ -1,35 +1,24 @@
-.header-card-avatar{
+@use 'colors';
+
+.header-card-avatar {
+  display: block;
   width: 100%;
-  border-radius: 150px;
-  -webkit-border-radius: 150px;
-  -moz-border-radius: 150px;
-  padding: 0.13rem;
+  border-radius: 28px;
 }
 
-.gradient-square-avatar{
-  background: transparent;
-  width: 25%;
-  border-radius: 150px;
-  -webkit-border-radius: 150px;
-  -moz-border-radius: 150px;
-  margin: -65px auto 20px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  z-index: 30;
-  -moz-box-shadow:    2px 4px 15px rgba(0, 0, 0, 0.4);
-  -webkit-box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.4);
-  box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.4);
+.gradient-square-avatar {
+  flex-shrink: 0;
+  width: 100%;
+  padding: 6px;
+  margin: 0;
+  border: 1px solid rgba(colors.$darkpurple, 0.08);
+  border-radius: 32px;
+  background:
+    linear-gradient(180deg, rgba(colors.$cardwhite, 0.96) 0%, rgba(colors.$backgroundwhite, 0.84) 100%);
+  box-shadow: 0 18px 38px rgba(colors.$darkpurple, 0.14);
 }
 
-.brandHeaderCard{
-  padding: 6%;
-  width:70% ;
-}
-
-@media only screen and (max-width: 1024px) {
-  .gradient-square-avatar{
-    margin: -50px auto 20px auto;
-  }
+.brand,
+.brandHeaderCard {
+  width: 100%;
 }

@@ -1,33 +1,54 @@
 import {
-  focusAreas,
-  milestoneItems,
+  heroProofItems,
   profileHeadline,
   profileName,
   profileSummary,
   resumeDownloadName,
   resumeFilePath,
 } from "../../utils/profile";
+import { getSiteSection } from "../../content/siteContent";
 import SocialLinks from "../shared/SocialLinks";
+import Avatar from "./Avatar";
 
-const doneImagePath = "/static/images/donesvg.svg";
+const buildSectionJumpLink = ({ label, sectionId }) => {
+  const sectionElementId = getSiteSection(sectionId)?.elementId;
 
-const heroActionLinks = [
-  {
-    className: "headerCardPrimaryLink",
-    download: resumeDownloadName,
-    href: resumeFilePath,
-    label: "Download resume",
-  },
-];
+  if (!sectionElementId) {
+    return null;
+  }
 
-const renderMilestone = ({ label, organization }) => (
-  <div className="cardListCompetence" key={`${label}-${organization}`}>
-    <strong className="darkblueTitle">
-      <img className="svgDone" src={doneImagePath} alt="svg done" /> {label}
-    </strong>{" "}
-    | {organization}
-  </div>
-);
+  return {
+    className: "headerCardSecondaryLink",
+    href: `#${sectionElementId}`,
+    label,
+  };
+};
+
+const jumpInLinks = [
+  buildSectionJumpLink({
+    label: "Work Style",
+    sectionId: "cards",
+  }),
+  buildSectionJumpLink({
+    label: "Career Path",
+    sectionId: "chronology",
+  }),
+  buildSectionJumpLink({
+    label: "Projects",
+    sectionId: "features",
+  }),
+  buildSectionJumpLink({
+    label: "Role-Fit AI",
+    sectionId: "ongoing",
+  }),
+].filter(Boolean);
+
+const resumeActionLink = {
+  className: "headerCardPrimaryLink",
+  download: resumeDownloadName,
+  href: resumeFilePath,
+  label: "Download resume",
+};
 
 const renderHeroActionLink = ({
   className,
@@ -50,48 +71,62 @@ const renderHeroActionLink = ({
   </a>
 );
 
-const renderFocusArea = (focusArea) => (
-  <li className="headerCardFocusItem" key={focusArea}>
-    {focusArea}
+const renderHeroProofItem = ({ category, summary }) => (
+  <li className="headerCardProofItem" key={category}>
+    <p className="headerCardProofCategory">{category}</p>
+    <p className="headerCardProofSummary">{summary}</p>
   </li>
 );
 
 const HeaderCardContent = () => (
   <>
-    <div className="headerCardText">
-      <p className="card-header-welcome">{profileHeadline}</p>
-      <h1 className="headerCardTitle">{profileName}</h1>
-      <p className="headerCardSummary">{profileSummary}</p>
-      <div className="headerCardActions">
-        {heroActionLinks.map(renderHeroActionLink)}
+    <aside className="headerCardSidebar">
+      <div className="gradient-square-avatar headerCardAvatarFrame">
+        <Avatar />
       </div>
-    </div>
-    <div className="headerCardText">
-      <p
-        className="cardListCompetenceTitle headerCardSectionTitle"
-        style={{ marginTop: "40px" }}
-      >
-        Milestones
-      </p>
-      {milestoneItems.map(renderMilestone)}
-      <div className="grabEmailPart" />
-    </div>
-    <div className="headerCardText headerCardBottomSection">
-      <div className="headerCardBottomBlock">
-        <p className="cardListCompetenceTitle headerCardActionTitle">Connect</p>
+
+      <div className="headerCardSidebarBlock">
+        {/* <p className="cardListCompetenceTitle headerCardActionTitle">Connect</p> */}
         <div className="social-icons-header">
           <SocialLinks
             imageClassName="svgSocialHeader"
             linkClassName="headerSocialLink"
           />
         </div>
+        <div className="headerCardJumpList">
+          {renderHeroActionLink(resumeActionLink)}
+        </div>
       </div>
-      <div className="headerCardBottomBlock headerCardResumeBlock">
-        <p className="cardListCompetenceTitle headerCardActionTitle">Focus</p>
-        <ul className="headerCardFocusList">
-          {focusAreas.map(renderFocusArea)}
-        </ul>
-      </div>
+
+      {/* <div className="headerCardSidebarBlock">
+        <p className="cardListCompetenceTitle headerCardActionTitle">Jump In</p>
+        <div className="headerCardJumpList">
+          {jumpInLinks.map(renderHeroActionLink)}
+        </div>
+      </div> */}
+    </aside>
+
+    <div className="headerCardMain">
+      {/* <div className="headerCardIntro"> */}
+        <h1 className="headerCardTitle">{profileName}</h1>
+        <p className="card-header-welcome">{profileHeadline}</p>
+        <p className="headerCardSummary">{profileSummary}</p>
+      {/* </div> */}
+    </div>
+
+    <div
+      aria-labelledby="header-card-proof-title"
+      className="headerCardProofPanel"
+    >
+      <p
+        className="cardListCompetenceTitle headerCardSectionTitle"
+        id="header-card-proof-title"
+      >
+        Expertise
+      </p>
+      <ul className="headerCardProofList">
+        {heroProofItems.map(renderHeroProofItem)}
+      </ul>
     </div>
   </>
 );

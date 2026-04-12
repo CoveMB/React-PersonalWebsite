@@ -2,26 +2,25 @@
 @use 'uiPrimitives';
 
 .trustSignalsSection {
-  width: min(1400px, calc(100vw - 180px));
+  @include uiPrimitives.responsiveContainer(1400px, 180px);
   margin: 0 auto 142px auto;
 }
 
 .trustSignalsPanel {
-  padding: 28px 32px;
-  border: 1px solid rgba(colors.$darkpurple, 0.1);
-  border-radius: 22px;
-  background:
-    linear-gradient(135deg, rgba(colors.$cardwhite, 0.95), rgba(colors.$backgroundwhite, 0.92));
-  box-shadow: 0 22px 50px rgba(colors.$darkpurple, 0.08);
+  @include uiPrimitives.elevatedSurface(
+    $padding: 28px 32px,
+    $border-radius: 24px,
+    $background-start: rgba(colors.$cardwhite, 0.96),
+    $background-end: rgba(colors.$backgroundwhite, 0.94)
+  );
+  margin-top: 50px;
 }
 
 .trustSignalsEyebrow {
-  margin: 0 0 20px 0;
-  color: colors.$lightpurple;
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  @include uiPrimitives.eyebrowLabel(
+    $margin: 0 0 20px 0,
+    $letter-spacing: 0.18em
+  );
 }
 
 .trustSignalsGroup {
@@ -58,7 +57,6 @@
 
 @media only screen and (max-width: 870px) {
   .trustSignalsSection {
-    width: calc(100vw - 24px);
     margin-bottom: 56px;
   }
 

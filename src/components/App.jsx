@@ -3,45 +3,41 @@
 import { useEffect, useRef } from "react";
 import Footer from "./footer/Footer";
 import Header from "./header/Header";
-import OpacityParallax from "./hoc/OpacityParallax";
-import NavBtns from "./NavBtns";
+import NavigationObserver from "./navigation/NavigationObserver";
+import DotNavigation from "./navigation/DotNavigation";
 import ParallaxTitle from "./ParalaxTitle";
 import Projects from "./projects/Projects";
 import QualificationContainer from "./qualifications/QualificationContainer";
 import RoleFitSection from "./ai/AI";
+import CareerChronology from "./chronology/CareerChronology";
 import TrustSignals from "./trust/TrustSignals";
-import NavBar from "./navbar/NavBar";
+import { getSectionTitle, getSiteSection } from "../content/siteContent";
 import { initializeStores } from "../store/initializeStores";
 import { useStore } from "../store/useStore";
 
 initializeStores();
 
-const getSectionOffsets = ({
-  cardsElement,
-  featuresElement,
-  ongoingElement,
-}) => ({
-  cards: cardsElement?.offsetTop ?? 0,
-  features: featuresElement?.offsetTop ?? 0,
-  ongoing: ongoingElement?.offsetTop ?? 0,
-  top: 0,
+const createPageSection = ({ children, ...pageSection }) => ({
+  ...pageSection,
+  children,
 });
 
-const observeSectionOffsets = ({
-  cardsElement,
-  dispatch,
-  featuresElement,
-  ongoingElement,
-}) => {
+const getObservedSections = (pageSections) =>
+  pageSections.map(({ id, reference }) => ({
+    id,
+    reference,
+  }));
+
+const getSectionOffsets = (sections) => ({
+  top: 0,
+  ...Object.fromEntries(
+    sections.map(({ id, reference }) => [ id, reference.current?.offsetTop ?? 0 ]),
+  ),
+});
+
+const observeSectionOffsets = ({ dispatch, sections }) => {
   const updateOffsets = () => {
-    dispatch(
-      "SET_REFS",
-      getSectionOffsets({
-        cardsElement,
-        featuresElement,
-        ongoingElement,
-      }),
-    );
+    dispatch("SET_REFS", getSectionOffsets(sections));
   };
 
   updateOffsets();
@@ -55,7 +51,8 @@ const observeSectionOffsets = ({
 
   const resizeObserver = new ResizeObserver(updateOffsets);
 
-  [cardsElement, featuresElement, ongoingElement]
+  sections
+    .map(({ reference }) => reference.current)
     .filter(Boolean)
     .forEach((sectionElement) => {
       resizeObserver.observe(sectionElement);
@@ -67,47 +64,89 @@ const observeSectionOffsets = ({
   };
 };
 
+const renderPageSection = ({
+  children,
+  className,
+  id,
+  reference,
+  sectionElementId,
+}) => (
+  <div className={className} id={sectionElementId} key={id} ref={reference}>
+    {children}
+  </div>
+);
+
 export default function App() {
   const cardsReference = useRef(null);
+  const chronologyReference = useRef(null);
   const featuresReference = useRef(null);
   const ongoingReference = useRef(null);
   const [, dispatch] = useStore(false);
+  const pageSections = [
+    createPageSection({
+      children: (
+        <>
+          <TrustSignals />
+          <ParallaxTitle title={getSectionTitle("cards")} />
+          <QualificationContainer />
+        </>
+      ),
+      className: "normalizedBackground normalizedBackgroundToWhite",
+      id: "cards",
+      reference: cardsReference,
+      sectionElementId: getSiteSection("cards")?.elementId,
+    }),
+    createPageSection({
+      children: (
+        <>
+          <ParallaxTitle title={getSectionTitle("chronology")} />
+          <CareerChronology />
+        </>
+      ),
+      className: "normalizedBackgroundWhite",
+      id: "chronology",
+      reference: chronologyReference,
+      sectionElementId: getSiteSection("chronology")?.elementId,
+    }),
+    createPageSection({
+      children: (
+        <>
+          <ParallaxTitle title={getSectionTitle("features")} />
+          <Projects />
+        </>
+      ),
+      className: "normalizedBackgroundWhite",
+      id: "features",
+      reference: featuresReference,
+      sectionElementId: getSiteSection("features")?.elementId,
+    }),
+    createPageSection({
+      children: (
+        <>
+          <ParallaxTitle title={getSectionTitle("ongoing")} />
+          <RoleFitSection />
+        </>
+      ),
+      className: "normalizedBackgroundWhite roleFitLabSection",
+      id: "ongoing",
+      reference: ongoingReference,
+      sectionElementId: getSiteSection("ongoing")?.elementId,
+    }),
+  ];
 
   useEffect(() => {
     return observeSectionOffsets({
-      cardsElement: cardsReference.current,
       dispatch,
-      featuresElement: featuresReference.current,
-      ongoingElement: ongoingReference.current,
+      sections: getObservedSections(pageSections),
     });
   }, [dispatch]);
 
   return (
     <>
-      <NavBtns />
-      <NavBar />
+      <NavigationObserver />
+      <DotNavigation />
       <Header />
-      <OpacityParallax nextId="#projects">
-        <div
-          className="normalizedBackground normalizedBackgroundToWhite"
-          id="cardsDiv"
-          ref={cardsReference}
-        >
-          <TrustSignals />
-          <ParallaxTitle title="My Peculiarities" />
-          <QualificationContainer />
-        </div>
-      </OpacityParallax>
-      <OpacityParallax nextId="#role-fit">
-        <div className="normalizedBackgroundWhite" ref={featuresReference}>
-          <ParallaxTitle idElement="projects" title="Some Of My Projects" />
-          <Projects />
-        </div>
-      </OpacityParallax>
-      <div className="normalizedBackgroundWhite" ref={ongoingReference}>
-        <ParallaxTitle idElement="role-fit" title="Am I a good fit for your role?" />
-        <RoleFitSection />
-      </div>
+      {pageSections.map(renderPageSection)}
       <Footer />
     </>
   );

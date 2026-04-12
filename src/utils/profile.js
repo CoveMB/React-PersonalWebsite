@@ -4,10 +4,10 @@ const githubProfileUrl = "https://github.com/CoveMB";
 const linkedinProfileUrl =
   "https://www.linkedin.com/in/cove-marquis-eth/?locale=en_US";
 const instagramProfileUrl = "https://www.instagram.com/cove.suchness/?hl=en";
-export const profileName = "Cove Marquis-Bortoli";
+export const profileName = "Cove Marquis";
 export const profileHeadline = "Senior full-stack blockchain developer";
 export const profileSummary =
-  "I build secure product applications and developer tooling across the full-stack. With a strong focus on product research and development, process improvement and delivery quality. Most recently, I worked on blockchain tooling and full-stack product engineering at OpenZeppelin.";
+  "I build secure product applications and tooling across the full-stack. With a strong focus on product research and development and delivery quality. I value team collaboration and process improvement. Most recently, I worked on blockchain tooling and full-stack product engineering at OpenZeppelin.";
 export const profileLocation = "Montreal, Canada";
 export const profileTimezone = "Eastern Time (America/Toronto)";
 export const profileAvailability = "Open to selected opportunities";
@@ -23,7 +23,6 @@ export const socialLinks = [
     href: emailLink,
     imagePath: "/static/images/email.svg",
     target: "_top",
-    style: { marginTop: "5px" },
   },
   {
     alt: "LinkedIn Icon",
@@ -51,50 +50,84 @@ export const socialLinks = [
 export const focusAreas = [
   "Product development",
   "Process improvement",
+  "Team support",
   "Developer experience",
 ];
 
+const createHeroProofItem = ({
+  category,
+  summary,
+  title,
+}) => ({
+  category,
+  summary,
+  title,
+});
+
+export const heroProofItems = [
+  createHeroProofItem({
+    category: "Engineering",
+    summary:
+      "Built full-stack applications on AWS-backed services, and CI/CD pipelines."
+  }),
+  createHeroProofItem({
+    category: "Product",
+    summary:
+      "Led architecture, MVP scope, user research, and product-market fit decisions.",
+  }),
+  createHeroProofItem({
+    category: "Team",
+    summary:
+      "Owned onboarding, facilitated Scrum, mentored developers, and improved daily workflows across delivery teams.",
+  }),
+];
+
+const createMilestoneItem = ({ label, organization }) => ({
+  label,
+  organization,
+});
+
 export const milestoneItems = [
-  {
+  createMilestoneItem({
     label: "Senior Full Stack Blockchain Developer",
     organization: "OpenZeppelin",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Professional Scrum Master",
     organization: "PSMI",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Tech Mentor",
     organization: "QueerTech Montreal",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Lead Full Stack Developer",
     organization: "Skeepers",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Product Ownership Bootcamp",
     organization: "Linky",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Montreal cohort Tech Track",
     organization: "Next AI",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Entrepreneur in Acceleration",
     organization: "Centech",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "CTO & Co-founder",
     organization: "VizzMD",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Full Stack Teacher and Mentor",
     organization: "Le Wagon",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Marketing and Data Pipelines",
     organization: "LCI Education",
-  },
+  }),
 ];
 
 export const trustSignalGroups = [
