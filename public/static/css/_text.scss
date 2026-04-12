@@ -1,5 +1,17 @@
 @use 'colors';
 
+:root {
+  --body-copy-size: clamp(1rem, 0.98rem + 0.18vw, 1.12rem);
+  --body-copy-line-height: 1.72;
+  --body-copy-weight: 500;
+  --body-copy-tracking: 0.002em;
+  --display-title-size: clamp(2.5rem, 4.8vw, 3.95rem);
+  --display-title-spacing: -0.03em;
+  --card-title-size: clamp(1.45rem, 2.2vw, 1.92rem);
+  --accent-copy-scale: 1.06;
+  --accent-copy-weight: 700;
+}
+
 p {
   margin: 0;
   padding: 0;
@@ -9,13 +21,15 @@ p {
 
 .sectionTitle {
   font-family: var(--font-display), serif;
-  margin: 0 20% 100px 20%;
+  width: min(760px, calc(100vw - 48px));
+  margin: 0 auto clamp(64px, 9vw, 92px) auto;
   font-style: normal;
   font-weight: 600;
-  font-size: 3.6em;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  font-size: var(--display-title-size);
+  line-height: 1.02;
+  letter-spacing: var(--display-title-spacing);
   text-align: center;
+  text-wrap: balance;
   color: colors.$darkpurple;
 }
 
@@ -36,32 +50,35 @@ p {
   color: colors.$darkpurple;
   font-style: normal;
   font-weight: 600;
-  font-size: 1.8em;
-  line-height: 1.2;
+  font-size: var(--card-title-size);
+  line-height: 1.14;
   letter-spacing: -0.025em;
   text-align: center;
-  margin: 0 10% 30px 10%;
+  text-wrap: balance;
+  margin: 0 0 22px 0;
 }
 
 .cardText {
   font-style: normal;
-  font-weight: 600;
-  font-size: 1.3em;
-  line-height: 1.75;
-  text-align: justify;
+  font-weight: var(--body-copy-weight);
+  font-size: var(--body-copy-size);
+  line-height: var(--body-copy-line-height);
+  letter-spacing: var(--body-copy-tracking);
+  text-align: left;
+  text-wrap: pretty;
   color: colors.$textgrey;
 }
 
 .blueTitle {
   color: colors.$lightpurple;
-  font-weight: 800;
-  font-size: 1.2em;
+  font-weight: var(--accent-copy-weight);
+  font-size: calc(var(--accent-copy-scale) * 1em);
 }
 
 .darkblueTitle {
   color: colors.$lightpurple;
-  font-weight: 800;
-  font-size: 1.05em;
+  font-weight: var(--accent-copy-weight);
+  font-size: 1em;
 }
 
 h2 {
@@ -74,34 +91,26 @@ h2 {
   }
 
   .blueTitle {
-    font-size: 1.14em;
-  }
-
-  .selectedCardTitle {
-    width: 100%;
-    padding: 0 15px 0 15px;
-    font-size: 1.6em;
+    font-size: 1.04em;
   }
 
   .cardText {
-    font-size: 1.3em;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.68;
   }
 
   .cardTitle {
-    font-size: 1.4em;
-    line-height: 1.2;
-    margin: 0 10% 0 10%;
+    margin-bottom: 18px;
   }
 }
 
 @media only screen and (max-width: 570px) {
   .darkblueTitle {
-    font-size: 0.95em;
+    font-size: 0.98em;
   }
 
   .blueTitle {
-    font-size: 1.1em;
+    font-size: 1.02em;
   }
 
   .cardListCompetence {
@@ -112,6 +121,7 @@ h2 {
   }
 
   .sectionTitle {
-    font-size: 2.8em;
+    width: calc(100vw - 32px);
+    font-size: 2.55rem;
   }
 }

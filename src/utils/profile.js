@@ -54,47 +54,83 @@ export const focusAreas = [
   "Developer experience",
 ];
 
+const createHeroProofItem = ({
+  category,
+  summary,
+  title,
+}) => ({
+  category,
+  summary,
+  title,
+});
+
+export const heroProofItems = [
+  createHeroProofItem({
+    category: "Engineering",
+    summary:
+      "Built Sui tooling, contract operations flows, AWS-backed services, and CI/CD pipelines for production delivery.",
+    title: "OpenZeppelin and Aldo",
+  }),
+  createHeroProofItem({
+    category: "Product",
+    summary:
+      "Led architecture, MVP scope, and product-fit decisions while shipping full-stack applications close to business needs.",
+    title: "Tooly and VizzMD",
+  }),
+  createHeroProofItem({
+    category: "Leadership",
+    summary:
+      "Owned onboarding, facilitated Scrum, mentored developers, and improved daily workflows across delivery teams.",
+    title: "Aldo, Skeepers, and Le Wagon",
+  }),
+];
+
+const createMilestoneItem = ({ label, organization }) => ({
+  label,
+  organization,
+});
+
 export const milestoneItems = [
-  {
+  createMilestoneItem({
     label: "Senior Full Stack Blockchain Developer",
     organization: "OpenZeppelin",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Professional Scrum Master",
     organization: "PSMI",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Tech Mentor",
     organization: "QueerTech Montreal",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Lead Full Stack Developer",
     organization: "Skeepers",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Product Ownership Bootcamp",
     organization: "Linky",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Montreal cohort Tech Track",
     organization: "Next AI",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Entrepreneur in Acceleration",
     organization: "Centech",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "CTO & Co-founder",
     organization: "VizzMD",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Full Stack Teacher and Mentor",
     organization: "Le Wagon",
-  },
-  {
+  }),
+  createMilestoneItem({
     label: "Marketing and Data Pipelines",
     organization: "LCI Education",
-  },
+  }),
 ];
 
 export const trustSignalGroups = [

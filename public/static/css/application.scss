@@ -2,7 +2,7 @@
 @use 'header';
 @use 'headerCard';
 @use 'gradient_square';
-@use 'navbar';
+@use 'navBtn';
 @use 'cards';
 @use 'scrollbar';
 @use 'spinner';
@@ -10,9 +10,9 @@
 @use 'projects';
 @use 'text';
 @use 'ai';
+@use 'careerChronology';
 @use 'trustSignals';
 @use 'footer';
-@use 'navBtn';
 
 body {
   margin: 0;
@@ -83,20 +83,12 @@ button {
   padding-bottom: 65px;
 }
 
-.makeItFlex {
-  display: flex;
-  display: -webkit-flex;
-  -webkit-flex-wrap: wrap;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
 .displayNone {
   display: none;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
 }

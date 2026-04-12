@@ -23,6 +23,69 @@
   text-transform: $text-transform;
 }
 
+@mixin responsiveContainer(
+  $max-width,
+  $desktop-gutter: 48px,
+  $mobile-gutter: 24px,
+  $mobile-breakpoint: 870px
+) {
+  width: min($max-width, calc(100vw - $desktop-gutter));
+
+  @media only screen and (max-width: $mobile-breakpoint) {
+    width: calc(100vw - $mobile-gutter);
+  }
+}
+
+@mixin elevatedSurface(
+  $padding: 28px,
+  $border-radius: 24px,
+  $border-color: rgba(colors.$darkpurple, 0.08),
+  $background-start: rgba(colors.$cardwhite, 0.94),
+  $background-end: rgba(colors.$backgroundwhite, 0.98),
+  $box-shadow: (
+    0 22px 52px rgba(colors.$darkpurple, 0.07),
+    0 6px 18px rgba(colors.$darkpurple, 0.04)
+  )
+) {
+  padding: $padding;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  background: linear-gradient(180deg, $background-start 0%, $background-end 100%);
+  box-shadow: $box-shadow;
+}
+
+@mixin eyebrowLabel(
+  $margin: 0,
+  $color: colors.$lightpurple,
+  $font-size: 0.82rem,
+  $font-weight: 800,
+  $letter-spacing: 0.16em,
+  $text-align: left
+) {
+  margin: $margin;
+  color: $color;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  letter-spacing: $letter-spacing;
+  text-align: $text-align;
+  text-transform: uppercase;
+}
+
+@mixin metaLabel(
+  $margin: 0,
+  $color: rgba(colors.$darkpurple, 0.64),
+  $font-size: 0.78rem,
+  $font-weight: 800,
+  $letter-spacing: 0.15em
+) {
+  margin: $margin;
+  color: $color;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  letter-spacing: $letter-spacing;
+  text-transform: uppercase;
+}
+
 @mixin actionButtonBase(
   $min-height: 48px,
   $padding-inline: 18px,

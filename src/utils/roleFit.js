@@ -1,5 +1,5 @@
 import { projectCatalog } from "../components/projects/projectCatalog";
-import { projectNarrativesById } from "../components/projects/projectText";
+import { projectCaseStudiesById } from "../components/projects/projectText";
 import {
   focusAreas,
   milestoneItems,
@@ -50,7 +50,7 @@ const formatProjectContext = ({ plainText, referenceUrl, title }) =>
   `${title}: ${plainText}${referenceUrl ? ` | ${referenceUrl}` : ""}`;
 
 const toPromptProject = ({ id, primaryHref, sourceHref, title }) => ({
-  plainText: projectNarrativesById[id]?.plainText ?? "",
+  plainText: projectCaseStudiesById[id]?.plainText ?? "",
   referenceUrl: sourceHref ?? primaryHref ?? "",
   title,
 });

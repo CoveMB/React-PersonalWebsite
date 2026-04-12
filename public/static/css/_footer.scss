@@ -10,7 +10,7 @@
 }
 
 .footerShell {
-  width: min(1120px, calc(100vw - 48px));
+  @include uiPrimitives.responsiveContainer(1120px);
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
@@ -60,11 +60,12 @@
   flex-direction: column;
   gap: 18px;
   align-items: flex-start;
-  padding: 28px;
-  border: 1px solid rgba(colors.$darkpurple, 0.1);
-  border-radius: 28px;
-  background-color: rgba(colors.$cardwhite, 0.92);
-  box-shadow: 0 18px 42px rgba(colors.$darkpurple, 0.08);
+  @include uiPrimitives.elevatedSurface(
+    $padding: 28px,
+    $border-radius: 28px,
+    $background-start: rgba(colors.$cardwhite, 0.94),
+    $background-end: rgba(colors.$backgroundwhite, 0.96)
+  );
 }
 
 .footerActionLink {
@@ -124,7 +125,7 @@
 }
 
 .footerBottom {
-  width: min(1120px, calc(100vw - 48px));
+  @include uiPrimitives.responsiveContainer(1120px);
   margin: 28px auto 0 auto;
   padding-top: 22px;
   border-top: 1px solid rgba(colors.$darkpurple, 0.08);
@@ -157,7 +158,6 @@
   }
 
   .footerShell {
-    width: calc(100vw - 24px);
     grid-template-columns: 1fr;
     gap: 24px;
   }
@@ -176,7 +176,6 @@
   }
 
   .footerBottom {
-    width: calc(100vw - 24px);
     margin-top: 24px;
     justify-content: flex-start;
   }

@@ -3,19 +3,27 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { prefersReducedMotion } from "../../utils/motionPreference";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const easingMap = {
-  easeIn: "power1.in",
   linear: "none",
 };
 
 const propertyMap = {
   opacity: "opacity",
-  scale: "scale",
-  translateX: "x",
   translateY: "y",
+};
+
+const createScrollPlaybackConfig = (step, defaultScrub = false) => {
+  const shouldScrub = step.scrub ?? defaultScrub;
+
+  return {
+    once: step.once ?? false,
+    scrub: shouldScrub,
+    toggleActions: shouldScrub ? undefined : "play none none none",
+  };
 };
 
 const buildAnimationValues = (properties) => properties.reduce(
@@ -47,30 +55,30 @@ const createScrollTriggerConfig = ({ step, element }) => {
       start: step.start,
       end: step.start + step.duration,
       invalidateOnRefresh: true,
-      scrub: true,
+      ...createScrollPlaybackConfig(step, true),
     };
   }
 
   if (typeof step.start === "string" && step.start !== "self") {
-    const endTrigger = document.querySelector(step.start);
+    const targetElement = document.querySelector(step.start);
 
-    if (endTrigger) {
+    if (targetElement) {
       return {
-        trigger: endTrigger,
-        start: "top top",
-        end: `+=${step.duration}`,
+        trigger: targetElement,
+        start: step.triggerStart ?? "top 85%",
+        end: step.triggerEnd ?? `+=${step.duration ?? 1}`,
         invalidateOnRefresh: true,
-        scrub: true,
+        ...createScrollPlaybackConfig(step),
       };
     }
   }
 
   return {
     trigger: element,
-    start: "top bottom",
-    end: `+=${step.duration}`,
+    start: step.triggerStart ?? "top 85%",
+    end: step.triggerEnd ?? `+=${step.duration ?? 1}`,
     invalidateOnRefresh: true,
-    scrub: true,
+    ...createScrollPlaybackConfig(step),
   };
 };
 
@@ -78,7 +86,11 @@ export default function ScrollParallax({ as: Component = "div", children, classN
   const elementReference = useRef(null);
 
   useLayoutEffect(() => {
-    if (!elementReference.current || parallaxData.length === 0) {
+    if (
+      !elementReference.current ||
+      parallaxData.length === 0 ||
+      prefersReducedMotion()
+    ) {
       return undefined;
     }
 
@@ -92,6 +104,7 @@ export default function ScrollParallax({ as: Component = "div", children, classN
 
         gsap.fromTo(elementReference.current, animationValues.from, {
           ...animationValues.to,
+          duration: step.animationDuration ?? 0.55,
           ease: easingMap[step.easing] ?? step.easing ?? "none",
           scrollTrigger: createScrollTriggerConfig({ element: elementReference.current, step }),
         });
@@ -104,7 +117,11 @@ export default function ScrollParallax({ as: Component = "div", children, classN
   }, [parallaxData]);
 
   useLayoutEffect(() => {
-    if (!elementReference.current || typeof ResizeObserver === "undefined") {
+    if (
+      !elementReference.current ||
+      typeof ResizeObserver === "undefined" ||
+      prefersReducedMotion()
+    ) {
       return undefined;
     }
 

@@ -1,55 +1,167 @@
 @use 'colors';
-
-.navbarHidden {
-  top: -10vh;
-  transition: top 0.8s ease;
-}
+@use 'uiPrimitives';
 
 .navbar {
-  width: 100vw;
-  height: 8vh;
-  position: -webkit-sticky; /* Safari */
-  position: fixed;
+  position: sticky;
   top: 0;
-  background-color: transparent !important;
-  z-index: 999;
-  transition: top 0.8s ease;
+  z-index: 1000;
+  width: 100%;
+  padding: 14px 0;
+  transition:
+    background-color 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    backdrop-filter 0.22s ease;
 }
 
-.normalizeBtn {
-  background: none;
-  border: none;
-  margin: 0;
+.navbarAtTop {
+  background-color: rgba(colors.$backgroundwhite, 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.navbarScrolled {
+  background-color: rgba(colors.$cardwhite, 0.82);
+  border-bottom: 1px solid rgba(colors.$darkpurple, 0.08);
+  box-shadow: 0 14px 34px rgba(colors.$darkpurple, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.navbarShell {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  @include uiPrimitives.responsiveContainer(1240px);
+  margin: 0 auto;
+}
+
+.navBrandButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
   padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
 }
 
-.navBrand {
-  margin: 6px;
-  border-radius: 45px;
-  border: 1px solid colors.$darkpurple;
-  -moz-box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.4);
-  -webkit-box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.4);
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+.navBrandAvatar {
+  display: block;
+  flex-shrink: 0;
+  border: 1px solid rgba(colors.$darkpurple, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 22px rgba(colors.$darkpurple, 0.1);
 }
 
-.navBtn:hover {
-  background: none;
-  border: none;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
+.navBrandText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
-.navBtn:focus {
-  background: none;
-  border: none;
-  margin: 0;
-  padding: 0;
+.navBrandName {
+  color: colors.$darkpurple;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
 }
 
-@media only screen and (max-width: 800px) {
+.navBrandRole {
+  color: rgba(colors.$textgrey, 0.84);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.navbarLinks {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.navbarLink {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(colors.$darkpurple, 0.08);
+  border-radius: 999px;
+  background-color: rgba(colors.$cardwhite, 0.72);
+  color: rgba(colors.$darkpurple, 0.82);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.navbarLink:hover,
+.navbarLink:focus-visible {
+  border-color: rgba(colors.$darkpurple, 0.2);
+  background-color: rgba(colors.$cardwhite, 0.96);
+  box-shadow: 0 10px 22px rgba(colors.$darkpurple, 0.08);
+  color: colors.$darkpurple;
+  transform: translateY(-1px);
+}
+
+.navbarLink:focus-visible {
+  outline: 2px solid rgba(colors.$lightpurple, 0.5);
+  outline-offset: 3px;
+}
+
+.navbarLinkActive {
+  border-color: transparent;
+  background-color: colors.$darkpurple;
+  box-shadow: 0 12px 24px rgba(colors.$darkpurple, 0.14);
+  color: colors.$backgroundwhite;
+}
+
+.navbarLinkActive:hover,
+.navbarLinkActive:focus-visible {
+  background-color: colors.$lightpurple;
+  color: colors.$backgroundwhite;
+}
+
+@media only screen and (max-width: 980px) {
+  .navbarShell {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .navbarLinks {
+    justify-content: flex-start;
+  }
+}
+
+@media only screen and (max-width: 870px) {
   .navbar {
-    height: 8vh;
-    background-color: colors.$backgroundwhite;
+    padding: 12px 0;
+  }
+
+  .navbarShell {
+  }
+
+  .navBrandRole {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .navbarLinks {
+    gap: 8px;
+  }
+
+  .navbarLink {
+    min-height: 38px;
+    padding: 0 12px;
+    font-size: 0.76rem;
   }
 }

@@ -1,6 +1,6 @@
 import {
   focusAreas,
-  milestoneItems,
+  heroProofItems,
   profileHeadline,
   profileName,
   profileSummary,
@@ -8,8 +8,7 @@ import {
   resumeFilePath,
 } from "../../utils/profile";
 import SocialLinks from "../shared/SocialLinks";
-
-const doneImagePath = "/static/images/donesvg.svg";
+import Avatar from "./Avatar";
 
 const heroActionLinks = [
   {
@@ -18,16 +17,12 @@ const heroActionLinks = [
     href: resumeFilePath,
     label: "Download resume",
   },
+  {
+    className: "headerCardSecondaryLink",
+    href: "#projects",
+    label: "View selected work",
+  },
 ];
-
-const renderMilestone = ({ label, organization }) => (
-  <div className="cardListCompetence" key={`${label}-${organization}`}>
-    <strong className="darkblueTitle">
-      <img className="svgDone" src={doneImagePath} alt="svg done" /> {label}
-    </strong>{" "}
-    | {organization}
-  </div>
-);
 
 const renderHeroActionLink = ({
   className,
@@ -56,28 +51,22 @@ const renderFocusArea = (focusArea) => (
   </li>
 );
 
+const renderHeroProofItem = ({ category, summary, title }) => (
+  <li className="headerCardProofItem" key={category}>
+    <p className="headerCardProofCategory">{category}</p>
+    <p className="headerCardProofTitle">{title}</p>
+    <p className="headerCardProofSummary">{summary}</p>
+  </li>
+);
+
 const HeaderCardContent = () => (
   <>
-    <div className="headerCardText">
-      <p className="card-header-welcome">{profileHeadline}</p>
-      <h1 className="headerCardTitle">{profileName}</h1>
-      <p className="headerCardSummary">{profileSummary}</p>
-      <div className="headerCardActions">
-        {heroActionLinks.map(renderHeroActionLink)}
+    <aside className="headerCardSidebar">
+      <div className="gradient-square-avatar headerCardAvatarFrame">
+        <Avatar />
       </div>
-    </div>
-    <div className="headerCardText">
-      <p
-        className="cardListCompetenceTitle headerCardSectionTitle"
-        style={{ marginTop: "40px" }}
-      >
-        Milestones
-      </p>
-      {milestoneItems.map(renderMilestone)}
-      <div className="grabEmailPart" />
-    </div>
-    <div className="headerCardText headerCardBottomSection">
-      <div className="headerCardBottomBlock">
+
+      <div className="headerCardSidebarBlock">
         <p className="cardListCompetenceTitle headerCardActionTitle">Connect</p>
         <div className="social-icons-header">
           <SocialLinks
@@ -86,13 +75,41 @@ const HeaderCardContent = () => (
           />
         </div>
       </div>
-      <div className="headerCardBottomBlock headerCardResumeBlock">
+
+      <div className="headerCardSidebarBlock">
         <p className="cardListCompetenceTitle headerCardActionTitle">Focus</p>
         <ul className="headerCardFocusList">
           {focusAreas.map(renderFocusArea)}
         </ul>
       </div>
+    </aside>
+
+    <div className="headerCardMain">
+      <div className="headerCardIntro">
+        <p className="card-header-welcome">{profileHeadline}</p>
+        <h1 className="headerCardTitle">{profileName}</h1>
+        <p className="headerCardSummary">{profileSummary}</p>
+      </div>
+
+      <div className="headerCardActions">
+        {heroActionLinks.map(renderHeroActionLink)}
+      </div>
     </div>
+
+    <section
+      aria-labelledby="header-card-proof-title"
+      className="headerCardProofPanel"
+    >
+      <p
+        className="cardListCompetenceTitle headerCardSectionTitle"
+        id="header-card-proof-title"
+      >
+        Selected work
+      </p>
+      <ul className="headerCardProofList">
+        {heroProofItems.map(renderHeroProofItem)}
+      </ul>
+    </section>
   </>
 );
 
