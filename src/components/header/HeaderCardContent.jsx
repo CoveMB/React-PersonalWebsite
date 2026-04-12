@@ -108,8 +108,8 @@ const HeaderCardContent = () => (
 
     <div className="headerCardMain">
       {/* <div className="headerCardIntro"> */}
-        <p className="card-header-welcome">{profileHeadline}</p>
         <h1 className="headerCardTitle">{profileName}</h1>
+        <p className="card-header-welcome">{profileHeadline}</p>
         <p className="headerCardSummary">{profileSummary}</p>
       {/* </div> */}
     </div>
