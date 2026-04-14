@@ -97,21 +97,12 @@ const HeaderCardContent = () => (
           {renderHeroActionLink(resumeActionLink)}
         </div>
       </div>
-
-      {/* <div className="headerCardSidebarBlock">
-        <p className="cardListCompetenceTitle headerCardActionTitle">Jump In</p>
-        <div className="headerCardJumpList">
-          {jumpInLinks.map(renderHeroActionLink)}
-        </div>
-      </div> */}
     </aside>
 
     <div className="headerCardMain">
-      {/* <div className="headerCardIntro"> */}
-        <h1 className="headerCardTitle">{profileName}</h1>
-        <p className="card-header-welcome">{profileHeadline}</p>
-        <p className="headerCardSummary">{profileSummary}</p>
-      {/* </div> */}
+      <h1 className="headerCardTitle">{profileName}</h1>
+      <p className="card-header-welcome">{profileHeadline}</p>
+      <p className="headerCardSummary">{profileSummary}</p>
     </div>
 
     <div

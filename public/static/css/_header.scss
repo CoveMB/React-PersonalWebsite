@@ -9,7 +9,7 @@
   position: relative;
   overflow: hidden;
   padding: clamp(48px, 6vw, 72px) 0 clamp(72px, 9vw, 100px) 0;
-  background-color: colors.$cardwhite;
+  background-color: colors.$backgroundwhite;
   min-height: 100vh;
   min-height: 100svh;
 }
@@ -21,10 +21,15 @@
   background:
     linear-gradient(
       180deg,
-      rgba(17, 27, 44, 0.58) 15%,
-      rgba(32, 48, 74, 0.36) 40%,
-      rgba(colors.$backgroundwhite, 0.74) 80%,
-      rgba(colors.$cardwhite, 0.96) 100%
+      rgba(colors.$darkpurple, 0.12) 0%,
+      rgba(colors.$darkpurple, 0.12) 18%,
+      rgba(colors.$darkpurple, 0.08) 34%,
+      rgba(colors.$backgroundwhite, 0.16) 46%,
+      rgba(colors.$backgroundwhite, 0.52) 58%,
+      rgba(colors.$backgroundwhite, 0.82) 70%,
+      rgba(colors.$backgroundwhite, 0.96) 82%,
+      rgba(colors.$backgroundwhite, 0.99) 90%,
+      colors.$backgroundwhite 100%
     ),
     url("/static/images/header-min.jpg");
   background-position: center center;
@@ -42,6 +47,12 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+}
+
+.headerCardParallax {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
 @media only screen and (max-width: 870px) {

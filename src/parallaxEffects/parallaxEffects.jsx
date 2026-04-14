@@ -8,6 +8,24 @@ const createAnimationProperty = ({
   startValue,
 });
 
+const createScrollTranslateYParallaxStep = ({
+  duration,
+  endValue,
+  start = 0,
+  startValue = 0,
+}) => ({
+  duration,
+  easing: "linear",
+  properties: [
+    createAnimationProperty({
+      endValue,
+      property: "translateY",
+      startValue,
+    }),
+  ],
+  start,
+});
+
 const createSubtleRevealParallaxStep = ({
   animationDuration = 0.55,
   distance = 24,
@@ -33,5 +51,12 @@ const createSubtleRevealParallaxStep = ({
   start: "self",
   triggerStart,
 });
+
+export const heroCardScrollParallaxData = [
+  createScrollTranslateYParallaxStep({
+    duration: 600,
+    endValue: -800,
+  }),
+];
 
 export const subtleRevealParallaxData = [createSubtleRevealParallaxStep()];
