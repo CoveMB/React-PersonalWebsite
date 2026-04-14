@@ -2,7 +2,7 @@
 @use 'uiPrimitives';
 
 .careerChronologySection {
-  @include uiPrimitives.responsiveContainer(1400px, 180px);
+  @include uiPrimitives.responsiveContainer(1160px, 48px);
   margin: 0 auto;
 }
 
