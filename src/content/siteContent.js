@@ -1,3 +1,6 @@
+import { howIWorkBodyTextByTopic } from "./howIWorkTexts";
+import { PROJECTS_SECTION_INTRO } from "./projectTexts";
+
 export const siteSections = [
   {
     elementId: "",
@@ -55,20 +58,17 @@ export const getSiteSection = (sectionId) => siteSectionsById[sectionId] ?? null
 
 export const qualificationContentByTopic = {
   lead: {
-    body:
-      "As a lead developer and a scrum master, I have learned to orient individuals and spread knowledge to empower the team and strengthen its effectiveness supporting the project's goals for continuous improvement.",
+    body: howIWorkBodyTextByTopic.lead,
     emphasis: "Stronger team flow and steady execution delivery",
     titleLines: ["Team", "& Delivery"],
   },
   polyvalent: {
-    body:
-      "I work across product, front-end, back-end, and infrastructure so complex systems can move from idea to delivery with less handoff friction while reviewing processes for enhanced efficiency.",
+    body: howIWorkBodyTextByTopic.polyvalent,
     emphasis: "Taking charge of polyvalent missions, with a holistic point of view",
     titleLines: ["Platform", "& Product"],
   },
   learning: {
-    body:
-      "I learn fast, test new approaches, and turn useful discoveries into repeatable workflows that help both delivery speed and quality. I research and propose new and innovative solutions to challenging problems",
+    body: howIWorkBodyTextByTopic.learning,
     emphasis: "Applied learning with practical leverage",
     titleLines: ["Learning", "& Innovation"],
   },
@@ -78,8 +78,7 @@ export const projectsSectionContent = {
   archivedTitle: "Earlier Work",
   caseStudyLabel: "Case study",
   earlierWorkLabel: "Earlier work",
-  intro:
-    "These projects show recent work across product engineering, systems delivery and developer tooling. Sorted in chronological order.",
+  intro: PROJECTS_SECTION_INTRO,
 };
 
 export const getProjectsArchiveToggleLabel = ({

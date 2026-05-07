@@ -1,3 +1,5 @@
+import { ROLE_FIT_LAB_LEAD } from "./roleFitTexts";
+
 export const roleFitLabSectionContent = {
   badge: "Local role-fit assistant",
   contactLinkLabel: "Send me the role directly",
@@ -5,8 +7,7 @@ export const roleFitLabSectionContent = {
   eyebrow: "Optional lab",
   fieldHint: "Press Enter to generate. Use Shift+Enter for a new line.",
   inputLabel: "Role description",
-  lead:
-    "This browser-side lab gives a quick role-fit read grounded in portfolio work and resume context. It is useful as a fast first pass, not the main hiring narrative.",
+  lead: ROLE_FIT_LAB_LEAD,
   noteLabel: "Local note",
   placeholder:
     "Paste the role here. The assistant will generate a concise fit summary grounded in portfolio work and resume context.",

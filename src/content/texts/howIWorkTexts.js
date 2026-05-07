@@ -1,0 +1,14 @@
+export const HOW_I_WORK_LEAD_BODY =
+  "As a lead developer and a scrum master, I have learned to orient individuals and spread knowledge to empower the team and strengthen its effectiveness supporting the project's goals for continuous improvement.";
+
+export const HOW_I_WORK_POLYVALENT_BODY =
+  "I work across product, front-end, back-end, and infrastructure so complex systems can move from idea to delivery with less handoff friction while reviewing processes for enhanced efficiency.";
+
+export const HOW_I_WORK_LEARNING_BODY =
+  "I learn fast, test new approaches, and turn useful discoveries into repeatable workflows that help both delivery speed and quality. I research and propose new and innovative solutions to challenging problems";
+
+export const howIWorkBodyTextByTopic = {
+  lead: HOW_I_WORK_LEAD_BODY,
+  learning: HOW_I_WORK_LEARNING_BODY,
+  polyvalent: HOW_I_WORK_POLYVALENT_BODY,
+};

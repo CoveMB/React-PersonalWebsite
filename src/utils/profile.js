@@ -1,3 +1,12 @@
+import {
+  FOOTER_LEAD,
+  FOOTER_NOTE_BUILT_WITH,
+  HERO_PROOF_ENGINEERING_SUMMARY,
+  HERO_PROOF_PRODUCT_SUMMARY,
+  HERO_PROOF_TEAM_SUMMARY,
+  PROFILE_SUMMARY,
+} from "../content/profileTexts";
+
 export const profileEmailAddress = "marquisbenjamin23@gmail.com";
 export const emailLink = `mailto:${profileEmailAddress}`;
 const githubProfileUrl = "https://github.com/CoveMB";
@@ -6,11 +15,12 @@ const linkedinProfileUrl =
 const instagramProfileUrl = "https://www.instagram.com/cove.suchness/?hl=en";
 export const profileName = "Cove Marquis";
 export const profileHeadline = "Senior full-stack blockchain developer";
-export const profileSummary =
-  "I build secure product applications and tooling across the full-stack. With a strong focus on product research and development and delivery quality. I value team collaboration and process improvement. Most recently, I worked on blockchain tooling and full-stack product engineering at OpenZeppelin.";
+export const profileSummary = PROFILE_SUMMARY;
 export const profileLocation = "Montreal, Canada";
 export const profileTimezone = "Eastern Time (America/Toronto)";
 export const profileAvailability = "Open to selected opportunities";
+export const footerLead = FOOTER_LEAD;
+export const footerNotes = [FOOTER_NOTE_BUILT_WITH];
 
 export const resumeDownloadName = "Resume Cove Marquis EN.pdf";
 export const resumeFilePath = encodeURI(
@@ -67,18 +77,15 @@ const createHeroProofItem = ({
 export const heroProofItems = [
   createHeroProofItem({
     category: "Engineering",
-    summary:
-      "Built full-stack applications on AWS-backed services, and CI/CD pipelines."
+    summary: HERO_PROOF_ENGINEERING_SUMMARY,
   }),
   createHeroProofItem({
     category: "Product",
-    summary:
-      "Led architecture, MVP scope, user research, and product-market fit decisions.",
+    summary: HERO_PROOF_PRODUCT_SUMMARY,
   }),
   createHeroProofItem({
     category: "Team",
-    summary:
-      "Owned onboarding, facilitated Scrum, mentored developers, and improved daily workflows across delivery teams.",
+    summary: HERO_PROOF_TEAM_SUMMARY,
   }),
 ];
 

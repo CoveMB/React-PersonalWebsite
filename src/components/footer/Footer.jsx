@@ -1,4 +1,6 @@
 import {
+  footerLead,
+  footerNotes,
   profileAvailability,
   profileLocation,
   profileTimezone,
@@ -17,8 +19,6 @@ const footerActionLinks = [
 ];
 
 const footerMetaItems = [profileLocation, profileTimezone];
-
-const footerNotes = ["Built with Next.js, and GSAP."];
 
 const renderActionLink = ({
   className,
@@ -54,7 +54,7 @@ export default function Footer() {
       <div className="footerShell">
         <div className="footerLead">
           <h2 className="footerTitle">
-            Building reliable product and developer tooling.
+            {footerLead}
           </h2>
           <br />
           <ul className="footerMeta">
