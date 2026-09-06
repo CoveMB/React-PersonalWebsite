@@ -36,21 +36,12 @@ export const siteSections = [
   },
 ];
 
-const buildSectionTitlesById = (allSections) =>
-  allSections.reduce(
-    (sectionTitlesById, { id, title }) => ({
-      ...sectionTitlesById,
-      [id]: title,
-    }),
-    {},
-  );
-
-const sectionTitlesById = buildSectionTitlesById(siteSections);
 export const siteSectionsById = Object.fromEntries(
   siteSections.map((section) => [ section.id, section ]),
 );
 
-export const getSectionTitle = (sectionId) => sectionTitlesById[sectionId] ?? "";
+export const getSectionTitle = (sectionId) =>
+  siteSectionsById[sectionId]?.title ?? "";
 export const getSiteSection = (sectionId) => siteSectionsById[sectionId] ?? null;
 
 export const qualificationContentByTopic = {
