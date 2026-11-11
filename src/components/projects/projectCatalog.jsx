@@ -60,6 +60,27 @@ const splitProjectsByFeaturedState = (
 
 export const projectCatalog = [
   createProject({
+    id: "egeriaSystems",
+    image: "/static/images/egeriaSystems.png",
+    imageAlt: "Egeria Systems logo",
+    isFeatured: true,
+    mediaScale: 0.9,
+    primaryHref: "https://github.com/Egeria-Systems/egeria-scaffold",
+    primaryLabel: "View scaffold",
+    techStack: [
+      "Technology Consulting",
+      "Visual Design",
+      "Next.js",
+      "TypeScript",
+      "Cloudflare",
+      "AI Workflows",
+      "Obsidian",
+      "Client Discovery",
+      "Analytics",
+    ],
+    title: "Egeria Systems",
+  }),
+  createProject({
     id: "suiTooling",
     image: "/static/images/suiTooling.svg",
     imageAlt: "Sui tooling project preview",
