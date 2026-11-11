@@ -53,6 +53,23 @@ const createProjectCaseStudy = ({ sections, summary }) => ({
 });
 
 export const projectCaseStudiesById = {
+  egeriaSystems: createProjectCaseStudy({
+    sections: [
+      createCaseStudySection(
+        "context",
+        "I started **Egeria Systems** to help individuals and organizations translate their **goals, values, and personality** into thoughtful websites, applications, and digital workflows.",
+      ),
+      createCaseStudySection(
+        "build",
+        "I combine **client discovery**, **visual direction and user experience design**, and **technical architecture** with hands-on development. Alongside reusable **Next.js and TypeScript** foundations, I build **AI-assisted consulting workflows** for intake, analysis, technology selection, reports, and interactive website maquettes.",
+      ),
+      createCaseStudySection(
+        "outcome",
+        "The work brings **creative direction**, **engineering**, and **structured delivery** into one approach, making client decisions traceable and prototypes or implementation plans easier to review and adapt.",
+      ),
+    ],
+    summary: "Connecting client vision with design, engineering, and repeatable delivery",
+  }),
   suiTooling: createProjectCaseStudy({
     sections: [
       createCaseStudySection(
