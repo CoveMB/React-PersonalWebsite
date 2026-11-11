@@ -61,7 +61,7 @@ export const projectCaseStudiesById = {
       ),
       createCaseStudySection(
         "build",
-        "I combine **client discovery**, **visual direction and user experience design**, and **technical architecture** with hands-on development. Alongside reusable **Next.js and TypeScript** foundations, I build **AI-assisted consulting workflows** for intake, analysis, technology selection, reports, and interactive website maquettes.",
+        "I combine **client discovery**, **visual direction and UX**, and **technical architecture** with hands-on delivery. I built an **Obsidian-based consulting system** for client context and decisions, reusable **Next.js and TypeScript** website foundations, and **AI-assisted workflows** for intake, analysis, reports, and interactive maquettes.",
       ),
       createCaseStudySection(
         "outcome",
