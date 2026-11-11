@@ -1,5 +1,5 @@
-import { howIWorkBodyTextByTopic } from "./howIWorkTexts";
-import { PROJECTS_SECTION_INTRO } from "./projectTexts";
+import { howIWorkBodyTextByTopic } from "./texts/howIWorkTexts";
+import { PROJECTS_SECTION_INTRO } from "./texts/projectTexts";
 
 export const siteSections = [
   {

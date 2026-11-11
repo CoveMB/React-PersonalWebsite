@@ -5,7 +5,7 @@ import {
   HERO_PROOF_PRODUCT_SUMMARY,
   HERO_PROOF_TEAM_SUMMARY,
   PROFILE_SUMMARY,
-} from "../content/profileTexts";
+} from "../content/texts/profileTexts";
 
 export const profileEmailAddress = "marquisbenjamin23@gmail.com";
 export const emailLink = `mailto:${profileEmailAddress}`;

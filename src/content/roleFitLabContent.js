@@ -1,4 +1,4 @@
-import { ROLE_FIT_LAB_LEAD } from "./roleFitTexts";
+import { ROLE_FIT_LAB_LEAD } from "./texts/roleFitTexts";
 
 export const roleFitLabSectionContent = {
   badge: "Local role-fit assistant",

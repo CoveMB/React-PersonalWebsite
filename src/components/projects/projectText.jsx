@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { projectNarrativeTextById } from "../../content/projectTexts";
+import { projectNarrativeTextById } from "../../content/texts/projectTexts";
 
 const emphasisExpression = /(\*\*.*?\*\*)/g;
 const caseStudySectionLabels = {
