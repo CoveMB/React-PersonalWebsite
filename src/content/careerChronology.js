@@ -22,7 +22,16 @@ export const careerChronologySectionContent = {
 export const careerChronologyItems = [
   createCareerChronologyItem({
     category: "Role",
-    dateLabel: "2022-Present",
+    dateLabel: "2026-Present",
+    location: "Montreal, Canada | Remote",
+    organization: "Egeria Systems",
+    summary:
+      "Help individuals and organizations turn their goals and identity into websites and applications, combining visual direction, technical architecture, full-stack development, and reusable consulting workflows.",
+    title: "Consultant",
+  }),
+  createCareerChronologyItem({
+    category: "Role",
+    dateLabel: "2022-2026",
     location: "Remote",
     organization: "OpenZeppelin",
     summary:
