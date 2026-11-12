@@ -19,6 +19,7 @@ export default function ProjectImage({
   mediaScale,
   primaryHref,
   projectImage,
+  projectImageDark,
   sourceHref,
 }) {
   const projectMediaHref = getProjectMediaHref({
@@ -31,10 +32,18 @@ export default function ProjectImage({
       <div className="projectMediaViewport">
         <img
           alt={imageAlt}
-          className="projectMediaImage"
+          className={projectImageDark ? "projectMediaImage projectMediaImage--light" : "projectMediaImage"}
           src={projectImage}
           style={projectMediaImageStyle}
         />
+        {projectImageDark ? (
+          <img
+            alt={imageAlt}
+            className="projectMediaImage projectMediaImage--dark"
+            src={projectImageDark}
+            style={projectMediaImageStyle}
+          />
+        ) : null}
       </div>
     </div>
   );
