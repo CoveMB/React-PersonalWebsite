@@ -210,6 +210,7 @@
 }
 
 .headerContactGlyph {
+  filter: var(--theme-monochrome-filter);
   width: 20px;
   height: 20px;
   display: block;

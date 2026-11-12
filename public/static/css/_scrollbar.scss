@@ -2,7 +2,7 @@
 
 body::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	background-color: colors.$backgroundwhite;
+	background-color: var(--theme-canvas);
 	border-radius: 8px;
 }
 
@@ -18,21 +18,21 @@ body::-webkit-scrollbar-thumb {
 		linear,
 		left bottom,
 		left top,
-		color-stop(0.44, colors.$lightpurple),
-		color-stop(0.72, colors.$darkpurple),
-		color-stop(0.86, colors.$darkpurple)
+		color-stop(0.44, var(--theme-accent)),
+		color-stop(0.72, var(--theme-deep)),
+		color-stop(0.86, var(--theme-deep))
 	);
 }
 
 .scrollbarxcustom::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	background-color: colors.$backgroundwhite;
+	background-color: var(--theme-canvas);
 	border-radius: 8px;
 }
 
 .scrollbarxcustom::-webkit-scrollbar {
 	width: 5px;
-	background-color: colors.$backgroundwhite;
+	background-color: var(--theme-canvas);
 }
 
 .scrollbarxcustom::-webkit-scrollbar-thumb {
@@ -41,21 +41,21 @@ body::-webkit-scrollbar-thumb {
 		linear,
 		left bottom,
 		left top,
-		color-stop(0.44, colors.$lightpurple),
-		color-stop(0.72, colors.$darkpurple),
-		color-stop(0.86, colors.$darkpurple)
+		color-stop(0.44, var(--theme-accent)),
+		color-stop(0.72, var(--theme-deep)),
+		color-stop(0.86, var(--theme-deep))
 	);
 }
 
 .scrollbarycustom::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	background-color: colors.$backgroundwhite;
+	background-color: var(--theme-canvas);
 	border-radius: 8px;
 }
 
 .scrollbarycustom::-webkit-scrollbar {
 	height: 5px;
-	background-color: colors.$backgroundwhite;
+	background-color: var(--theme-canvas);
 }
 
 .scrollbarycustom::-webkit-scrollbar-thumb {
@@ -64,8 +64,8 @@ body::-webkit-scrollbar-thumb {
 		linear,
 		left bottom,
 		left top,
-		color-stop(0.44, colors.$darkpurple),
-		color-stop(0.72, colors.$darkpurple),
-		color-stop(0.86, colors.$darkpurple)
+		color-stop(0.44, var(--theme-deep)),
+		color-stop(0.72, var(--theme-deep)),
+		color-stop(0.86, var(--theme-deep))
 	);
 }
