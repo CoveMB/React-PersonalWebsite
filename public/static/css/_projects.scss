@@ -245,6 +245,24 @@
   transform: scale(var(--project-media-scale, 1));
 }
 
+// The manual theme override takes precedence over OS preferences. Only the
+// Egeria project renders a second (vector) source; other projects are unchanged.
+.projectMediaImage--dark {
+  display: none;
+}
+
+:root[data-theme="dark"] {
+  .projectMediaImage--light { display: none; }
+  .projectMediaImage--dark { display: block; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    .projectMediaImage--light { display: none; }
+    .projectMediaImage--dark { display: block; }
+  }
+}
+
 .projectTechList {
   display: flex;
   flex-wrap: wrap;
