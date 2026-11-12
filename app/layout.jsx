@@ -27,6 +27,7 @@ const handwrittenFont = Caveat({
 export default function RootLayout({ children }) {
   return (
     <html
+      id="portfolio-scroll-viewport"
       suppressHydrationWarning
       lang="en-CA"
       className={`${sansFont.variable} ${displayFont.variable} ${handwrittenFont.variable} scrollNoOverflow`}
