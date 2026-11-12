@@ -87,10 +87,10 @@ const HeaderCardContent = () => (
 
       <div className="headerCardSidebarBlock">
         {/* <p className="cardListCompetenceTitle headerCardActionTitle">Connect</p> */}
-        <div className="social-icons-header">
+        <div className="headerContactGrid">
           <SocialLinks
-            imageClassName="svgSocialHeader"
-            linkClassName="headerSocialLink"
+            imageClassName="headerContactGlyph"
+            linkClassName="headerContactAction"
           />
         </div>
         <div className="headerCardJumpList">

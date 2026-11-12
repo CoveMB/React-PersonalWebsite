@@ -177,7 +177,7 @@
   text-transform: uppercase;
 }
 
-.social-icons-header {
+.headerContactGrid {
   display: grid;
   grid-template-columns: repeat(2, 52px);
   gap: 12px;
@@ -188,7 +188,7 @@
   margin: 0 auto;
 }
 
-.headerSocialLink {
+.headerContactAction {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -202,14 +202,14 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.headerSocialLink:hover,
-.headerSocialLink:focus-visible {
+.headerContactAction:hover,
+.headerContactAction:focus-visible {
   border-color: rgba(colors.$darkpurple, 0.24);
   box-shadow: 0 16px 30px rgba(colors.$darkpurple, 0.12);
   transform: translateY(-2px);
 }
 
-.svgSocialHeader {
+.headerContactGlyph {
   width: 20px;
   height: 20px;
   display: block;
@@ -369,11 +369,11 @@
     width: 100%;
   }
 
-  .social-icons-header {
+  .headerContactGrid {
     grid-template-columns: repeat(2, 48px);
   }
 
-  .headerSocialLink {
+  .headerContactAction {
     width: 48px;
     height: 48px;
   }
