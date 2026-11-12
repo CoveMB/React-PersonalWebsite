@@ -153,11 +153,26 @@
 .careerChronologyItem--certification,
 .careerChronologyItem--education {
   .careerChronologyCard {
-    padding: 12px 20px;
+    padding: 8px 20px;
+  }
+
+  .careerChronologyCategory {
+    margin-bottom: 4px;
   }
 
   .careerChronologyTitle {
     font-size: 0.98rem;
+    line-height: 1.3;
+  }
+
+  .careerChronologyMeta {
+    margin-top: 3px;
+    line-height: 1.35;
+  }
+
+  .careerChronologySummary {
+    margin-top: 5px;
+    line-height: 1.4;
   }
 }
 
