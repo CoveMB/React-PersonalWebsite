@@ -1,88 +1,125 @@
-const ACTIVE_ATTRIBUTE = "data-aurora-scroll-active";
-const HOVER_ATTRIBUTE = "data-aurora-scroll-hover";
+const COMET_SIZE = 5;
+const READY_ATTRIBUTE = 'data-aurora-comet-ready';
 
-// Native scrollbar thumbs shrink as document height grows. Match their
-// approximate geometry without replacing, intercepting, or hiding them.
-export function getAuroraGlowGeometry({ viewportHeight, scrollHeight, scrollTop }) {
-  if (!Number.isFinite(viewportHeight) || !Number.isFinite(scrollHeight) ||
-      viewportHeight <= 0 || scrollHeight <= viewportHeight) {
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+// A fixed 5px comet moves across the rail's full length while the document
+// retains its native scrolling, keyboard, wheel, and touch behaviour.
+export function getCometGeometry({ viewportHeight, scrollHeight, scrollTop, railHeight }) {
+  if (![viewportHeight, scrollHeight, scrollTop, railHeight].every(Number.isFinite) ||
+      viewportHeight <= 0 || railHeight <= COMET_SIZE || scrollHeight <= viewportHeight) {
     return null;
   }
 
-  const height = Math.min(viewportHeight, Math.max(28, viewportHeight ** 2 / scrollHeight));
-  const travel = viewportHeight - height;
-  const progress = Math.max(0, Math.min(1, scrollTop / (scrollHeight - viewportHeight)));
-
-  return { height, top: travel * progress };
+  const progress = clamp(scrollTop / (scrollHeight - viewportHeight), 0, 1);
+  return { top: progress * (railHeight - COMET_SIZE), percentage: Math.round(progress * 100) };
 }
 
-export function observeScrollActivity({
+export function mountAuroraCometScrollbar({
+  railElement,
   scrollTarget = window,
   rootElement = document.documentElement,
-  glowElement = null,
+  scrollingElement = document.scrollingElement || document.documentElement,
   idleDelayMs = 220,
 } = {}) {
-  let idleTimerId;
-  let attached = true;
+  if (!railElement) return () => {};
 
-  const updateGlowGeometry = () => {
-    if (!glowElement) return;
-    const metrics = getAuroraGlowGeometry({
-      viewportHeight: rootElement.clientHeight || scrollTarget.innerHeight,
-      scrollHeight: rootElement.scrollHeight,
-      scrollTop: scrollTarget.scrollY,
-    });
-    glowElement.hidden = metrics === null;
-    if (metrics) {
-      glowElement.style.setProperty("--aurora-glow-height", `${metrics.height}px`);
-      glowElement.style.setProperty("--aurora-glow-top", `${metrics.top}px`);
-    }
+  let previousScrollTop = scrollingElement.scrollTop;
+  let idleTimer;
+  let mounted = true;
+
+  const measurements = () => ({
+    viewportHeight: rootElement.clientHeight || scrollTarget.innerHeight,
+    scrollHeight: scrollingElement.scrollHeight,
+    scrollTop: scrollingElement.scrollTop,
+    railHeight: railElement.clientHeight,
+  });
+
+  const update = () => {
+    if (!mounted) return;
+    // Measure even after an earlier empty page hid the indicator.
+    railElement.hidden = false;
+    const geometry = getCometGeometry(measurements());
+    railElement.hidden = geometry === null;
+    if (!geometry) return;
+    railElement.style.setProperty('--comet-y', `${geometry.top}px`);
+    railElement.setAttribute('aria-valuenow', String(geometry.percentage));
   };
 
   const onScroll = () => {
-    rootElement.setAttribute(ACTIVE_ATTRIBUTE, "");
-    scrollTarget.clearTimeout(idleTimerId);
-    idleTimerId = scrollTarget.setTimeout(() => {
-      rootElement.removeAttribute(ACTIVE_ATTRIBUTE);
-      idleTimerId = undefined;
+    const scrollTop = scrollingElement.scrollTop;
+    if (Math.abs(scrollTop - previousScrollTop) > 0.5) {
+      railElement.dataset.direction = scrollTop > previousScrollTop ? 'down' : 'up';
+      previousScrollTop = scrollTop;
+    }
+    railElement.classList.add('is-moving');
+    scrollTarget.clearTimeout(idleTimer);
+    idleTimer = scrollTarget.setTimeout(() => {
+      railElement.classList.remove('is-moving');
+      idleTimer = undefined;
     }, idleDelayMs);
-    updateGlowGeometry();
+    update();
   };
 
-  const onPointerMove = ({ clientX }) => {
-    if (clientX >= scrollTarget.innerWidth - 16) {
-      rootElement.setAttribute(HOVER_ATTRIBUTE, "");
-    } else {
-      rootElement.removeAttribute(HOVER_ATTRIBUTE);
+  const seek = (clientY) => {
+    const rect = railElement.getBoundingClientRect();
+    const progress = clamp((clientY - rect.top - COMET_SIZE / 2) / (rect.height - COMET_SIZE), 0, 1);
+    const { viewportHeight, scrollHeight } = measurements();
+    scrollTarget.scrollTo({ top: progress * Math.max(0, scrollHeight - viewportHeight), behavior: 'instant' });
+  };
+
+  const onPointerDown = (event) => {
+    if (event.button !== 0 || railElement.hidden) return;
+    event.preventDefault();
+    railElement.setPointerCapture(event.pointerId);
+    seek(event.clientY);
+  };
+  const onPointerMove = (event) => {
+    if (railElement.hasPointerCapture(event.pointerId)) seek(event.clientY);
+  };
+  const onKeyDown = (event) => {
+    const scrollStep = 48;
+    const pageStep = (rootElement.clientHeight || scrollTarget.innerHeight) * 0.8;
+    const maxScroll = Math.max(0, scrollingElement.scrollHeight - (rootElement.clientHeight || scrollTarget.innerHeight));
+    const changes = {
+      ArrowDown: () => scrollTarget.scrollBy({ top: scrollStep, behavior: 'instant' }),
+      ArrowUp: () => scrollTarget.scrollBy({ top: -scrollStep, behavior: 'instant' }),
+      PageDown: () => scrollTarget.scrollBy({ top: pageStep, behavior: 'instant' }),
+      PageUp: () => scrollTarget.scrollBy({ top: -pageStep, behavior: 'instant' }),
+      Home: () => scrollTarget.scrollTo({ top: 0, behavior: 'instant' }),
+      End: () => scrollTarget.scrollTo({ top: maxScroll, behavior: 'instant' }),
+      ' ': () => scrollTarget.scrollBy({ top: event.shiftKey ? -pageStep : pageStep, behavior: 'instant' }),
+    };
+    if (Object.hasOwn(changes, event.key)) {
+      event.preventDefault();
+      changes[event.key]();
     }
   };
-  const onPointerLeave = () => rootElement.removeAttribute(HOVER_ATTRIBUTE);
 
-  scrollTarget.addEventListener("scroll", onScroll, { passive: true });
-  if (glowElement) {
-    scrollTarget.addEventListener("resize", updateGlowGeometry);
-    scrollTarget.addEventListener("pointermove", onPointerMove, { passive: true });
-    scrollTarget.addEventListener("pointerleave", onPointerLeave);
-    updateGlowGeometry();
-  }
+  scrollTarget.addEventListener('scroll', onScroll, { passive: true });
+  scrollTarget.addEventListener('resize', update);
+  railElement.addEventListener('pointerdown', onPointerDown);
+  railElement.addEventListener('pointermove', onPointerMove);
+  railElement.addEventListener('keydown', onKeyDown);
 
-  const resizeObserver = glowElement && scrollTarget.ResizeObserver
-    ? new scrollTarget.ResizeObserver(updateGlowGeometry)
+  const resizeObserver = scrollTarget.ResizeObserver
+    ? new scrollTarget.ResizeObserver(update)
     : null;
-  resizeObserver?.observe(rootElement);
+  resizeObserver?.observe(scrollingElement);
+  rootElement.setAttribute(READY_ATTRIBUTE, '');
+  update();
 
   return () => {
-    if (!attached) return;
-    attached = false;
-    scrollTarget.removeEventListener("scroll", onScroll);
-    scrollTarget.clearTimeout(idleTimerId);
-    rootElement.removeAttribute(ACTIVE_ATTRIBUTE);
-    if (glowElement) {
-      scrollTarget.removeEventListener("resize", updateGlowGeometry);
-      scrollTarget.removeEventListener("pointermove", onPointerMove);
-      scrollTarget.removeEventListener("pointerleave", onPointerLeave);
-      rootElement.removeAttribute(HOVER_ATTRIBUTE);
-      resizeObserver?.disconnect();
-    }
+    if (!mounted) return;
+    mounted = false;
+    scrollTarget.removeEventListener('scroll', onScroll);
+    scrollTarget.removeEventListener('resize', update);
+    railElement.removeEventListener('pointerdown', onPointerDown);
+    railElement.removeEventListener('pointermove', onPointerMove);
+    railElement.removeEventListener('keydown', onKeyDown);
+    scrollTarget.clearTimeout(idleTimer);
+    resizeObserver?.disconnect();
+    railElement.classList.remove('is-moving');
+    rootElement.removeAttribute(READY_ATTRIBUTE);
   };
 }
