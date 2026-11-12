@@ -14,7 +14,7 @@
 - WebKit/Chromium root scrollbar **5px**; Firefox `thin` approximation is acceptable where precise pixel size is unavailable.
 - Aurora blue gradient idle; distinct brighter hover/scroll state; ~220ms cooldown.
 - Preserve native document scroll, existing light palette and any later dark theme, nested custom scrollbar utilities, reduced-motion support, and current layout.
-- No custom overlay, scrolling engine, packages, or theme implementation.
+- No custom *draggable* overlay, scrolling engine, packages, or theme implementation; a decorative non-interactive glow is permitted after native shadow clipping was confirmed.
 
 ## Review Focus
 - Rapid successive scroll events: timer restarts; the active state cannot expire after an earlier event (controller test).
@@ -58,3 +58,25 @@
 - [ ] **Step 4: Run verification.** `node --test tests/scrollbarActivity.test.mjs`; `npm run lint` and `npm run build` if dependencies available; otherwise record inability, and use syntax and browser checks rather than claiming those passed.
 - [ ] **Step 5: Independently review implementation.** Compare the full diff with this plan and spec for event lifecycle, visual fallback, accessibility, scope creep and unintended changes; fix verified problems, rerun affected checks.
 - [ ] **Step 6: Commit coherently and open a PR** from `feat/aurora-trace-scrollbar-5px` into `master`, including review and verification status.
+
+---
+
+### Follow-up corrective task: Make the selected glow visibly match the demo
+
+**Reason:** The original implementation changed the native scrollbar thumb's CSS box shadow, but real Chromium screenshots confirmed that shadows painted on native scrollbar pseudo-elements do not extend into the document. The reference demo uses a regular element whose glow spreads beyond its bounds; checking CSS computed styles alone missed the visual requirement.
+
+**Files:**
+- Modify: `src/utils/scrollbarActivity.mjs` and `src/components/animation/ScrollbarActivity.jsx`
+- Modify: `public/static/css/_scrollbar.scss`
+- Add: `tests/scrollbarGlow.test.mjs`
+
+**Interfaces:**
+- `getAuroraGlowGeometry({ viewportHeight, scrollHeight, scrollTop }) -> { height, top } | null`
+- `observeScrollActivity({ glowElement, ...existingOptions }) -> cleanup`
+- `.auroraScrollbarGlow` is non-interactive and aria-hidden, positioned beside (not replacing) the 5px native thumb.
+
+- [x] **Step 1: Reproduce the missing glow.** Chromium screenshot and pixel sampling showed no coloured pixels outside the native 5px gutter even though the thumb CSS had a box shadow.
+- [x] **Step 2: Add failing behavioural tests.** Test geometry at top/middle/bottom, no-scroll/overscroll, lifecycle on scroll/resize/unmount, and hover proximity. The tests initially failed against the prior version.
+- [x] **Step 3: Implement minimal correction.** Position a fixed glow layer using the calculated native scrollbar thumb ratio; make it brighter on scroll or pointer proximity, with a quiet idle state and reduced-motion-safe styling. Native scrolling and scrollbar drag remain unchanged.
+- [x] **Step 4: Verify.** Node tests 8/8 passed; headed Chromium screenshots show visibly illuminated pixels outside the original clipping region, with a 5px native gutter, normal wheel/keyboard scrolling, reduced-motion stable state and no overflow. Both light and dark backgrounds were checked.
+- [ ] **Step 5: Final remote verification and PR refresh.** Inspect remote diff, check available CI status, and preserve remaining browser-specific limitations.
