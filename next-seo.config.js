@@ -1,15 +1,19 @@
 const siteUrl = "https://cove-marquis-bortoli.xyz";
 const canonicalUrl = `${siteUrl}/`;
-const fullName = "Cove Marquis-Bortoli";
-const roleTitle = "Senior Full Stack Blockchain Developer";
+const fullName = "cove marquis-bortoli";
+const roleTitle = "Senior Full-Stack Engineer & Technology Consultant";
 const defaultTitle = `${roleTitle} | ${fullName}`;
 const siteName = `${fullName} Portfolio`;
 const themeColor = "#52021b";
-const description = "Portfolio of Cove Marquis-Bortoli, a senior full stack blockchain developer building secure products across blockchain, web, AI, and developer tooling.";
+const description = "Portfolio of cove marquis-bortoli, a senior full-stack engineer and technology consultant working across software architecture, web applications, UX design, blockchain, developer tooling, and automation.";
 const keywords = [
   fullName,
   roleTitle,
   "full stack developer",
+  "technology consultant",
+  "web application development",
+  "user experience design",
+  "Egeria Systems",
   "blockchain developer",
   "OpenZeppelin",
   "React",
@@ -26,14 +30,14 @@ const openGraphImages = [
     url: createAbsoluteUrl("/static/images/header-min.jpg"),
     width: 3183,
     height: 2045,
-    alt: "Portfolio header artwork for Cove Marquis-Bortoli",
+    alt: "Portfolio header artwork for cove marquis-bortoli",
     type: "image/jpeg",
   },
   {
     url: createAbsoluteUrl("/static/images/avatar.jpg"),
     width: 2210,
     height: 2209,
-    alt: "Portrait of Cove Marquis-Bortoli",
+    alt: "Portrait of cove marquis-bortoli",
     type: "image/jpeg",
   },
 ];
@@ -107,8 +111,8 @@ export const metadata = {
     description,
     siteName,
     images: openGraphImages,
-    firstName: "Cove",
-    lastName: "Marquis-Bortoli",
+    firstName: "cove",
+    lastName: "marquis-bortoli",
   },
   twitter: {
     card: "summary_large_image",

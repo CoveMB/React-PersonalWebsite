@@ -156,7 +156,7 @@
 @media only screen and (max-width: 640px) {
   .careerChronologyItem {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 4px;
   }
 
   .careerChronologyDate {
@@ -164,26 +164,6 @@
   }
 
   .careerChronologyConnector {
-    min-height: 18px;
-  }
-
-  .careerChronologyConnector::before {
-    top: 0;
-    bottom: 0;
-    left: 13px;
-    right: auto;
-    width: 1px;
-    height: auto;
-    transform: none;
-    background:
-      linear-gradient(180deg, rgba(colors.$darkpurple, 0.14) 0%, rgba(colors.$lightpurple, 0.56) 100%);
-  }
-
-  .careerChronologyConnector::after {
-    top: auto;
-    bottom: 1px;
-    left: 8px;
-    right: auto;
-    transform: rotate(135deg);
+    display: none;
   }
 }
