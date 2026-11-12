@@ -69,7 +69,7 @@ export const qualificationContentByTopic = {
   },
   learning: {
     body: howIWorkBodyTextByTopic.learning,
-    emphasis: "Design that reflects the client's goals and identity",
+    emphasis: "Designing simple and efficient systems",
     titleLines: ["Discovery", "& Design"],
   },
 };

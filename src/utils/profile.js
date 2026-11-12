@@ -5,6 +5,7 @@ import {
   HERO_PROOF_PRODUCT_SUMMARY,
   HERO_PROOF_TEAM_SUMMARY,
   PROFILE_SUMMARY,
+  HERO_PROOF_TOOLING_SUMMARY
 } from "../content/texts/profileTexts";
 
 export const profileEmailAddress = "marquisbenjamin23@gmail.com";
@@ -82,11 +83,15 @@ export const heroProofItems = [
     summary: HERO_PROOF_ENGINEERING_SUMMARY,
   }),
   createHeroProofItem({
-    category: "Product",
+    category: "Producting",
     summary: HERO_PROOF_PRODUCT_SUMMARY,
   }),
   createHeroProofItem({
-    category: "Team",
+    category: "Tooling",
+    summary: HERO_PROOF_TOOLING_SUMMARY,
+  }),
+  createHeroProofItem({
+    category: "Teaming",
     summary: HERO_PROOF_TEAM_SUMMARY,
   }),
 ];
