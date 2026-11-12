@@ -7,15 +7,15 @@ export const FOOTER_LEAD =
 export const FOOTER_NOTE_BUILT_WITH = "Built with Next.js, and GSAP.";
 
 export const HERO_PROOF_ENGINEERING_SUMMARY =
-  "Built full-stack and blockchain applications as event driven systems on Cloud services with CI/CD pipelines.";
+  "Built with care full-stack and blockchain applications as event driven systems on Cloud services with CI/CD pipelines.";
 
 export const HERO_PROOF_PRODUCT_SUMMARY =
-  "Connected architecture, product direction, user research, and visual design with business goals and user needs.";
+  "Connected mindfully user research, product direction and creative visual design with business goals and user needs.";
 
 export const HERO_PROOF_TOOLING_SUMMARY =
-  "Built developer tooling, internal systems and AI assisted workflows for ease and efficiency.";
+  "Built easeful developer tooling, internal systems, methodology and AI assisted workflows for smoother efficiency.";
 
 export const HERO_PROOF_TEAM_SUMMARY =
-  "Owned onboarding, facilitated Scrum, mentored developers, and improved daily workflows across delivery teams.";
+  "Responsibly owned onboarding, facilitated Scrum, mentored developers, and improved daily workflows across delivery teams.";
 
   
