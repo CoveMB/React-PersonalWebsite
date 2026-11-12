@@ -146,22 +146,14 @@
   text-wrap: pretty;
 }
 
-.careerChronologyItem--role {
-  .careerChronologyCard {
-    border-color: rgba(colors.$lightpurple, 0.2);
-    background: linear-gradient(180deg, rgba(colors.$lightpurple, 0.07) 0%, colors.$cardwhite 100%);
-  }
-
-  .careerChronologyTitle {
-    font-size: 1.14rem;
-  }
+.careerChronologyItem--role .careerChronologyTitle {
+  font-size: 1.14rem;
 }
 
 .careerChronologyItem--certification,
 .careerChronologyItem--education {
   .careerChronologyCard {
-    padding: 16px 18px;
-    box-shadow: 0 8px 18px rgba(colors.$darkpurple, 0.035);
+    padding: 12px 20px;
   }
 
   .careerChronologyTitle {
