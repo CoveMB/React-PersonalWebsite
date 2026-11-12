@@ -39,9 +39,9 @@
 @mixin elevatedSurface(
   $padding: 28px,
   $border-radius: 24px,
-  $border-color: rgb(var(--theme-deep-rgb) / 0.08),
+  $border-color: rgb(var(--theme-deep-rgb) / 0.18),
   $background-start: rgb(var(--theme-card-rgb) / 0.94),
-  $background-end: rgb(var(--theme-canvas-rgb) / 0.98),
+  $background-end: rgb(var(--theme-canvas-rgb) / 0.99),
   $box-shadow: (
     0 22px 52px rgb(var(--theme-shadow-rgb) / 0.07),
     0 6px 18px rgb(var(--theme-shadow-rgb) / 0.04)
