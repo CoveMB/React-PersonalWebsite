@@ -2,6 +2,7 @@ import { Caveat, Fraunces, Manrope } from "next/font/google";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { metadata, viewport } from "../next-seo.config";
 import { getThemeBootstrapScript } from "../src/utils/theme.mjs";
+import ScrollbarActivity from "../src/components/animation/ScrollbarActivity";
 import "../public/static/css/application.scss";
 
 export { metadata, viewport };
@@ -27,6 +28,7 @@ const handwrittenFont = Caveat({
 export default function RootLayout({ children }) {
   return (
     <html
+      id="portfolio-scroll-viewport"
       suppressHydrationWarning
       lang="en-CA"
       className={`${sansFont.variable} ${displayFont.variable} ${handwrittenFont.variable} scrollNoOverflow`}
@@ -44,6 +46,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body suppressHydrationWarning>
+        <ScrollbarActivity />
         {children}
         <GoogleTagManager gtmId="GTM-PJVMQR7" />
       </body>
