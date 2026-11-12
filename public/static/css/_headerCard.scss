@@ -10,13 +10,13 @@
   width: 85%;
   margin: 0;
   padding: clamp(28px, 4vw, 42px);
-  border: 1px solid rgba(colors.$darkpurple, 0.1);
+  border: 1px solid rgb(var(--theme-deep-rgb) / 0.1);
   border-radius: 36px;
   background:
-    linear-gradient(180deg, rgba(colors.$cardwhite, 0.82) 0%, rgba(colors.$backgroundwhite, 0.9) 100%);
+    linear-gradient(180deg, rgb(var(--theme-hero-rgb) / 0.82) 0%, rgb(var(--theme-canvas-rgb) / 0.9) 100%);
   box-shadow:
-    0 28px 70px rgba(colors.$darkpurple, 0.14),
-    0 8px 24px rgba(colors.$darkpurple, 0.08);
+    0 28px 70px rgb(var(--theme-shadow-rgb) / 0.14),
+    0 8px 24px rgb(var(--theme-shadow-rgb) / 0.08);
   backdrop-filter: blur(18px);
 }
 
@@ -66,7 +66,7 @@
 
 .card-header-welcome {
   margin: 0;
-  color: rgba(colors.$lightpurple, 0.9);
+  color: rgb(var(--theme-accent-rgb) / 0.9);
   font-size: 0.84rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -76,7 +76,7 @@
 
 .headerCardTitle {
   margin: 0;
-  color: colors.$darkpurple;
+  color: var(--theme-deep);
   font-family: var(--font-display), serif;
   font-size: clamp(2.8rem, 4.8vw, 4.6rem);
   font-style: normal;
@@ -92,7 +92,7 @@
 .headerCardSummary {
   max-width: 34rem;
   margin: 18px 0 0 0;
-  color: rgba(colors.$textgrey, 0.92);
+  color: rgb(var(--theme-body-rgb) / 0.92);
   font-size: var(--body-copy-size);
   font-weight: var(--body-copy-weight);
   line-height: var(--body-copy-line-height);
@@ -115,15 +115,15 @@
 }
 
 .headerCardPrimaryLink {
-  background-color: colors.$darkpurple;
-  color: colors.$backgroundwhite;
-  box-shadow: 0 14px 30px rgba(colors.$darkpurple, 0.18);
+  background-color: var(--theme-primary-fill);
+  color: var(--theme-primary-text);
+  box-shadow: 0 14px 30px rgb(var(--theme-shadow-rgb) / 0.18);
 }
 
 .headerCardSecondaryLink {
-  border: 1px solid rgba(colors.$darkpurple, 0.16);
-  background-color: rgba(colors.$cardwhite, 0.82);
-  color: colors.$darkpurple;
+  border: 1px solid var(--theme-control-border);
+  background-color: rgb(var(--theme-nested-rgb) / 0.82);
+  color: var(--theme-deep);
 }
 
 .headerCardPrimaryLink,
@@ -132,7 +132,7 @@
 .headerCardPrimaryLink:active,
 .headerCardPrimaryLink:focus,
 .headerCardPrimaryLink:focus-visible {
-  color: colors.$backgroundwhite;
+  color: var(--theme-primary-text);
   text-decoration: none;
 }
 
@@ -142,34 +142,34 @@
 .headerCardSecondaryLink:active,
 .headerCardSecondaryLink:focus,
 .headerCardSecondaryLink:focus-visible {
-  color: colors.$darkpurple;
+  color: var(--theme-deep);
   text-decoration: none;
 }
 
 .headerCardPrimaryLink:hover,
 .headerCardPrimaryLink:focus-visible {
-  background-color: colors.$lightpurple;
-  box-shadow: 0 18px 34px rgba(colors.$darkpurple, 0.22);
+  background-color: var(--theme-primary-hover);
+  box-shadow: 0 18px 34px rgb(var(--theme-shadow-rgb) / 0.22);
   transform: translateY(-2px);
 }
 
 .headerCardSecondaryLink:hover,
 .headerCardSecondaryLink:focus-visible {
-  border-color: rgba(colors.$darkpurple, 0.3);
-  background-color: rgba(colors.$cardwhite, 0.98);
-  box-shadow: 0 12px 24px rgba(colors.$darkpurple, 0.08);
+  border-color: rgb(var(--theme-deep-rgb) / 0.3);
+  background-color: rgb(var(--theme-nested-rgb) / 0.98);
+  box-shadow: 0 12px 24px rgb(var(--theme-shadow-rgb) / 0.08);
   transform: translateY(-2px);
 }
 
 .headerCardPrimaryLink:focus-visible,
 .headerCardSecondaryLink:focus-visible {
-  outline: 2px solid colors.$lightpurple;
+  outline: 2px solid var(--theme-accent);
   outline-offset: 4px;
 }
 
 .headerCardActionTitle {
   margin: 0;
-  color: rgba(colors.$darkpurple, 0.72);
+  color: rgb(var(--theme-deep-rgb) / 0.72);
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -194,18 +194,18 @@
   justify-content: center;
   width: 52px;
   height: 52px;
-  border: 1px solid rgba(colors.$darkpurple, 0.1);
+  border: 1px solid rgb(var(--theme-deep-rgb) / 0.1);
   border-radius: 18px;
-  background-color: rgba(colors.$cardwhite, 0.84);
-  box-shadow: 0 12px 26px rgba(colors.$darkpurple, 0.08);
+  background-color: rgb(var(--theme-nested-rgb) / 0.84);
+  box-shadow: 0 12px 26px rgb(var(--theme-shadow-rgb) / 0.08);
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .headerContactAction:hover,
 .headerContactAction:focus-visible {
-  border-color: rgba(colors.$darkpurple, 0.24);
-  box-shadow: 0 16px 30px rgba(colors.$darkpurple, 0.12);
+  border-color: rgb(var(--theme-deep-rgb) / 0.24);
+  box-shadow: 0 16px 30px rgb(var(--theme-shadow-rgb) / 0.12);
   transform: translateY(-2px);
 }
 
@@ -234,16 +234,16 @@
   flex-direction: column;
   gap: 18px;
   padding: 24px;
-  border: 1px solid rgba(colors.$darkpurple, 0.08);
+  border: 1px solid rgb(var(--theme-deep-rgb) / 0.08);
   border-radius: 28px;
   background:
-    linear-gradient(180deg, rgba(colors.$cardwhite, 0.9) 0%, rgba(colors.$backgroundwhite, 0.92) 100%);
-  box-shadow: 0 20px 48px rgba(colors.$darkpurple, 0.08);
+    linear-gradient(180deg, rgb(var(--theme-raised-rgb) / 0.9) 0%, rgb(var(--theme-canvas-rgb) / 0.92) 100%);
+  box-shadow: 0 20px 48px rgb(var(--theme-shadow-rgb) / 0.08);
 }
 
 .headerCardSectionTitle {
   margin: 0;
-  color: rgba(colors.$lightpurple, 0.88);
+  color: rgb(var(--theme-accent-rgb) / 0.88);
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -265,14 +265,14 @@
   flex-direction: column;
   gap: 6px;
   padding: 14px 16px;
-  border: 1px solid rgba(colors.$darkpurple, 0.08);
+  border: 1px solid rgb(var(--theme-deep-rgb) / 0.08);
   border-radius: 20px;
-  background-color: rgba(colors.$cardwhite, 0.84);
+  background-color: rgb(var(--theme-card-rgb) / 0.84);
 }
 
 .headerCardProofCategory {
   margin: 0;
-  color: rgba(colors.$lightpurple, 0.92);
+  color: rgb(var(--theme-accent-rgb) / 0.92);
   font-size: 0.74rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -281,7 +281,7 @@
 
 .headerCardProofTitle {
   margin: 0;
-  color: colors.$darkpurple;
+  color: var(--theme-deep);
   font-size: 0.98rem;
   font-weight: 700;
   line-height: 1.35;
@@ -289,7 +289,7 @@
 
 .headerCardProofSummary {
   margin: 0;
-  color: rgba(colors.$textgrey, 0.86);
+  color: rgb(var(--theme-body-rgb) / 0.86);
   font-size: 0.92rem;
   font-weight: 500;
   line-height: 1.5;

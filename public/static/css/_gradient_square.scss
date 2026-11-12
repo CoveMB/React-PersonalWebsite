@@ -11,11 +11,11 @@
   width: 100%;
   padding: 6px;
   margin: 9px 0 0 0;
-  border: 1px solid rgba(colors.$darkpurple, 0.08);
+  border: 1px solid rgb(var(--theme-deep-rgb) / 0.08);
   border-radius: 32px;
   background:
-    linear-gradient(180deg, rgba(colors.$cardwhite, 0.96) 0%, rgba(colors.$backgroundwhite, 0.84) 100%);
-  box-shadow: 0 18px 38px rgba(colors.$darkpurple, 0.14);
+    linear-gradient(180deg, rgb(var(--theme-card-rgb) / 0.96) 0%, rgb(var(--theme-canvas-rgb) / 0.84) 100%);
+  box-shadow: 0 18px 38px rgb(var(--theme-shadow-rgb) / 0.14);
 }
 
 .brand,

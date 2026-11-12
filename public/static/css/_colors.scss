@@ -4,3 +4,69 @@ $darkpurple: #031e34;
 $textgrey: #484848;
 $backgroundwhite: #f8f8f8; // Should match wave header svg fill color
 $cardwhite:#ffffff;
+
+// Runtime palette: an absent data-theme means "follow the operating system".
+// Sass constants above remain available to any legacy, non-themed stylesheet.
+:root {
+  --theme-canvas: #f8f8f8;
+  --theme-canvas-rgb: 248 248 248;
+  --theme-card: #ffffff;
+  --theme-card-rgb: 255 255 255;
+  --theme-deep: #031e34;
+  --theme-deep-rgb: 3 30 52;
+  --theme-accent: #0e3355;
+  --theme-accent-rgb: 14 51 85;
+  --theme-body: #484848;
+  --theme-body-rgb: 72 72 72;
+  --theme-hero-rgb: 255 255 255;
+  --theme-raised-rgb: 255 255 255;
+  --theme-nested-rgb: 255 255 255;
+  --theme-shadow-rgb: 3 30 52;
+  --theme-tint-rgb: 3 30 52;
+  --theme-primary-fill: #031e34;
+  --theme-primary-hover: #0e3355;
+  --theme-primary-text: #f8f8f8;
+  --theme-input: #ffffff;
+  --theme-placeholder: rgb(72 72 72 / 0.46);
+  --theme-control-border: rgb(3 30 52 / 0.16);
+  --theme-error-ink: #8f2439;
+  --theme-error-tint-rgb: 189 46 75;
+  color-scheme: light;
+}
+
+@mixin darkThemeTokens {
+  --theme-canvas: #08192b;
+  --theme-canvas-rgb: 8 25 43;
+  --theme-card: #142d47;
+  --theme-card-rgb: 20 45 71;
+  --theme-deep: #f3f6fb;
+  --theme-deep-rgb: 243 246 251;
+  --theme-accent: #a9c9ff;
+  --theme-accent-rgb: 169 201 255;
+  --theme-body: #d2deec;
+  --theme-body-rgb: 210 222 236;
+  --theme-hero-rgb: 16 38 62;
+  --theme-raised-rgb: 20 45 71;
+  --theme-nested-rgb: 29 57 86;
+  --theme-shadow-rgb: 0 5 17;
+  --theme-tint-rgb: 3 19 36;
+  --theme-primary-fill: #aecaFF;
+  --theme-primary-hover: #c7dcff;
+  --theme-primary-text: #091c31;
+  --theme-input: #10263e;
+  --theme-placeholder: #b6c9df;
+  --theme-control-border: #6987a8;
+  --theme-error-ink: #ffcad4;
+  --theme-error-tint-rgb: 255 155 170;
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"] {
+  @include darkThemeTokens;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include darkThemeTokens;
+  }
+}
