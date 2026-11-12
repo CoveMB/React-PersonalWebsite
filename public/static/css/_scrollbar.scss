@@ -28,17 +28,13 @@ html[data-aurora-comet-ready] body::-webkit-scrollbar { display: none; }
   z-index: 1000;
   top: max(44px, env(safe-area-inset-top));
   bottom: max(44px, env(safe-area-inset-bottom));
-  right: 6px;
-  width: 36px;
+  right: 0;
+  width: 44px;
   border: 0;
   background: transparent;
   cursor: pointer;
   user-select: none;
   touch-action: none;
-}
-@media (max-width: 1100px) {
-  // Section dots are hidden at this breakpoint, allowing a larger touch target.
-  .auroraCometRail { right: 0; width: 44px; }
 }
 .auroraCometRail[hidden] { display: none; }
 .auroraCometRail:focus-visible { outline: none; }
@@ -46,9 +42,9 @@ html[data-aurora-comet-ready] body::-webkit-scrollbar { display: none; }
 .auroraCometHead {
   position: absolute;
   top: 0;
-  left: 80%;
-  width: 7px;
-  height: 7px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   transform: translate3d(-50%, var(--comet-y), 0);
   background: #f8ffff;
@@ -62,10 +58,10 @@ html[data-aurora-comet-ready] body::-webkit-scrollbar { display: none; }
   position: absolute;
   bottom: 4px;
   left: 0;
-  width: 7px;
+  width: 5px;
   height: 39px;
   border-radius: 100px;
-  background: linear-gradient(to top, #d1f5ffed, #72b9f5a8 13%, #427ccf70 48%, #4166b600 100%);
+  background: linear-gradient(to top, #c8f6ffef 0%, #79c4ff8a 13%, #477bd944 48%, #4166b600 100% 100%);
   filter: blur(.7px);
   opacity: .58;
   transform: scaleY(.82);
@@ -90,12 +86,12 @@ html[data-aurora-comet-ready] body::-webkit-scrollbar { display: none; }
   bottom: auto;
   top: 4px;
   transform-origin: top;
-  background: linear-gradient(to bottom, #d1f5ffed, #72b9f5a8 13%, #427ccf70 48%, #4166b600 100%);
+  background: linear-gradient(to bottom, #c8f6ffef 0%, #79c4ff8a 13%, #477bd944 48%, #4166b600 100% 100%);
 }
 .auroraCometRail.is-moving .auroraCometHead,
 .auroraCometRail:hover .auroraCometHead,
 .auroraCometRail:focus-visible .auroraCometHead {
-  box-shadow: 0 0 0 1px #12609f, 0 0 9px 2px #388dcf, 0 0 24px 7px #5b8fe18a;
+  box-shadow: 0 0 7px 1px #dcfaff, 0 0 15px 4px #7accffae, 0 0 30px 9px #5b8fe153;
 }
 .auroraCometRail.is-moving .auroraCometHead::before {
   height: 51px;
