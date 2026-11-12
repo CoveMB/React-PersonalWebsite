@@ -31,6 +31,7 @@ const createProject = ({
   id,
   image,
   imageAlt,
+  imageDark,
   isFeatured,
   mediaScale,
   primaryHref,
