@@ -15,7 +15,7 @@ The user requested replacing **both the existing Aurora Trace thumb and its scro
 ## Architecture
 
 - The **document remains the scroll container**. Standard wheel, keyboard, touch, anchors, browser history and inertia remain native.
-- A single root client component renders a fixed transparent **44px interaction area** (5px visual head), with an accessible `role=scrollbar` and `aria-controls` referencing the scrollable root `<html>`.
+- A single root client component renders a fixed transparent **36px desktop / 44px mobile interaction area** (5px visual head), with an accessible `role=scrollbar` and `aria-controls` referencing the scrollable root `<html>`.
 - After the client control mounts, `data-aurora-comet-ready` hides the *root native scrollbar*; when it unmounts, the attribute is removed and the original native scrollbar returns.
 - Without JS, the original native root scrollbar is available as a 5px transparent-track fallback; nested `.scrollbarxcustom` and `.scrollbarycustom` are unchanged.
 - Geometry is updated on scroll, resize and scroll-document content-height changes. Scrolling direction is tracked only when the page actually moves.
@@ -24,7 +24,7 @@ The user requested replacing **both the existing Aurora Trace thumb and its scro
 
 ## Tradeoffs and verification
 
-- CSS hiding a native scrollbar has accessibility risks: mitigate with a genuine keyboard/pointer-operable, labelled, 44px-target scrollbar and native fallback when JS is unavailable.
+- CSS hiding a native scrollbar has accessibility risks: mitigate with a genuine keyboard/pointer-operable, labelled, 36px desktop / 44px mobile target scrollbar and native fallback when JS is unavailable.
 - The visual indicator differs from a native thumb in both length and recognizability; keep conservative glow and verify on multiple screen sizes.
 - Small layout shifts are possible when hiding the native 5px gutter after hydration; accept this over hiding scroll access in no-JS/error cases.
 - Tested with Node behaviour tests and a standalone Chromium DOM/browser harness for scroll direction, pointer seek, keyboard actions, cleanup, theme backgrounds and reduced motion. Full Next.js build, Firefox/Safari rendering and live site interactions require additional verification.
