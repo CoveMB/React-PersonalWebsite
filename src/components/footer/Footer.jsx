@@ -75,7 +75,7 @@ export default function Footer() {
       </div>
       <div className="footerBottom">
         <p className="footerCopyright">
-          &copy; {currentYear} Cove Marquis-Bortoli. All rights reserved.
+          &copy; {currentYear} cove marquis-bortoli. All rights reserved.
         </p>
         <div className="footerNotes">
           {footerNotes.map((note) => (

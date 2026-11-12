@@ -24,16 +24,18 @@ const preferredModelIdentifiers = [
 ];
 
 const roleFitStrengths = [
-  "Secure full-stack product engineering with strong delivery quality habits",
-  "Developer tooling, operational automation, and stronger engineering workflows",
-  "Blockchain and smart contract product work with a practical security mindset",
-  "AWS, event-driven systems, microservices, CI/CD, and DevOps delivery",
-  "Mentoring, enablement, scrum leadership, and process improvement",
+  "Full-stack product engineering, technical architecture, and reliable delivery",
+  "Client discovery, website visual direction, and UX grounded in business needs",
+  "Reusable Next.js tooling and AI-assisted intake, analysis, and reporting workflows",
+  "Blockchain and smart contract tooling with a practical security mindset",
+  "AWS, event-driven systems, microservices, CI/CD, and DevOps",
+  "Mentoring, developer enablement, and delivery process improvement",
 ];
 
 const roleFitPositioningNotes = [
-  "Strongest evidence is in product engineering, developer experience, security-minded delivery, and blockchain tooling.",
-  "There is some AI-adjacent product exposure through Tooly and the Next AI program, but not deep ML research experience.",
+  "Evidence spans product engineering, developer experience, AWS infrastructure, blockchain, and Egeria's consulting and design workflows.",
+  "Egeria's client delivery portal is planned, not implemented or deployed. Do not count it as shipped product experience.",
+  "AI-assisted skills and workflows demonstrate applied tooling, not deep machine-learning research experience.",
   "If a role requires skills that are not clearly evidenced, call that out honestly as a ramp-up area.",
 ];
 

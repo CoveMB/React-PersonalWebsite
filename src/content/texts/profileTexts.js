@@ -1,16 +1,21 @@
 export const PROFILE_SUMMARY =
-  "I build secure product applications and tooling across the full-stack. With a strong focus on product research and development and delivery quality. I value team collaboration and process improvement. Most recently, I worked on blockchain tooling and full-stack product engineering at OpenZeppelin.";
+  "I like working on products holistically, from what people see and experience to the systems that make it work to the workflow of the people who build them. I bring together thoughtful software engineering, creative design, caring teamwork and an understanding of how people and organisations operate. Through Egeria Systems, I turn that approach into websites, applications, tools and comprehensive systems built around real people and their needs. Previously, I built blockchain applications and developer tooling at OpenZeppelin.";
 
 export const FOOTER_LEAD =
-  "Building reliable product and developer tooling.";
+  "Designing useful experiences and building reliable digital systems.";
 
 export const FOOTER_NOTE_BUILT_WITH = "Built with Next.js, and GSAP.";
 
 export const HERO_PROOF_ENGINEERING_SUMMARY =
-  "Built full-stack applications on AWS-backed services, and CI/CD pipelines.";
+  "Built with care full-stack and blockchain applications as event driven systems on Cloud services with CI/CD pipelines.";
 
 export const HERO_PROOF_PRODUCT_SUMMARY =
-  "Led architecture, MVP scope, user research, and product-market fit decisions.";
+  "Connected mindfully user research, product direction and creative visual design with business goals and user needs.";
+
+export const HERO_PROOF_TOOLING_SUMMARY =
+  "Built easeful developer tooling, internal systems, methodology and AI assisted workflows for smoother efficiency.";
 
 export const HERO_PROOF_TEAM_SUMMARY =
-  "Owned onboarding, facilitated Scrum, mentored developers, and improved daily workflows across delivery teams.";
+  "Responsibly owned onboarding, facilitated Scrum, mentored developers, and improved daily workflows across delivery teams.";
+
+  

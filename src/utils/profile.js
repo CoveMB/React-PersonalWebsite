@@ -5,6 +5,7 @@ import {
   HERO_PROOF_PRODUCT_SUMMARY,
   HERO_PROOF_TEAM_SUMMARY,
   PROFILE_SUMMARY,
+  HERO_PROOF_TOOLING_SUMMARY
 } from "../content/texts/profileTexts";
 
 export const profileEmailAddress = "marquisbenjamin23@gmail.com";
@@ -13,8 +14,8 @@ const githubProfileUrl = "https://github.com/CoveMB";
 const linkedinProfileUrl =
   "https://www.linkedin.com/in/cove-marquis-eth/?locale=en_US";
 const instagramProfileUrl = "https://www.instagram.com/cove.suchness/?hl=en";
-export const profileName = "Cove Marquis";
-export const profileHeadline = "Senior full-stack blockchain developer";
+export const profileName = "cove marquis-bortoli";
+export const profileHeadline = "Senior Full-Stack Engineer & Technology Consultant";
 export const profileSummary = PROFILE_SUMMARY;
 export const profileLocation = "Montreal, Canada";
 export const profileTimezone = "Eastern Time (America/Toronto)";
@@ -22,9 +23,10 @@ export const profileAvailability = "Open to selected opportunities";
 export const footerLead = FOOTER_LEAD;
 export const footerNotes = [FOOTER_NOTE_BUILT_WITH];
 
-export const resumeDownloadName = "Resume Cove Marquis EN.pdf";
+const resumeAssetName = "Resume Cove Marquis EN.pdf";
+export const resumeDownloadName = "resume cove marquis en.pdf";
 export const resumeFilePath = encodeURI(
-  `/static/documents/${resumeDownloadName}`,
+  `/static/documents/${resumeAssetName}`,
 );
 
 export const socialLinks = [
@@ -58,10 +60,11 @@ export const socialLinks = [
 ];
 
 export const focusAreas = [
-  "Product development",
-  "Process improvement",
-  "Team support",
-  "Developer experience",
+  "Full-stack product development",
+  "Technical architecture",
+  "UX and visual design",
+  "Developer tooling",
+  "Delivery processes",
 ];
 
 const createHeroProofItem = ({
@@ -80,11 +83,15 @@ export const heroProofItems = [
     summary: HERO_PROOF_ENGINEERING_SUMMARY,
   }),
   createHeroProofItem({
-    category: "Product",
+    category: "Producting",
     summary: HERO_PROOF_PRODUCT_SUMMARY,
   }),
   createHeroProofItem({
-    category: "Team",
+    category: "Tooling",
+    summary: HERO_PROOF_TOOLING_SUMMARY,
+  }),
+  createHeroProofItem({
+    category: "Teaming",
     summary: HERO_PROOF_TEAM_SUMMARY,
   }),
 ];

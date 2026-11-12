@@ -57,20 +57,23 @@ export const getSectionTitle = (sectionId) => sectionTitlesById[sectionId] ?? ""
 export const getSiteSection = (sectionId) => siteSectionsById[sectionId] ?? null;
 
 export const qualificationContentByTopic = {
-  lead: {
-    body: howIWorkBodyTextByTopic.lead,
-    emphasis: "Stronger team flow and steady execution delivery",
-    titleLines: ["Team", "& Delivery"],
+  brief: {
+    body: howIWorkBodyTextByTopic.brief,
+    emphasis: "Sometimes a simpler cooperative process does more than another tool.",
+    icon: "/static/images/svgbrief.svg",
+    titleLines: ["Look Beyond", "the Brief"],
   },
-  polyvalent: {
-    body: howIWorkBodyTextByTopic.polyvalent,
-    emphasis: "Taking charge of polyvalent missions, with a holistic point of view",
-    titleLines: ["Platform", "& Product"],
+  change: {
+    body: howIWorkBodyTextByTopic.change,
+    emphasis: "I make room for change without building for every possibility.",
+    icon: "/static/images/svgpolyvalent.svg",
+    titleLines: ["Build for", "Change"],
   },
-  learning: {
-    body: howIWorkBodyTextByTopic.learning,
-    emphasis: "Applied learning with practical leverage",
-    titleLines: ["Learning", "& Innovation"],
+  people: {
+    body: howIWorkBodyTextByTopic.people,
+    emphasis: "People should understand and shape what gets built.",
+    icon: "/static/images/svglead.svg",
+    titleLines: ["Keep People", "Involved"],
   },
 };
 

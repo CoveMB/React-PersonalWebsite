@@ -6,6 +6,7 @@ const caseStudySectionLabels = {
   build: "Build",
   context: "Context",
   outcome: "Outcome",
+  whatsNext: "What's next",
 };
 
 const removeEmphasisMarkers = (text) => text.replace(/\*\*/g, "");
@@ -41,10 +42,11 @@ const createCaseStudySection = (id, text) => ({
   text,
 });
 
-const createCaseStudySections = ({ build, context, outcome }) => [
+const createCaseStudySections = ({ build, context, outcome, whatsNext }) => [
   createCaseStudySection("context", context),
   createCaseStudySection("build", build),
   createCaseStudySection("outcome", outcome),
+  ...(whatsNext ? [createCaseStudySection("whatsNext", whatsNext)] : []),
 ];
 
 const buildPlainText = ({ sections, summary }) =>
@@ -53,11 +55,12 @@ const buildPlainText = ({ sections, summary }) =>
     ...sections.map(({ text }) => removeEmphasisMarkers(text)),
   ].join(" ");
 
-const createProjectCaseStudy = ({ build, context, outcome, summary }) => {
+const createProjectCaseStudy = ({ build, context, outcome, summary, whatsNext }) => {
   const sections = createCaseStudySections({
     build,
     context,
     outcome,
+    whatsNext,
   });
 
   return {

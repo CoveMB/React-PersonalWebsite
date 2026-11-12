@@ -1,90 +1,94 @@
+# cove marquis-bortoli
 
+Montreal, QC, Canada  
+Phone: 514-625-3571 · Email: marquisbenjamin23@gmail.com  
+Languages: English, French  
+LinkedIn: https://www.linkedin.com/in/cove-marquis-eth  
+GitHub: https://github.com/CoveMB  
+Portfolio: https://cove-marquis-bortoli.xyz/
 
-Cove Marquis-Bortoli                                                                                                      Phone : 514-625-3571
-Montreal Qc Canada                                                                     Mail : marquisbenjamin23@gmail.com
-## Languages: English, French
-Linkedin: https://www.linkedin.com/in/cove-marquis-eth
-Github: https://github.com/CoveMB
-Website: https://cove-marquis-bortoli.xyz/
+## Summary of qualifications
 
-## Summary
-- Senior full-stack engineer with hands-on ownership across backend, frontend, cloud infrastructure, and CI/CD, from
-architecture through production delivery.
-- Strong background in TypeScript, Node.js, React, AWS serverless, and event-driven systems, building reliable and
-maintainable products end to end.
-- Additional depth in developer tooling through internal automation, CLI workflows, and IDE extensions that reduce
-engineering friction and improve team productivity.
-- Experience mentoring engineers, improving delivery practices, and helping teams ship more consistently through
-pragmatic standards and structured execution.
+- Senior full-stack engineer whose work spans blockchain applications and developer tooling at OpenZeppelin, cloud-based microservices, and custom web applications.
+- Build the tools behind products as well as the products themselves: developer CLIs and IDE extensions, reusable scaffolding with modular capabilities and lifecycle management, and AI-assisted workflows with people in the loop.
+- Connect technical decisions with how people and organisations work, from business needs and processes to product direction, software architecture, UX design, and implementation.
+- Bring experience as a product co-founder, technical lead, developer mentor and instructor, alongside analytics and marketing experience and a master's degree in sociology.
+
 ## Technical Skills
 
-o Languages:  TypeScript, JavaScript, Move, Ruby, Solidity,  Rust (learning)
-o Backend:  Node.js, Koa, Express, Rails
-o Frontend:  React, Svelte, Vue.js
-o Cloud & Infrastructure:  AWS (Lambda, DynamoDB, SNS, SQS, EventBridge...)
-o DevOps:  Docker, Terraform, CI/CD pipelines
-o Architecture:  Microservices, Event-driven architecture
-o Tools:  Git, Codex, Skills, internal CLI
-o Blockchain:  Sui, Ethereum, Smart Contracts
-o Methodologies:  Scrum (Scrum Master), Kanban (Scrum Master with Kanban), Agile
+- **Languages:** TypeScript, JavaScript, Move, Ruby, Solidity, Rust (learning)
+- **Programming Practices:** Functional programming, automated testing, modular design
+- **Backend:** Node.js, Koa, Express, Rails
+- **Frontend:** React, Next.js, Svelte
+- **Blockchain:** Sui, Ethereum, smart contracts
+- **Cloud & Infrastructure:** AWS (Lambda, DynamoDB, SNS, SQS, EventBridge), Cloudflare (Pages, Workers)
+- **DevOps:** Docker, Terraform, CI/CD pipelines
+- **Architecture:** Microservices, event-driven architecture
+- **Tools:** Git, CLI tooling, IDE extensions
+- **AI & Automation:** Codex, custom AI skills, AI-assisted workflows, custom tooling
+- **Methodologies:** Scrum, Kanban, Agile
 
 ## Employment History
 
-Senior Full-Stack Blockchain Developer - OpenZeppelin| Remote |                                  2022-Present
-o Contributed end to end to Defender, building AWS secure microservices and Svelte interfaces for
-a production blockchain observability and automation platform.
-o Built a Typescript tooling layer for Sui contract development, covering deployment workflows,
-artifact capture, contract interaction, and end-to-end test harnesses that made contracts easier
-to test, debug, and ship.
-o Maintained and extended Wizard, the web application used to assemble contracts from
-OpenZeppelin components across multiple languages, improving the developer experience for
-contract creation.
-o Built and optimized CI/CD pipelines that improved release quality and consistency.
-o Improved team delivery by training new developer and facilitating Scrum ceremonies, tightening
-engineering workflows, and reinforcing release discipline
+### Senior Full-Stack Engineer & Technology Consultant — Egeria Systems | Montreal, Canada | 2026-Present
 
+- Work with individuals and organisations to understand their needs and how they operate, turning goals into websites, web applications, analytics tracking, internal tools, and simpler digital workflows.
+- Lead project discovery and technical planning, from defining requirements and evaluating technologies to designing architectures and implementation plans tailored to organisational systems and processes.
+- Build a reusable Next.js and TypeScript scaffolding system that generates foundations for web projects and manages modular capabilities over their lifecycle, including Cloudflare, authentication, multilingual content, analytics, and other integrations.
+- Create internal tools and AI-assisted workflows for client intake, technical analysis, technology recommendations, branded reports, and interactive website mockup reviews.
+- Design the look, feel, and functionality of each website, drawing on the client's personality, values, and business goals to shape its visual direction and user experience.
 
-## Senior Software Developer - Aldo | Montreal, Canada |        2021
-o Delivered end-to-end order management services in a microservices and event-driven architecture,
-owning implementation from design through deployment and supporting reliable production operations.
-o Built tested TypeScript services with a functional approach, limiting sides-effects and improving
-maintainability.
-o Deployed and operated AWS serverless systems using Lambda, DynamoDB, SNS, SQS, and EventBridge to
-support scalable, event-driven order workflows.
-o Built internal CLI and IDE tooling that reduced development friction and made team workflows more
-consistent.
-o Built and optimized CI/CD pipelines that improved release quality, consistency and faster delivery.
-o Improved team delivery by strengthening onboarding, training new developers, and tightening day-to-day
-engineering workflows facilitating Scrum ceremonies.
+### Senior Full-Stack Blockchain Developer — OpenZeppelin | Remote | 2022-May 2026
 
-## Lead Full Stack Developer and Scrum Master - Speekers|  Montreal, Canada |    2020
-Led development workflow improvements alongside full-stack delivery, building JavaScript and TypeScript
-backend services, implementing Docker and Terraform environments, and creatingtooling and process
-structure to support team execution.
+- Built full-stack applications on Sui with Move smart contracts, TypeScript tooling, and React interfaces, including trading and account-management features.
+- Developed tools for deploying, configuring, interacting with, and testing Sui Move contracts, making development workflows more repeatable.
+- Extended OpenZeppelin Contracts Wizard with Stellar/Soroban contract-generation options, metadata support, and Rust compilation tests.
+- Developed OpenZeppelin Defender features across TypeScript clients, AWS-based microservices, and a Svelte frontend.
+- Maintained CI/CD and AWS deployment workflows while contributing to Scrum, Kanban, and AI-assisted development practices.
 
-## Co-founder and CTO - VizzMD at Centech’s Acceleration Program | Montreal, Canada |   2019
-Set product and technical direction as co-founder/CTO, translating market feedback into product
-decisions, building the MVP with Rails and React, and establishing the technical foundation for early-
-stage execution.
+### Senior Software Developer — Aldo | Montreal, Canada | 2021
 
-## Teacher for the Full Stack Developer Program - Le Wagon | Montreal, Canada |    2019
-Taught core full-stack development concepts and coached students through project delivery in an
-intensive bootcamp environment.
+- Developed end-to-end projects using microservices and event-driven architecture.
+- Built and tested TypeScript solutions using functional programming practices.
+- Deployed services on AWS, including Lambda, DynamoDB, SNS, SQS, and EventBridge.
+- Built, maintained, and improved CI/CD pipelines.
+- Helped improve team development processes using Scrum.
+- Handled onboarding and training for developers joining the team.
+- Created a CLI and IDE extension to streamline development workflows.
 
-## Web Analyst & Data Engineer - LCI Education | Montreal, Canada |      2018
-Built data pipelines and automated reporting workflows, developed performance metrics, and
-supported digital marketing operations across major paid media channels.
+### Full-Stack Developer and Scrum Master — Spockee | Montreal, Canada | 2021
+
+- Built REST APIs and real-time WebSocket services with JavaScript, TypeScript, Koa, and Express for a multi-service platform.
+- Developed an internal CLI to simplify developer setup, including dependency checks, repository configuration, and application installation.
+- Managed Docker environments, AWS infrastructure with Terraform, and CI/CD pipelines while helping the team coordinate work through Scrum.
+
+### Lead Full-Stack Developer and DevOps — Tooly | Montreal, Canada | 2020
+
+- Led architecture and technical decisions for an early-stage product, balancing business needs with a foundation that could evolve.
+- Built full-stack features with TypeScript, Node.js (Koa), and React, alongside Docker-based development environments.
+- Worked across product and engineering during Next AI's tech-track incubation program, connecting business needs with implementation decisions.
+
+### Co-founder and CTO — VizzMD | Centech's Acceleration Program | Montreal, Canada | 2019
+
+- Co-founded VizzMD and helped shape its early product and technology direction during Centech's acceleration program.
+- Built the first MVP with Rails and React, turning an early product concept into a working application.
+- Set up CRM processes and worked on validating the business concept and product-market fit.
+
+### Full-Stack Development Instructor — Le Wagon | Montreal, Canada | 2019
+
+- Helped students move from core programming concepts to building their own full-stack web projects.
+- Guided students through debugging, technical challenges, and how the parts of a web application fit together.
+
+### Web Analyst & Data Engineer — LCI Education | Montreal, Canada | 2018
+
+- Built automated data pipelines and reporting workflows to make marketing performance easier to track and understand.
+- Worked across data engineering and paid campaign management on Google Ads, Bing, YouTube, Facebook, and LinkedIn, connecting measurement with decisions.
 
 ## Education
-Professional Scrum with Kanban - Scrum.org I Certification
-## 2022
-Certified Ethereum Developer - Blockchain-Council.org I Certification
-## 2022
-Professional Scrum Master - Scrum.org |Certification
-## 2021
-## Product Manager Program - Linky Product Bootcamp | Bootcamp
-## 2020
-## Full Stack Developer Program - Le Wagon | Bootcamp
-## 2019
-Master’s Degree in Sociology – Magna Cum Laude  | UQAM
-## 2017
+
+- **2022 — Professional Scrum with Kanban I Certification**, Scrum.org
+- **2022 — Certified Ethereum Developer I Certification**, Blockchain-Council.org
+- **2021 — Professional Scrum Master I Certification**, Scrum.org
+- **2020 — Product Manager Program | Certification**, Linky Product Bootcamp
+- **2019 — Full Stack Developer Program | Certification**, Le Wagon Bootcamp
+- **2017 — Master's Degree in Sociology - Magna Cum Laude**, University of Quebec at Montreal (UQAM). Research thesis: Comparison of the state of discriminations in France and Quebec and how the model of community associations favors integration by socialization.

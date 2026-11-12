@@ -7,7 +7,7 @@ const caseStudyNumberFormatter = new Intl.NumberFormat("en-US", {
   useGrouping: false,
 });
 
-const getProjectActionLinks = ({ primaryHref, primaryLabel, sourceHref }) => {
+const getProjectActionLinks = ({ additionalLinks = [], primaryHref, primaryLabel, sourceHref }) => {
   const primaryAction = primaryHref
     ? [
         {
@@ -27,7 +27,11 @@ const getProjectActionLinks = ({ primaryHref, primaryLabel, sourceHref }) => {
       ]
     : [];
 
-  return [...primaryAction, ...sourceAction];
+  return [
+    ...primaryAction,
+    ...sourceAction,
+    ...additionalLinks.map(({ href, label }) => ({ href, isPrimary: false, label })),
+  ];
 };
 
 const getProjectActionLinkClassName = (isPrimary) => {

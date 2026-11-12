@@ -13,6 +13,10 @@ const renderCardTitle = ({ titleLines }) => (
 export default function Qualification({ topic }) {
   const qualificationContent = qualificationContentByTopic[topic];
 
+  if (!qualificationContent) {
+    return null;
+  }
+
   return (
     <div className="topic">
       <ScrollParallax
@@ -20,19 +24,14 @@ export default function Qualification({ topic }) {
         parallaxData={subtleRevealParallaxData}
       >
         <div className="qualificationCardHeader">
-          <img alt={`svg ${topic}`} className="svgCard" src={`/static/images/svg${topic}.svg`} />
-          {qualificationContent ? renderCardTitle(qualificationContent) : null}
+          <img alt="" className="svgCard" src={qualificationContent.icon} />
+          {renderCardTitle(qualificationContent)}
         </div>
         <div className="qualificationCardBody">
-          {qualificationContent ? (
-            <p className="cardText">
-              {qualificationContent.body}{" "}
-              <strong className="blueTitle">
-                {qualificationContent.emphasis}
-              </strong>
-              .
-            </p>
-          ) : null}
+          <p className="cardText">
+            {qualificationContent.body}{" "}
+            <strong className="blueTitle">{qualificationContent.emphasis}</strong>
+          </p>
         </div>
       </ScrollParallax>
     </div>

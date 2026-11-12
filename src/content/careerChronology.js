@@ -26,7 +26,15 @@ export const careerChronologySectionContent = {
 export const careerChronologyItems = [
   createCareerChronologyItem({
     category: "Role",
-    dateLabel: "2022-Present",
+    dateLabel: "2026-Present",
+    location: "Montreal, Canada | Remote",
+    organization: "Egeria Systems",
+    summary: careerSummaryTextById.egeriaSystems,
+    title: "Senior Full-Stack Engineer & Technology Consultant",
+  }),
+  createCareerChronologyItem({
+    category: "Role",
+    dateLabel: "2022-May 2026",
     location: "Remote",
     organization: "OpenZeppelin",
     summary: careerSummaryTextById.openZeppelin,
@@ -75,7 +83,7 @@ export const careerChronologyItems = [
     location: "Montreal, Canada",
     organization: "Tooly",
     summary: careerSummaryTextById.tooly,
-    title: "Lead Full Stack Developer & Devops",
+    title: "Lead Full-Stack Developer & DevOps",
   }),
   createCareerChronologyItem({
     category: "Certification",
@@ -98,7 +106,7 @@ export const careerChronologyItems = [
     location: "Montreal, Canada",
     organization: "Le Wagon",
     summary: careerSummaryTextById.leWagon,
-    title: "Teacher for the Full Stack Developer Program",
+    title: "Full-Stack Development Instructor",
   }),
   createCareerChronologyItem({
     category: "Certification",
