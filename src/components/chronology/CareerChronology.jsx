@@ -1,7 +1,15 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBriefcase, faCertificate, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import {
   careerChronologyItems,
   careerChronologySectionContent,
 } from "../../content/careerChronology";
+
+const categoryIcons = {
+  Role: faBriefcase,
+  Certification: faCertificate,
+  Education: faGraduationCap,
+};
 
 const getCareerChronologyItemKey = ({
   dateLabel,
@@ -14,7 +22,7 @@ const getCareerChronologyMeta = ({ location, organization }) =>
 
 const renderCareerChronologyItem = (careerChronologyItem) => (
   <li
-    className="careerChronologyItem"
+    className={`careerChronologyItem careerChronologyItem--${careerChronologyItem.category.toLowerCase()}`}
     key={getCareerChronologyItemKey(careerChronologyItem)}
   >
     <div className="careerChronologyDate">
@@ -27,6 +35,11 @@ const renderCareerChronologyItem = (careerChronologyItem) => (
 
     <article className="careerChronologyCard">
       <p className="careerChronologyCategory">
+        <FontAwesomeIcon
+          aria-hidden="true"
+          className="careerChronologyCategoryIcon"
+          icon={categoryIcons[careerChronologyItem.category]}
+        />
         {careerChronologyItem.category}
       </p>
       <h3 className="careerChronologyTitle">{careerChronologyItem.title}</h3>
