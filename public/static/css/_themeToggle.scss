@@ -25,9 +25,17 @@
   background: transparent;
 }
 
+// Keep keyboard focus visible on the existing switch, without drawing an
+// extra oval around the larger 76x44px click target.
 .themeToggleButton:focus-visible {
-  outline: 2px solid var(--theme-accent);
-  outline-offset: 2px;
+  outline: none;
+}
+
+.themeToggleButton:focus-visible .themeToggleTrack {
+  border-color: var(--theme-accent);
+  box-shadow:
+    inset 0 0 0 1px var(--theme-accent),
+    0 2px 8px rgb(var(--theme-shadow-rgb) / 0.13);
 }
 
 .themeToggleTrack {
