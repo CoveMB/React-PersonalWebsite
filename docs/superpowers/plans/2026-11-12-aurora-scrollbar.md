@@ -5,7 +5,7 @@ The earlier Aurora Trace approach used a 5px native thumb plus a separate glow. 
 ## Work completed
 
 1. [x] Review the active `feat/aurora-trace-scrollbar-5px` branch, root layout, Sass scrollbar rules, existing glow controller, existing tests and right-side section navigation.
-2. [x] Preserve native document scrolling. Replace the old noninteractive halo with a single labelled, draggable custom visual rail mounted by the existing root client component. Keep the visual head 5px and transparent hit area 44px.
+2. [x] Preserve native document scrolling. Replace the old noninteractive halo with a single labelled, draggable custom visual rail mounted by the existing root client component. Keep the visual head 5px and transparent hit area 36px on desktop (to clear the section dots) and 44px at <=1100px.
 3. [x] Hide the root native thumb/track only after JS mounts the overlay; restore fallback on cleanup. Do not touch named nested scrollbars. Remove obsolete native-glow activity styling.
 4. [x] Position the head using scroll progress; reverse the tapered tail on direction change, briefly brighten while active, support future theme overrides and reduced motion.
 5. [x] Add `id=portfolio-scroll-viewport` to the scrollable root and `aria-controls` to the control. Support pointer seek/drag and arrow/page/home/end/space keyboard interaction.
