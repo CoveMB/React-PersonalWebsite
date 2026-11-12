@@ -1,5 +1,5 @@
 export const PROFILE_SUMMARY =
-  "I like working on products holistically from what people see and experience, to the systems that make it the workflow of the people that build it. I bring together thoughtful software engineering, creative design, and an understanding of how people and organizations operate. Through Egeria Systems, I turn that approach into websites, applications, tools and comprehensive systems built around real people and their needs. Previously, I built blockchain applications and developer tooling at OpenZeppelin.";
+  "I like working on products holistically, from what people see and experience to the systems that make it work to the workflow of the people who build them. I bring together thoughtful software engineering, creative design, caring teamwork and an understanding of how people and organisations operate. Through Egeria Systems, I turn that approach into websites, applications, tools and comprehensive systems built around real people and their needs. Previously, I built blockchain applications and developer tooling at OpenZeppelin.";
 
 export const FOOTER_LEAD =
   "Designing useful experiences and building reliable digital systems.";
