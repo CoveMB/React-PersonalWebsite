@@ -1,92 +1,51 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import * as scrollbar from '../src/utils/scrollbarActivity.mjs';
+import { makeFixture } from './scrollbarFixture.mjs';
 
-const makeElements = () => {
-  const attributes = new Set();
-  const listeners = new Map();
-  const styles = new Map();
-  const rootElement = {
-    clientHeight: 600,
-    scrollHeight: 3600,
-    setAttribute: (name) => attributes.add(name),
-    removeAttribute: (name) => attributes.delete(name),
-    hasAttribute: (name) => attributes.has(name),
-  };
-  const glowElement = {
-    hidden: true,
-    style: { setProperty: (name, value) => styles.set(name, value) },
-  };
-  const timers = new Map();
-  let nextTimer = 1;
-  const scrollTarget = {
-    scrollY: 0,
-    innerWidth: 800,
-    innerHeight: 600,
-    addEventListener: (type, callback) => listeners.set(type, callback),
-    removeEventListener: (type, callback) => {
-      if (listeners.get(type) === callback) listeners.delete(type);
-    },
-    setTimeout: (callback) => {
-      const id = nextTimer++;
-      timers.set(id, callback);
-      return id;
-    },
-    clearTimeout: (id) => timers.delete(id),
-  };
-  return {
-    scrollTarget, rootElement, glowElement, styles, attributes, listeners, timers,
-    emit: (type, props) => listeners.get(type)?.(props),
-  };
-};
-
-test('glow geometry follows native thumb position instead of staying at page top', () => {
-  const values = scrollbar.getAuroraGlowGeometry({ viewportHeight: 600, scrollHeight: 3600, scrollTop: 1500 });
-  assert.deepEqual(values, { height: 100, top: 250 });
-  assert.deepEqual(scrollbar.getAuroraGlowGeometry({ viewportHeight: 600, scrollHeight: 3600, scrollTop: 3000 }), { height: 100, top: 500 });
+test('pointer clicking or dragging moves the real page, not a simulated content surface', () => {
+  const fixture = makeFixture();
+  let prevented = false;
+  fixture.emitRail('pointerdown', { button: 0, pointerId: 7, clientY: 44 + 250, preventDefault() { prevented = true; } });
+  assert.equal(prevented, true);
+  assert.equal(Math.round(fixture.scrollingElement.scrollTop), 1500);
+  fixture.emitRail('pointermove', { pointerId: 7, clientY: 44 + 497.5 });
+  assert.equal(fixture.scrollingElement.scrollTop, 3000);
+  fixture.railElement.releaseCapture();
+  fixture.emitRail('pointermove', { pointerId: 7, clientY: 45 });
+  assert.equal(fixture.scrollingElement.scrollTop, 3000);
+  fixture.cleanup();
 });
 
-test('glow geometry hides when page does not scroll and clamps extreme scroll offsets', () => {
-  assert.equal(scrollbar.getAuroraGlowGeometry({ viewportHeight: 600, scrollHeight: 600, scrollTop: 0 }), null);
-  assert.deepEqual(scrollbar.getAuroraGlowGeometry({ viewportHeight: 600, scrollHeight: 3600, scrollTop: -500 }), { height: 100, top: 0 });
-  assert.deepEqual(scrollbar.getAuroraGlowGeometry({ viewportHeight: 600, scrollHeight: 3600, scrollTop: 5000 }), { height: 100, top: 500 });
+test('ignores non-primary pointer presses', () => {
+  const fixture = makeFixture();
+  fixture.emitRail('pointerdown', { button: 2, pointerId: 2, clientY: 280, preventDefault() { throw Error('should not prevent default'); } });
+  assert.equal(fixture.scrollingElement.scrollTop, 0);
+  fixture.cleanup();
 });
 
-test('decorative glow aligns at mount, follows scroll and resize, and stops on cleanup', () => {
-  const fixture = makeElements();
-  const cleanup = scrollbar.observeScrollActivity({ ...fixture });
-  assert.equal(fixture.glowElement.hidden, false);
-  assert.equal(fixture.styles.get('--aurora-glow-height'), '100px');
-  assert.equal(fixture.styles.get('--aurora-glow-top'), '0px');
-
-  fixture.scrollTarget.scrollY = 1500;
-  fixture.emit('scroll');
-  assert.equal(fixture.styles.get('--aurora-glow-top'), '250px');
-  assert.equal(fixture.attributes.has('data-aurora-scroll-active'), true);
-
-  fixture.scrollTarget.innerHeight = 500;
-  fixture.rootElement.clientHeight = 500;
-  fixture.emit('resize');
-  assert.equal(fixture.styles.get('--aurora-glow-height'), `${500 * 500 / 3600}px`);
-
-  fixture.rootElement.scrollHeight = 500;
-  fixture.emit('resize');
-  assert.equal(fixture.glowElement.hidden, true);
-
-  cleanup();
-  assert.equal(fixture.listeners.has('scroll'), false);
-  assert.equal(fixture.listeners.has('resize'), false);
-  assert.equal(fixture.timers.size, 0);
-  assert.equal(fixture.attributes.has('data-aurora-scroll-active'), false);
+test('keyboard arrows, page jump and endpoints control the native page position', () => {
+  const fixture = makeFixture();
+  const key = (k) => fixture.emitRail('keydown', { key: k, preventDefault() {} });
+  key('ArrowDown'); assert.equal(fixture.scrollingElement.scrollTop, 48);
+  key('PageDown'); assert.equal(fixture.scrollingElement.scrollTop, 528);
+  key(' '); assert.equal(fixture.scrollingElement.scrollTop, 1008);
+  key('End'); assert.equal(fixture.scrollingElement.scrollTop, 3000);
+  key('Home'); assert.equal(fixture.scrollingElement.scrollTop, 0);
+  key('ArrowUp'); assert.equal(fixture.scrollingElement.scrollTop, -48);
+  fixture.cleanup();
 });
 
-test('edge hover activates the noninteractive halo and moving away removes it', () => {
-  const fixture = makeElements();
-  const cleanup = scrollbar.observeScrollActivity({ ...fixture });
-  fixture.emit('pointermove', { clientX: 794 });
-  assert.equal(fixture.attributes.has('data-aurora-scroll-hover'), true);
-  fixture.emit('pointermove', { clientX: 300 });
-  assert.equal(fixture.attributes.has('data-aurora-scroll-hover'), false);
-  cleanup();
-  assert.equal(fixture.listeners.has('pointermove'), false);
+test('resize and content changes adjust travel or hide the comet', () => {
+  const fixture = makeFixture();
+  fixture.emitScroll(1500);
+  fixture.railElement.clientHeight = 300;
+  fixture.refresh();
+  assert.equal(fixture.css.get('--comet-y'), '147.5px');
+  fixture.scrollingElement.scrollHeight = 600;
+  fixture.refresh();
+  assert.equal(fixture.railElement.hidden, true);
+  fixture.scrollingElement.scrollHeight = 3600;
+  fixture.refresh();
+  assert.equal(fixture.railElement.hidden, false);
+  fixture.cleanup();
 });
