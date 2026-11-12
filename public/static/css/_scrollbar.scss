@@ -55,6 +55,46 @@ html::-webkit-scrollbar-thumb {
   }
 }
 
+
+// A native scrollbar clips shadows to its 5px painting area. This decorative
+// halo sits inside the page, beside the native thumb, so the light can spill
+// into the viewport like the original Aurora Trace demo.
+.auroraScrollbarGlow {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 5px;
+  width: 5px;
+  height: var(--aurora-glow-height, 0px);
+  transform: translate3d(0, var(--aurora-glow-top, 0px), 0);
+  border-radius: 999px;
+  pointer-events: none;
+  background: linear-gradient(180deg, #b4ebffb3, #6daef78c 55%, #547ad18c);
+  box-shadow: 0 0 7px 2px #70baff99, 0 0 19px 5px #65aefb40;
+  filter: blur(2px);
+  opacity: 0.38;
+}
+
+.auroraScrollbarGlow[hidden] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .auroraScrollbarGlow {
+    transition: opacity 260ms ease-out, box-shadow 260ms ease-out;
+  }
+
+  html[data-aurora-scroll-active] .auroraScrollbarGlow,
+  html[data-aurora-scroll-hover] .auroraScrollbarGlow {
+    transition-duration: 85ms;
+    opacity: 0.96;
+    box-shadow:
+      0 0 11px 3px #a2e4ff,
+      0 0 27px 7px #589eff99,
+      0 0 43px 10px #6b8dce45;
+  }
+}
+
 .scrollbarxcustom::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 	background-color: colors.$backgroundwhite;
