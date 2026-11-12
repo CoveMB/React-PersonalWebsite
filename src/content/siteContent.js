@@ -59,7 +59,7 @@ export const getSiteSection = (sectionId) => siteSectionsById[sectionId] ?? null
 export const qualificationContentByTopic = {
   brief: {
     body: howIWorkBodyTextByTopic.brief,
-    emphasis: "Sometimes a simpler process does more than another tool.",
+    emphasis: "Sometimes a simpler cooperative process does more than another tool.",
     icon: "/static/images/svgbrief.svg",
     titleLines: ["Look Beyond", "the Brief"],
   },
