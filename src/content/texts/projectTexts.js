@@ -16,7 +16,7 @@ export const PROJECTS_SECTION_INTRO =
   "A selection of recent work in consulting, product engineering, and developer tooling. Featured projects come first, with earlier work available below.";
 
 export const PROJECT_EGERIA_SUMMARY =
-  "Building considered digital experiences and the systems behind client delivery";
+  "From client intentions to distinctive websites and reusable systems";
 
 export const PROJECT_EGERIA_CONTEXT =
   "I started **Egeria Systems** to work directly with individuals and organisations on websites, applications, and digital workflows. The creative side matters to me as much as the technical work: shaping a site's **visual direction and user experience** with care so it reflects the client's **personality, values, and business intentions**.";
