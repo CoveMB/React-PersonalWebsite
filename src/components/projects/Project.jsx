@@ -130,6 +130,7 @@ export default function Project({
             mediaScale={project.mediaScale}
             primaryHref={project.primaryHref}
             projectImage={project.image}
+            projectImageDark={project.imageDark}
             sourceHref={project.sourceHref}
           />
         </div>
