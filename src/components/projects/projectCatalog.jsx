@@ -13,6 +13,7 @@ const getRequiredProjectCaseStudy = (projectId) => {
 };
 
 const createProject = ({
+  additionalLinks = [],
   id,
   image,
   imageAlt,
@@ -24,6 +25,7 @@ const createProject = ({
   techStack,
   title,
 }) => ({
+  additionalLinks,
   caseStudy: getRequiredProjectCaseStudy(id),
   id,
   image,
@@ -80,6 +82,10 @@ export const projectCatalog = [
     title: "Egeria Systems",
   }),
   createProject({
+    additionalLinks: [
+      { href: "https://github.com/OpenZeppelin/openzeppelin-sui-marketplace", label: "Sui tooling" },
+      { href: "https://github.com/OpenZeppelin/contracts-wizard", label: "Contracts Wizard" },
+    ],
     id: "defender",
     image: "/static/images/defender.png",
     imageAlt: "OpenZeppelin Defender preview",
@@ -188,7 +194,7 @@ export const projectCatalog = [
       "Scrum",
       "Leadership",
     ],
-    title: "Skeepers",
+    title: "Spockee (later acquired by Skeepers)",
   }),
   createProject({
     id: "tooly",

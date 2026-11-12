@@ -3,63 +3,68 @@ const createProjectNarrativeText = ({
   context,
   outcome,
   summary,
+  whatsNext,
 }) => ({
   build,
   context,
   outcome,
   summary,
+  whatsNext,
 });
 
 export const PROJECTS_SECTION_INTRO =
   "A selection of recent work in consulting, product engineering, and developer tooling. Featured projects come first, with earlier work available below.";
 
 export const PROJECT_EGERIA_SUMMARY =
-  "Connecting client needs with design, technical planning, and reusable delivery tools";
+  "Building considered digital experiences and the systems behind client delivery";
 
 export const PROJECT_EGERIA_CONTEXT =
-  "I started **Egeria Systems** to work directly with individuals and organizations, from understanding their needs to shaping websites, applications, and digital workflows. That includes translating each client's goals, values, and identity into the **visual direction** and **user experience** of their website.";
+  "I started **Egeria Systems** to work directly with individuals and organisations on websites, applications, and digital workflows. The creative side matters to me as much as the technical work: shaping a site's **visual direction and user experience** with care so it reflects the client's **personality, values, and business intentions**.";
 
 export const PROJECT_EGERIA_BUILD =
-  "I built an **Obsidian-based consulting system** covering client and project intake, relationship management, methodologies, evidence-backed analyses, technical recommendations, and readiness reviews. I also developed **consulting-plugin skills** for intake-to-brief, follow-up questions, technology research, SEO, branded reports, and interactive website maquettes. **Egeria Scaffold** provides reusable **Next.js and TypeScript** foundations for client-owned sites and apps, with optional multilingual content, booking, analytics, and Cloudflare infrastructure.";
+  "I developed an **Obsidian-based consulting system** for client discovery, project records, methodologies, and technical decisions. Alongside it, I built **AI-assisted tools** for briefs, research, reports, and interactive website maquettes, with human review built into the process. **Egeria Scaffold** creates **client-owned Next.js and TypeScript projects** and manages modular capabilities, from authentication and multilingual content to analytics and Cloudflare infrastructure, as needs evolve.";
 
 export const PROJECT_EGERIA_OUTCOME =
-  "These tools support a more consistent path from client conversations to reviewable briefs, recommendations, maquettes, and build-readiness assessments. A **client delivery portal is planned, not yet implemented**. Its design includes project progress, versioned documents, shared or individual questionnaire responses, temporary asset uploads, maquette feedback and approvals, contextual comments, decisions and scope changes, meeting records, and read-only access to completed projects.";
+  "Together, these tools create a more consistent path from an initial conversation to documented decisions, reviewable designs, and working technical foundations, while keeping clients involved in what gets built.";
+
+export const PROJECT_EGERIA_WHATS_NEXT =
+  "A **client delivery portal is planned, not yet implemented**. It would give clients one place to follow project progress, review versioned documents and website maquettes, share feedback and approvals, and track decisions and scope changes.";
 
 export const PROJECT_SUI_TOOLING_SUMMARY =
-  "Building the tooling layer for a Sui marketplace dApp";
+  "A complete path from Move contracts to a working Sui application";
 
 export const PROJECT_SUI_TOOLING_CONTEXT =
-  "At OpenZeppelin, I built a **full-stack marketplace example** and the surrounding **tooling layer** to make Move contract development easier across environments.";
+  "A blockchain example is more useful when developers can run and explore the whole system, rather than starting with disconnected contract and frontend examples.";
 
 export const PROJECT_SUI_TOOLING_BUILD =
-  "The work covered **contract publishing**, deployment artifacts, **network-aware configuration**, transaction helpers, and an **integration test harness** that could deploy contracts, seed state, and validate end-to-end flows.";
+  "At OpenZeppelin, I worked across a full-stack **Sui marketplace reference implementation**, connecting Move contracts with **deployment scripts**, transaction helpers, network configuration, a Next.js interface, and **integration tests**.";
 
 export const PROJECT_SUI_TOOLING_OUTCOME =
-  "The result was a stronger **developer experience** and a more repeatable pipeline for building, testing, and operating **Sui applications** with Move smart contracts.";
+  "The project provides a reproducible way to explore the full development process, from publishing contracts to exercising transactions and testing application behaviour.";
 
 export const PROJECT_DEFENDER_SUMMARY =
   "Securing smart contract operations at scale";
 
 export const PROJECT_DEFENDER_CONTEXT =
-  "I worked on **OpenZeppelin Defender**, a platform teams use to deploy, monitor, and operate smart contracts in production with stronger operational safety.";
+  "Smart contracts may run on-chain, but operating them involves much more: monitoring activity, managing contracts, automating tasks, and giving teams ways to respond when something changes.";
 
 export const PROJECT_DEFENDER_BUILD =
-  "My scope spanned **full-stack product work**, from blockchain integration flows to AWS-backed microservices and the user-facing application layer.";
+  "At OpenZeppelin, I worked across **Defender's Svelte frontend**, **TypeScript clients**, and **AWS-based microservices**. My contributions included blockchain network support, automation execution controls, and typed interfaces for operational integrations. I also built a **Sui marketplace reference** and its underlying tooling for contract deployment, transactions, and integration tests, alongside work on **Contracts Wizard**.";
 
 export const PROJECT_DEFENDER_OUTCOME =
-  "I shipped features around **contract administration**, **automation**, and **monitoring** so teams could react to on-chain events faster and reduce manual operational work.";
+  "The work connected blockchain-specific requirements with the services and interfaces teams use to develop and operate contracts. It reinforced an important part of my engineering approach: understanding the entire system, not just the component being changed.";
 
 export const PROJECT_ASTRO_LIGHT_SUMMARY =
-  "A teaching dApp for DeFi and DAO concepts";
+  "Making blockchain concepts something people can experience";
 
 export const PROJECT_ASTRO_LIGHT_CONTEXT =
-  "I built Astro Light as a hands-on way to teach **blockchain fundamentals** beyond slide decks and theory.";
+  "I wanted a more hands-on way to explain **DeFi and DAO concepts** than relying on presentations or isolated code examples.";
 
 export const PROJECT_ASTRO_LIGHT_BUILD =
-  "The project combined a compact **DeFi and DAO experience** on Ethereum testnet where users could buy a token, swap, stake, and participate in a governance flow that changed the UI through on-chain decisions.";
+  "I created an **Ethereum testnet application** where users could explore token purchases, swaps, staking, and governance decisions that affected the interface.";
 
 export const PROJECT_ASTRO_LIGHT_OUTCOME =
-  "It was designed as both a **learning sandbox** and a compact **smart contract demo**, turning wallets, contract calls, token flows, and governance into something people could actually use and understand.";
+  "Astro Light brought several blockchain concepts into one interactive experience, making the relationship between smart contracts, wallets, and user actions easier to explore.";
 
 export const PROJECT_ALDO_SUMMARY =
   "Modernizing the core of an e-commerce platform";
@@ -68,94 +73,94 @@ export const PROJECT_ALDO_CONTEXT =
   "At Aldo, I joined the rebuild of the **order management system**, one of the most critical systems in the commerce stack.";
 
 export const PROJECT_ALDO_BUILD =
-  "The platform was built around an **event-driven microservice architecture** using EventBridge, Lambda functions, and AWS messaging services, with the OMS coordinating multiple interconnected services.";
+  "I developed **tested TypeScript services** in an **event-driven AWS architecture** using Lambda, EventBridge, and messaging services. I also built a **CLI and IDE extension** to simplify everyday development tasks, while helping onboard new developers.";
 
 export const PROJECT_ALDO_OUTCOME =
-  "Alongside delivery work on **tested TypeScript services**, I created a **CLI and IDE extension** and helped with **onboarding and team enablement** so developers could move through the architecture and daily workflows faster.";
+  "My work extended beyond the application itself to the experience of building and maintaining it: reusable development tools, clearer workflows, and knowledge sharing alongside the backend engineering.";
 
 export const PROJECT_SKEEPERS_SUMMARY =
-  "Scaling a live-shopping product beyond MVP";
+  "Building real-time services and improving how developers work";
 
 export const PROJECT_SKEEPERS_CONTEXT =
-  "I joined Skeepers when the product had traction, but the engineering foundations needed to catch up with the ambition of the business.";
+  "At **Spockee**, I worked on a live-shopping platform that brought real-time video commerce into online retail.";
 
 export const PROJECT_SKEEPERS_BUILD =
-  "I built **Koa and Express services**, supported **WebSocket flows**, containerized the stack with Docker, and managed AWS infrastructure through **Terraform**.";
+  "I developed **JavaScript and TypeScript services** using Koa, Express, and WebSockets, alongside Docker environments and Terraform-managed AWS infrastructure. I also created a **CLI for developer setup** and helped coordinate the team's Scrum practices.";
 
 export const PROJECT_SKEEPERS_OUTCOME =
-  "I also introduced **CI/CD pipelines**, **CLI tooling**, and more structured **Scrum practices** to help the team ship more reliably and grow into stronger delivery habits.";
+  "The role combined real-time application engineering with improving the everyday development process, from environment management to delivery workflows.";
 
 export const PROJECT_TOOLY_SUMMARY =
-  "Leading the technical direction of an MVP";
+  "Turning early product ideas into a technical foundation";
 
 export const PROJECT_TOOLY_CONTEXT =
-  "At Tooly, I led the technical side of the MVP while the company went through the **Next AI** incubation program.";
+  "At Tooly, I helped shape the technical direction of an early-stage product during the **Next AI** incubation program. Product requirements and architectural choices had to develop together.";
 
 export const PROJECT_TOOLY_BUILD =
-  "I built the stack with **TypeScript**, **Node and Koa**, **React**, and **GraphQL**, while making architectural decisions for a more scalable product.";
+  "I worked across the **TypeScript, Node.js, Koa, React, and GraphQL** stack, making architecture decisions while developing the MVP.";
 
 export const PROJECT_TOOLY_OUTCOME =
-  "The role also extended into **product thinking**, from MVP experiments to shaping how the solution could better match user and business needs.";
+  "The experience brought together hands-on development and product thinking, working through technical choices while the team was still defining what the product needed to become.";
 
 export const PROJECT_COMINITY_SUMMARY =
-  "Bringing DevOps discipline into agency delivery";
+  "Choosing infrastructure that fits the project";
 
 export const PROJECT_COMINITY_CONTEXT =
-  "Alongside product work, I supported Cominity's agency projects and helped bring stronger engineering practices into client delivery.";
+  "At Cominity, I worked across agency projects with different requirements, where the right infrastructure depended on the application and the team maintaining it.";
 
 export const PROJECT_COMINITY_BUILD =
-  "I set up **CI/CD pipelines**, containerized applications with **Docker**, used **Kubernetes** where orchestration made sense, and applied **serverless patterns** with AWS Lambda when they were the better fit.";
+  "I worked with **Docker, Kubernetes, AWS Lambda, and CI/CD pipelines**, applying different deployment approaches according to project needs. I also supported junior developers.";
 
 export const PROJECT_COMINITY_OUTCOME =
-  "The work was as much about **technical execution** as it was about helping teams make practical infrastructure decisions and mentoring junior developers along the way.";
+  "The work connected infrastructure decisions with practical delivery and mentoring, rather than treating technologies as solutions in themselves.";
 
 export const PROJECT_CENTECH_SUMMARY =
-  "Building an MVP inside an acceleration program";
+  "Building a product while figuring out what it needed to be";
 
 export const PROJECT_CENTECH_CONTEXT =
-  "At Centech, I joined VizzMD as **CTO and co-founder** to help turn a rehabilitation data-visualization idea into a real product.";
+  "As **co-founder and CTO of VizzMD**, I helped turn a rehabilitation data-visualisation concept into an initial product during **Centech's acceleration program**.";
 
 export const PROJECT_CENTECH_BUILD =
-  "I helped shape both the **product direction** and the **technical direction**, including CRM setup and a first MVP built with **Rails and React**.";
+  "I worked on the product and technology direction, built the first MVP using **Rails and React**, and established CRM processes while exploring product-market fit.";
 
 export const PROJECT_CENTECH_OUTCOME =
-  "It was my entry point into **startup building** and cross-functional ownership, working close to the business while still building the product itself.";
+  "It brought together responsibilities I had previously approached separately: understanding business needs, making product decisions, and building the software myself.";
 
 export const PROJECT_LE_WAGON_SUMMARY =
-  "Teaching full-stack development in the classroom";
+  "Helping people make sense of programming";
 
 export const PROJECT_LE_WAGON_CONTEXT =
-  "After graduating from Le Wagon, I returned first as a teaching assistant and then as a teacher for the full-stack program.";
+  "After graduating from Le Wagon, I returned as a teaching assistant and later as an instructor in the full-stack program.";
 
 export const PROJECT_LE_WAGON_BUILD =
-  "I taught **JavaScript** and core development concepts, helped students debug their projects, and adapted explanations to different learning styles.";
+  "I taught **JavaScript and development fundamentals**, helped students debug their projects, and adapted explanations to how different learners approached problems.";
 
 export const PROJECT_LE_WAGON_OUTCOME =
-  "That experience strengthened my **communication**, **mentorship**, and **public speaking** skills while keeping me close to the fundamentals of product development.";
+  "Teaching gave me another perspective on software development: making technical ideas understandable, recognising where someone is stuck, and helping them find their own way forward.";
 
 export const PROJECT_SHARE_IN_SUMMARY =
-  "Turning a career pivot into a real product";
+  "My first collaborative full-stack product";
 
 export const PROJECT_SHARE_IN_CONTEXT =
-  "Share In was my final project at Le Wagon, built as I shifted from data and marketing work into software development.";
+  "Share In was my final Le Wagon project, created during my transition from data and marketing into software development. The idea was to help people connect through shared cultural interests.";
 
 export const PROJECT_SHARE_IN_BUILD =
-  "We created a **Rails application** focused on connecting people through shared cultural interests, including **real-time messaging** powered by WebSockets.";
+  "Our team developed a **Rails application** with **real-time messaging through WebSockets**, bringing together the frontend, backend, and interactive features.";
 
 export const PROJECT_SHARE_IN_OUTCOME =
-  "It was the project that turned self-taught **JavaScript and Python** into collaborative **full-stack product development** with a team.";
+  "It was a turning point from learning programming independently to building a complete application with other developers.";
 
 export const PROJECT_AIRFLOW_SUMMARY =
-  "Automating reporting with a custom data pipeline";
+  "Building the reporting tools I needed while working in marketing";
 
 export const PROJECT_AIRFLOW_CONTEXT =
-  "While working in digital marketing, I built an **Apache Airflow pipeline** to reduce repetitive reporting work across multiple clients.";
+  "While working with digital advertising campaigns, I encountered the repetitive work involved in bringing data from different platforms into usable reports.";
 
 export const PROJECT_AIRFLOW_BUILD =
-  "The pipeline pulled data from advertising, analytics, and CRM APIs, loaded it into **BigQuery**, and used **Pandas** to create cleaner performance outputs and send results by email.";
+  "I built an **Apache Airflow pipeline** that collected advertising, analytics, and CRM data through APIs, processed it with **Python and Pandas**, and loaded it into **BigQuery** for reporting.";
 
 export const PROJECT_AIRFLOW_OUTCOME =
-  "I also packaged the environment with **Docker** and **Docker Compose** so the workflow was easier to run, reproduce, and improve over time.";
+  "This project connected my analytics experience with software engineering: moving from working with performance data to building the systems that collect and prepare it.";
 
 export const projectNarrativeTextById = {
   aldo: createProjectNarrativeText({
@@ -199,6 +204,7 @@ export const projectNarrativeTextById = {
     context: PROJECT_EGERIA_CONTEXT,
     outcome: PROJECT_EGERIA_OUTCOME,
     summary: PROJECT_EGERIA_SUMMARY,
+    whatsNext: PROJECT_EGERIA_WHATS_NEXT,
   }),
   leWagon: createProjectNarrativeText({
     build: PROJECT_LE_WAGON_BUILD,
