@@ -30,7 +30,7 @@ p {
   letter-spacing: var(--display-title-spacing);
   text-align: center;
   text-wrap: balance;
-  color: colors.$darkpurple;
+  color: var(--theme-deep);
 }
 
 .cardListCompetence {
@@ -47,7 +47,7 @@ p {
 
 .cardTitle {
   font-family: var(--font-display), serif;
-  color: colors.$darkpurple;
+  color: var(--theme-deep);
   font-style: normal;
   font-weight: 600;
   font-size: var(--card-title-size);
@@ -66,17 +66,17 @@ p {
   letter-spacing: var(--body-copy-tracking);
   text-align: left;
   text-wrap: pretty;
-  color: colors.$textgrey;
+  color: var(--theme-body);
 }
 
 .blueTitle {
-  color: colors.$lightpurple;
+  color: var(--theme-accent);
   font-weight: var(--accent-copy-weight);
   font-size: calc(var(--accent-copy-scale) * 1em);
 }
 
 .darkblueTitle {
-  color: colors.$lightpurple;
+  color: var(--theme-accent);
   font-weight: var(--accent-copy-weight);
   font-size: 1em;
 }

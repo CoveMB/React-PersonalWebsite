@@ -13,13 +13,14 @@
 @use 'careerChronology';
 @use 'trustSignals';
 @use 'footer';
+@use 'themeToggle';
 
 body {
   margin: 0;
   padding: 0;
-  background-color: colors.$backgroundwhite;
+  background-color: var(--theme-canvas);
   width: 100%;
-  color: colors.$textgrey;
+  color: var(--theme-body);
   font-family: var(--font-sans), sans-serif;
   font-weight: 500;
   overflow-x: hidden;
@@ -56,7 +57,7 @@ button {
 
 .normalizedBackground {
   width: 100%;
-  background-color: colors.$backgroundwhite;
+  background-color: var(--theme-canvas);
   margin: -5.5vh 0 0 0;
   padding: 100px 0 100px 0;
 }
@@ -65,15 +66,15 @@ button {
   background-image:
     linear-gradient(
       180deg,
-      colors.$backgroundwhite 0%,
-      colors.$backgroundwhite calc(100% - 88px),
-      colors.$cardwhite 100%
+      var(--theme-canvas) 0%,
+      var(--theme-canvas) calc(100% - 88px),
+      var(--theme-card) 100%
     );
 }
 
 .normalizedBackgroundWhite {
   width: 100%;
-  background-color: colors.$cardwhite;
+  background-color: var(--theme-card);
   margin: 0;
   padding: 100px 0 100px 0;
 }
@@ -81,7 +82,7 @@ button {
 .normalizedBackgroundbig {
   width: 100%;
   height: 200vh;
-  background-color: colors.$backgroundwhite;
+  background-color: var(--theme-canvas);
   margin: 0;
   padding-bottom: 65px;
 }

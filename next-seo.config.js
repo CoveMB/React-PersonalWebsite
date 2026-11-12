@@ -4,7 +4,7 @@ const fullName = "cove marquis-bortoli";
 const roleTitle = "Senior Full-Stack Engineer & Technology Consultant";
 const defaultTitle = `${roleTitle} | ${fullName}`;
 const siteName = `${fullName} Portfolio`;
-const themeColor = "#52021b";
+const themeColor = "#F8F8F8";
 const description = "Portfolio of cove marquis-bortoli, a senior full-stack engineer and technology consultant working across software architecture, web applications, UX design, blockchain, developer tooling, and automation.";
 const keywords = [
   fullName,
@@ -138,14 +138,12 @@ export const metadata = {
     "mobile-web-app-capable": "yes",
     "msapplication-TileColor": themeColor,
     "msapplication-tap-highlight": "no",
-    "theme-color": themeColor,
   },
 };
 
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor,
 };
 
 export default siteMetadata;

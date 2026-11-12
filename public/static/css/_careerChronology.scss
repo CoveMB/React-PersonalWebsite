@@ -10,8 +10,8 @@
   @include uiPrimitives.elevatedSurface(
     $padding: 28px 30px,
     $border-radius: 26px,
-    $background-start: rgba(colors.$cardwhite, 0.95),
-    $background-end: rgba(colors.$backgroundwhite, 0.98)
+    $background-start: rgb(var(--theme-card-rgb) / 0.95),
+    $background-end: rgb(var(--theme-canvas-rgb) / 0.98)
   );
 }
 
@@ -21,7 +21,7 @@
 
 .careerChronologyLead {
   margin: 0;
-  color: rgba(colors.$textgrey, 0.82);
+  color: rgb(var(--theme-body-rgb) / 0.82);
   font-size: 0.94rem;
   font-weight: 500;
   line-height: 1.62;
@@ -54,7 +54,7 @@
     $padding-block: 8px,
     $padding-inline: 12px,
     $border-radius: 999px,
-    $background-color: rgba(colors.$cardwhite, 0.94),
+    $background-color: rgb(var(--theme-card-rgb) / 0.94),
     $font-size: 0.74rem,
     $font-weight: 800,
     $letter-spacing: 0.08em,
@@ -75,7 +75,7 @@
   right: 0;
   height: 1px;
   background:
-    linear-gradient(90deg, rgba(colors.$darkpurple, 0.14) 0%, rgba(colors.$lightpurple, 0.56) 100%);
+    linear-gradient(90deg, rgb(var(--theme-deep-rgb) / 0.14) 0%, rgb(var(--theme-accent-rgb) / 0.56) 100%);
   transform: translateY(-50%);
 }
 
@@ -86,27 +86,27 @@
   right: 1px;
   width: 12px;
   height: 12px;
-  border-top: 2px solid rgba(colors.$lightpurple, 0.82);
-  border-right: 2px solid rgba(colors.$lightpurple, 0.82);
+  border-top: 2px solid rgb(var(--theme-accent-rgb) / 0.82);
+  border-right: 2px solid rgb(var(--theme-accent-rgb) / 0.82);
   transform: translateY(-50%) rotate(45deg);
 }
 
 .careerChronologyCard {
   min-width: 0;
   padding: 18px 20px;
-  border: 1px solid rgba(colors.$darkpurple, 0.08);
+  border: 1px solid rgb(var(--theme-deep-rgb) / 0.08);
   border-radius: 20px;
   background:
-    linear-gradient(180deg, rgba(colors.$cardwhite, 0.9) 0%, rgba(colors.$backgroundwhite, 0.96) 100%);
+    linear-gradient(180deg, rgb(var(--theme-card-rgb) / 0.9) 0%, rgb(var(--theme-canvas-rgb) / 0.96) 100%);
   box-shadow:
-    0 18px 36px rgba(colors.$darkpurple, 0.06),
-    0 6px 14px rgba(colors.$darkpurple, 0.04);
+    0 18px 36px rgb(var(--theme-shadow-rgb) / 0.06),
+    0 6px 14px rgb(var(--theme-shadow-rgb) / 0.04);
 }
 
 .careerChronologyCategory {
   @include uiPrimitives.metaLabel(
     $margin: 0 0 8px 0,
-    $color: rgba(colors.$lightpurple, 0.9)
+    $color: rgb(var(--theme-accent-rgb) / 0.9)
   );
   display: flex;
   align-items: center;
@@ -121,7 +121,7 @@
 
 .careerChronologyTitle {
   margin: 0;
-  color: colors.$darkpurple;
+  color: var(--theme-deep);
   font-size: 1.04rem;
   font-weight: 700;
   line-height: 1.4;
@@ -129,7 +129,7 @@
 
 .careerChronologyMeta {
   margin: 6px 0 0 0;
-  color: rgba(colors.$darkpurple, 0.68);
+  color: rgb(var(--theme-deep-rgb) / 0.68);
   font-size: 0.86rem;
   font-weight: 600;
   line-height: 1.5;
@@ -138,7 +138,7 @@
 
 .careerChronologySummary {
   margin: 10px 0 0 0;
-  color: rgba(colors.$textgrey, 0.88);
+  color: rgb(var(--theme-body-rgb) / 0.88);
   font-size: var(--body-copy-size);
   font-weight: var(--body-copy-weight);
   line-height: var(--body-copy-line-height);

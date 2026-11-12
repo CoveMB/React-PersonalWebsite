@@ -24,7 +24,9 @@ export default function Qualification({ topic }) {
         parallaxData={subtleRevealParallaxData}
       >
         <div className="qualificationCardHeader">
-          <img alt="" className="svgCard" src={qualificationContent.icon} />
+          <span className="svgCardFrame">
+            <img alt="" className="svgCard" src={qualificationContent.icon} />
+          </span>
           {renderCardTitle(qualificationContent)}
         </div>
         <div className="qualificationCardBody">

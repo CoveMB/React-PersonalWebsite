@@ -5,8 +5,8 @@
   width: 100%;
   padding: 72px 0 80px 0;
   background:
-    linear-gradient(180deg, rgba(colors.$cardwhite, 0.98), rgba(colors.$cardwhite, 1));
-  border-top: 1px solid rgba(colors.$darkpurple, 0.08);
+    linear-gradient(180deg, rgb(var(--theme-card-rgb) / 0.98), rgb(var(--theme-card-rgb) / 1));
+  border-top: 1px solid rgb(var(--theme-deep-rgb) / 0.08);
 }
 
 .footerShell {
@@ -24,7 +24,7 @@
 
 .footerTitle {
   margin: 0;
-  color: colors.$darkpurple;
+  color: var(--theme-deep);
   font-family: var(--font-display), serif;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 600;
@@ -50,7 +50,7 @@
   @include uiPrimitives.chip(
     $padding-block: 10px,
     $padding-inline: 14px,
-    $background-color: rgba(colors.$cardwhite, 0.92)
+    $background-color: rgb(var(--theme-card-rgb) / 0.92)
   );
 }
 
@@ -63,36 +63,36 @@
   @include uiPrimitives.elevatedSurface(
     $padding: 28px,
     $border-radius: 28px,
-    $background-start: rgba(colors.$cardwhite, 0.94),
-    $background-end: rgba(colors.$backgroundwhite, 0.96)
+    $background-start: rgb(var(--theme-card-rgb) / 0.94),
+    $background-end: rgb(var(--theme-canvas-rgb) / 0.96)
   );
 }
 
 .footerActionLink {
   @include uiPrimitives.actionButtonBase();
-  border: 1px solid rgba(colors.$darkpurple, 0.16);
-  background-color: rgba(colors.$backgroundwhite, 0.9);
-  color: colors.$darkpurple;
+  border: 1px solid var(--theme-control-border);
+  background-color: rgb(var(--theme-canvas-rgb) / 0.9);
+  color: var(--theme-deep);
 }
 
 .footerActionPrimary {
   border-color: transparent;
-  background-color: colors.$darkpurple;
-  color: colors.$backgroundwhite;
+  background-color: var(--theme-primary-fill);
+  color: var(--theme-primary-text);
 }
 
 .footerActionLink:hover,
 .footerActionLink:focus-visible {
-  border-color: rgba(colors.$darkpurple, 0.3);
-  box-shadow: 0 14px 24px rgba(colors.$darkpurple, 0.12);
+  border-color: rgb(var(--theme-deep-rgb) / 0.3);
+  box-shadow: 0 14px 24px rgb(var(--theme-shadow-rgb) / 0.12);
   transform: translateY(-2px);
   text-decoration: none;
 }
 
 .footerActionPrimary:hover,
 .footerActionPrimary:focus-visible {
-  background-color: colors.$lightpurple;
-  color: colors.$backgroundwhite;
+  background-color: var(--theme-primary-hover);
+  color: var(--theme-primary-text);
 }
 
 .footerIconLinks {
@@ -107,20 +107,21 @@
   justify-content: center;
   width: 46px;
   height: 46px;
-  border: 1px solid rgba(colors.$darkpurple, 0.1);
+  border: 1px solid rgb(var(--theme-deep-rgb) / 0.1);
   border-radius: 50%;
-  background-color: rgba(colors.$backgroundwhite, 0.86);
+  background-color: rgb(var(--theme-canvas-rgb) / 0.86);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .svgFooter {
+  filter: var(--theme-monochrome-filter);
   width: 22px;
 }
 
 .footerIconLink:hover,
 .footerIconLink:focus-visible {
-  border-color: rgba(colors.$darkpurple, 0.22);
-  box-shadow: 0 12px 22px rgba(colors.$darkpurple, 0.12);
+  border-color: rgb(var(--theme-deep-rgb) / 0.22);
+  box-shadow: 0 12px 22px rgb(var(--theme-shadow-rgb) / 0.12);
   transform: translateY(-2px);
 }
 
@@ -128,7 +129,7 @@
   @include uiPrimitives.responsiveContainer(1120px);
   margin: 28px auto 0 auto;
   padding-top: 22px;
-  border-top: 1px solid rgba(colors.$darkpurple, 0.08);
+  border-top: 1px solid rgb(var(--theme-deep-rgb) / 0.08);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -139,7 +140,7 @@
 .footerCopyright,
 .footerNote {
   margin: 0;
-  color: rgba(colors.$textgrey, 0.85);
+  color: rgb(var(--theme-body-rgb) / 0.85);
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.02em;

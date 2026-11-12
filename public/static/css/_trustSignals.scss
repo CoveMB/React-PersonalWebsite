@@ -10,8 +10,8 @@
   @include uiPrimitives.elevatedSurface(
     $padding: 28px 32px,
     $border-radius: 24px,
-    $background-start: rgba(colors.$cardwhite, 0.96),
-    $background-end: rgba(colors.$backgroundwhite, 0.94)
+    $background-start: rgb(var(--theme-card-rgb) / 0.96),
+    $background-end: rgb(var(--theme-canvas-rgb) / 0.94)
   );
 }
 
@@ -35,7 +35,7 @@
 
 .trustSignalsGroupTitle {
   margin: 0;
-  color: colors.$darkpurple;
+  color: var(--theme-deep);
   font-size: 0.94rem;
   font-weight: 800;
   letter-spacing: 0.04em;

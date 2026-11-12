@@ -35,7 +35,7 @@
 
 .sectionDotNavigationLabel {
   max-width: 5.5rem;
-  color: rgba(colors.$darkpurple, 0.82);
+  color: rgb(var(--theme-deep-rgb) / 0.82);
   font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -50,10 +50,10 @@
   min-height: 16px;
   height: 16px;
   padding: 0;
-  border: 2px solid rgba(colors.$darkpurple, 0.92);
+  border: 2px solid rgb(var(--theme-deep-rgb) / 0.92);
   border-radius: 999px;
-  background-color: rgba(colors.$cardwhite, 0.88);
-  box-shadow: 0 8px 18px rgba(colors.$darkpurple, 0.12);
+  background-color: rgb(var(--theme-card-rgb) / 0.88);
+  box-shadow: 0 8px 18px rgb(var(--theme-shadow-rgb) / 0.12);
   transition:
     transform 0.18s ease,
     background-color 0.18s ease,
@@ -64,16 +64,16 @@
 .sectionDotNavigationButton:hover,
 .sectionDotNavigationButton:focus-visible {
   transform: scale(1.18);
-  box-shadow: 0 12px 22px rgba(colors.$darkpurple, 0.18);
+  box-shadow: 0 12px 22px rgb(var(--theme-shadow-rgb) / 0.18);
 }
 
 .sectionDotNavigationButton:focus-visible {
-  outline: 2px solid rgba(colors.$lightpurple, 0.58);
+  outline: 2px solid rgb(var(--theme-accent-rgb) / 0.58);
   outline-offset: 3px;
 }
 
 .sectionDotNavigationButtonActive {
-  background-color: colors.$darkpurple;
+  background-color: var(--theme-deep);
   transform: scale(1.18);
 }
 

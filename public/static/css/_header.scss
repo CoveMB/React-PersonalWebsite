@@ -9,7 +9,7 @@
   position: relative;
   overflow: hidden;
   padding: clamp(48px, 6vw, 72px) 0 clamp(72px, 9vw, 100px) 0;
-  background-color: colors.$backgroundwhite;
+  background-color: var(--theme-canvas);
   min-height: 100vh;
   min-height: 100svh;
 }
@@ -21,15 +21,15 @@
   background:
     linear-gradient(
       180deg,
-      rgba(colors.$darkpurple, 0.12) 0%,
-      rgba(colors.$darkpurple, 0.12) 18%,
-      rgba(colors.$darkpurple, 0.08) 34%,
-      rgba(colors.$backgroundwhite, 0.16) 46%,
-      rgba(colors.$backgroundwhite, 0.52) 58%,
-      rgba(colors.$backgroundwhite, 0.82) 70%,
-      rgba(colors.$backgroundwhite, 0.96) 82%,
-      rgba(colors.$backgroundwhite, 0.99) 90%,
-      colors.$backgroundwhite 100%
+      rgb(var(--theme-tint-rgb) / 0.12) 0%,
+      rgb(var(--theme-tint-rgb) / 0.12) 18%,
+      rgb(var(--theme-tint-rgb) / 0.08) 34%,
+      rgb(var(--theme-canvas-rgb) / 0.16) 46%,
+      rgb(var(--theme-canvas-rgb) / 0.52) 58%,
+      rgb(var(--theme-canvas-rgb) / 0.82) 70%,
+      rgb(var(--theme-canvas-rgb) / 0.96) 82%,
+      rgb(var(--theme-canvas-rgb) / 0.99) 90%,
+      var(--theme-canvas) 100%
     ),
     url("/static/images/header-min.jpg");
   background-position: center center;

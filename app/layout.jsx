@@ -1,6 +1,7 @@
 import { Caveat, Fraunces, Manrope } from "next/font/google";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { metadata, viewport } from "../next-seo.config";
+import { getThemeBootstrapScript } from "../src/utils/theme.mjs";
 import ScrollbarActivity from "../src/components/animation/ScrollbarActivity";
 import "../public/static/css/application.scss";
 
@@ -33,6 +34,8 @@ export default function RootLayout({ children }) {
       className={`${sansFont.variable} ${displayFont.variable} ${handwrittenFont.variable} scrollNoOverflow`}
     >
       <head>
+        <meta name="theme-color" content="#F8F8F8" />
+        <script dangerouslySetInnerHTML={{ __html: getThemeBootstrapScript() }} />
         <link
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           rel="stylesheet"
