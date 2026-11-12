@@ -19,7 +19,7 @@ export const PROJECT_EGERIA_SUMMARY =
   "From client intentions to distinctive websites and reusable systems";
 
 export const PROJECT_EGERIA_CONTEXT =
-  "I started **Egeria Systems** to work directly with individuals and organisations on websites, applications, and digital workflows. The creative side matters to me as much as the technical work: shaping a site's **visual direction and user experience** with care so it reflects the client's **personality, values, and business intentions**.";
+  "I started **Egeria Systems** to work directly with individuals and organizations, from understanding their needs to shaping websites, applications, and digital workflows. That includes translating each client's goals, values, and identity into the **visual direction** and **user experience** of their website.";
 
 export const PROJECT_EGERIA_BUILD =
   "I developed an **Obsidian-based consulting system** for client discovery, project records, methodologies, and technical decisions. Alongside it, I built **AI-assisted tools** for briefs, research, reports, and interactive website maquettes, with human review built into the process. **Egeria Scaffold** creates **client-owned Next.js and TypeScript projects** and manages modular capabilities, from authentication and multilingual content to analytics and Cloudflare infrastructure, as needs evolve.";
