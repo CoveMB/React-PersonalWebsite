@@ -1,27 +1,58 @@
 @use 'colors';
 
-body::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	background-color: colors.$backgroundwhite;
-	border-radius: 8px;
+// Aurora Trace: preserve native page scrolling, with a 5px WebKit thumb.
+html::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }
 
-body::-webkit-scrollbar {
-	width: 4px;
-	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+html::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-body::-webkit-scrollbar-thumb {
-	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	border-radius: 8px;
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.44, colors.$lightpurple),
-		color-stop(0.72, colors.$darkpurple),
-		color-stop(0.86, colors.$darkpurple)
-	);
+html::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    #b9ecff 0%,
+    #76bff7 42%,
+    #4677bd 100%
+  );
+  box-shadow: 0 0 4px rgba(84, 156, 238, 0.4);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html::-webkit-scrollbar-thumb {
+    transition: box-shadow 220ms ease;
+  }
+
+  html[data-aurora-scroll-active]::-webkit-scrollbar-thumb,
+  html::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      180deg,
+      #e0faff 0%,
+      #8edbff 40%,
+      #5c9cf3 100%
+    );
+    box-shadow:
+      0 0 8px rgba(126, 207, 255, 0.85),
+      0 0 16px rgba(79, 145, 244, 0.4);
+  }
+}
+
+// Firefox supports 'thin' rather than an exact 5px width.
+// Scope standards-based sizing so it cannot override the WebKit rule.
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #5e99d3 transparent;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-aurora-scroll-active] {
+      scrollbar-color: #8ccfff transparent;
+    }
+  }
 }
 
 .scrollbarxcustom::-webkit-scrollbar-track {
