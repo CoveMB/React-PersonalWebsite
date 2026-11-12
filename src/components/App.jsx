@@ -144,7 +144,7 @@ export default function App() {
   return (
     <>
       <NavigationObserver />
-      <DotNavigation />
+      {/* <DotNavigation /> */}
       <Header />
       {pageSections.map(renderPageSection)}
       <Footer />

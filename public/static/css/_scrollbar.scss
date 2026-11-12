@@ -46,9 +46,9 @@ html[data-aurora-comet-ready] body::-webkit-scrollbar { display: none; }
 .auroraCometHead {
   position: absolute;
   top: 0;
-  left: 50%;
-  width: 5px;
-  height: 5px;
+  left: 80%;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   transform: translate3d(-50%, var(--comet-y), 0);
   background: #f8ffff;
@@ -62,7 +62,7 @@ html[data-aurora-comet-ready] body::-webkit-scrollbar { display: none; }
   position: absolute;
   bottom: 4px;
   left: 0;
-  width: 5px;
+  width: 7px;
   height: 39px;
   border-radius: 100px;
   background: linear-gradient(to top, #d1f5ffed, #72b9f5a8 13%, #427ccf70 48%, #4166b600 100%);
