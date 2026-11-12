@@ -6,7 +6,7 @@ const caseStudySectionLabels = {
   build: "Build",
   context: "Context",
   outcome: "Outcome",
-  whatsNext: "What\'s next",
+  whatsNext: "What's next",
 };
 
 const removeEmphasisMarkers = (text) => text.replace(/\*\*/g, "");
