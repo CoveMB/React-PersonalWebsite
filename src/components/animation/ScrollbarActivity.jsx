@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { observeScrollActivity } from "../../utils/scrollbarActivity.mjs";
 
 export default function ScrollbarActivity() {
-  useEffect(() => observeScrollActivity(), []);
+  const glowReference = useRef(null);
 
-  return null;
+  useEffect(() => observeScrollActivity({ glowElement: glowReference.current }), []);
+
+  return <div aria-hidden="true" className="auroraScrollbarGlow" ref={glowReference} hidden />;
 }
