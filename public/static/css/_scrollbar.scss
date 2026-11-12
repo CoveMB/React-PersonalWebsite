@@ -1,27 +1,135 @@
 @use 'colors';
 
-body::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	background-color: colors.$backgroundwhite;
-	border-radius: 8px;
+// Without JavaScript the portfolio keeps an ordinary, usable 5px scrollbar.
+html::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+html::-webkit-scrollbar-track { background: transparent; }
+html::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: linear-gradient(180deg, #b9ecff, #76bff7 42%, #4677bd);
+}
+@supports not selector(::-webkit-scrollbar) {
+  html { scrollbar-width: thin; scrollbar-color: #5e99d3 transparent; }
 }
 
-body::-webkit-scrollbar {
-	width: 4px;
-	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+// The fallback disappears only once the accessible, draggable overlay mounts.
+// The viewport still scrolls natively; neither page overflow nor touch inertia
+// is changed. No scrollbar track or progress stripe is drawn.
+html[data-aurora-comet-ready],
+html[data-aurora-comet-ready] body { scrollbar-width: none; }
+html[data-aurora-comet-ready]::-webkit-scrollbar,
+html[data-aurora-comet-ready] body::-webkit-scrollbar { display: none; }
+
+.auroraCometRail {
+  --comet-y: 0px;
+  position: fixed;
+  z-index: 1000;
+  top: max(44px, env(safe-area-inset-top));
+  bottom: max(44px, env(safe-area-inset-bottom));
+  right: 6px;
+  width: 36px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+}
+@media (max-width: 1100px) {
+  // Section dots are hidden at this breakpoint, allowing a larger touch target.
+  .auroraCometRail { right: 0; width: 44px; }
+}
+.auroraCometRail[hidden] { display: none; }
+.auroraCometRail:focus-visible { outline: none; }
+// The comet's halo, not the entire invisible click region, indicates focus.
+.auroraCometHead {
+  position: absolute;
+  top: 0;
+  left: 80%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transform: translate3d(-50%, var(--comet-y), 0);
+  background: #f8ffff;
+  --comet-rest-shadow: 0 0 0 1px #12609f, 0 0 9px 2px #3986c2, 0 0 17px 4px #79b1e365;
+  box-shadow: var(--comet-rest-shadow);
+  pointer-events: none;
+  will-change: transform;
+}
+.auroraCometHead::before {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  width: 7px;
+  height: 39px;
+  border-radius: 100px;
+  background: linear-gradient(to top, #d1f5ffed, #72b9f5a8 13%, #427ccf70 48%, #4166b600 100%);
+  filter: blur(.7px);
+  opacity: .58;
+  transform: scaleY(.82);
+  transform-origin: bottom;
+  transition: opacity 180ms ease, transform 180ms ease, height 180ms ease;
+}
+.auroraCometHead::after {
+  content: '';
+  position: absolute;
+  width: 29px;
+  height: 29px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #98dcff47 0, #5389ef21 43%, transparent 73%);
+  filter: blur(3px);
+  opacity: .62;
+  transition: opacity 180ms ease;
+}
+.auroraCometRail[data-direction='up'] .auroraCometHead::before {
+  bottom: auto;
+  top: 4px;
+  transform-origin: top;
+  background: linear-gradient(to bottom, #d1f5ffed, #72b9f5a8 13%, #427ccf70 48%, #4166b600 100%);
+}
+.auroraCometRail.is-moving .auroraCometHead,
+.auroraCometRail:hover .auroraCometHead,
+.auroraCometRail:focus-visible .auroraCometHead {
+  box-shadow: 0 0 0 1px #12609f, 0 0 9px 2px #388dcf, 0 0 24px 7px #5b8fe18a;
+}
+.auroraCometRail.is-moving .auroraCometHead::before {
+  height: 51px;
+  opacity: .95;
+  transform: scaleY(1);
+}
+.auroraCometRail.is-moving .auroraCometHead::after,
+.auroraCometRail:hover .auroraCometHead::after { opacity: 1; }
+.auroraCometRail:hover .auroraCometHead::before { opacity: .85; }
+
+// Allow the system theme (or a future manual theme) to adapt the comet against navy.
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) .auroraCometHead {
+    background: #e5faff;
+    --comet-rest-shadow: 0 0 5px 1px #a3eaffee, 0 0 12px 3px #68b8fa7a, 0 0 23px 6px #5588d43a;
+    box-shadow: var(--comet-rest-shadow);
+  }
+}
+html[data-theme='dark'] .auroraCometHead {
+  background: #e5faff;
+  --comet-rest-shadow: 0 0 5px 1px #a3eaffee, 0 0 12px 3px #68b8fa7a, 0 0 23px 6px #5588d43a;
+  box-shadow: var(--comet-rest-shadow);
 }
 
-body::-webkit-scrollbar-thumb {
-	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	border-radius: 8px;
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.44, colors.$lightpurple),
-		color-stop(0.72, colors.$darkpurple),
-		color-stop(0.86, colors.$darkpurple)
-	);
+@media (prefers-reduced-motion: reduce) {
+  .auroraCometHead::before,
+  .auroraCometHead::after { transition: none; }
+  .auroraCometRail.is-moving .auroraCometHead { box-shadow: var(--comet-rest-shadow); }
+  .auroraCometRail.is-moving .auroraCometHead::after { opacity: .62; }
+  .auroraCometRail.is-moving .auroraCometHead::before {
+    height: 39px;
+    opacity: .58;
+    transform: scaleY(.82);
+  }
 }
 
 .scrollbarxcustom::-webkit-scrollbar-track {
