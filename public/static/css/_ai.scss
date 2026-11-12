@@ -139,7 +139,7 @@
 .roleFitTextarea:focus {
   outline: none;
   border-color: var(--theme-accent);
-  box-shadow: 0 0 0 4px rgb(var(--theme-shadow-rgb) / 0.06);
+  box-shadow: 0 0 0 4px rgb(var(--theme-accent-rgb) / 0.16);
 }
 
 .roleFitTextarea::placeholder {
@@ -180,7 +180,7 @@
 
 .roleFitSecondaryButton {
   background-color: transparent;
-  border-color: rgb(var(--theme-deep-rgb) / 0.12);
+  border-color: var(--theme-control-border);
   color: var(--theme-deep);
 }
 

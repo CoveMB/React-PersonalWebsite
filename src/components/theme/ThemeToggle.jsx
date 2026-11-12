@@ -9,17 +9,18 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     const controller = createThemeController(window, document);
+    const anchor = anchorRef.current;
     controllerRef.current = controller;
     controller.apply();
 
     controller.mediaQuery?.addEventListener?.("change", controller.onPreferenceChange);
     window.addEventListener("storage", controller.onStorageChange);
-    anchorRef.current?.setAttribute("data-ready", "true");
+    anchor?.setAttribute("data-ready", "true");
 
     return () => {
       controller.mediaQuery?.removeEventListener?.("change", controller.onPreferenceChange);
       window.removeEventListener("storage", controller.onStorageChange);
-      anchorRef.current?.removeAttribute("data-ready");
+      anchor?.removeAttribute("data-ready");
       controllerRef.current = null;
     };
   }, []);
