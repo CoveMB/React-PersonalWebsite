@@ -2,7 +2,7 @@ export const CAREER_CHRONOLOGY_SUMMARY =
   "A way into full-stack, blockchain and internal tooling development, team support, product building and technology consulting.";
 
 export const CAREER_EGERIA_SUMMARY =
-  "Turn client goals and ways of working into websites, applications, and simpler digital systems, combining visual design, modular project scaffolding, capability lifecycle management, and AI-assisted tools from discovery through delivery.";
+  "Turn client goals and ways of working into websites, applications, and simpler digital systems, combining creative visual design, modular project scaffolding, capability lifecycle management, and AI-assisted tools from discovery through delivery.";
 
 export const CAREER_OPEN_ZEPPELIN_SUMMARY =
   "Full-stack blockchain development across Sui tooling, Defender automations, contract operations, OpenZeppelin Contracts Wizard, Svelte interfaces, AWS microservices, and CI/CD, while facilitating retrospectives.";
