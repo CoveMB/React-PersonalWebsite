@@ -31,6 +31,10 @@
   outline: none;
 }
 
+.themeToggleButton:focus {
+  outline: none;
+}
+
 .themeToggleButton:focus-visible .themeToggleTrack {
   border-color: var(--theme-accent);
   box-shadow:
