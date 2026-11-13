@@ -92,7 +92,7 @@
 .headerCardSummary {
   max-width: 34rem;
   margin: 18px 0 0 0;
-  color: rgb(var(--theme-body-rgb) / 1);
+  color: rgb(var(--theme-body-rgb) / 0.94);
   font-size: var(--body-copy-size);
   font-weight: var(--body-copy-weight);
   line-height: var(--body-copy-line-height);
@@ -290,7 +290,7 @@
 
 .headerCardProofSummary {
   margin: 0;
-  color: rgb(var(--theme-body-rgb) / 0.94);
+  color: rgb(var(--theme-body-rgb) / 0.88);
   font-size: 0.92rem;
   font-weight: 500;
   line-height: 1.5;

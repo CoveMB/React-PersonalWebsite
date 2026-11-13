@@ -35,6 +35,7 @@
 .footerConnect {
   font-size: 1.25rem;
   margin-bottom: 0;
+  color: rgb(var(--theme-body-rgb) / 0.94);
 }
 
 .footerMeta {
@@ -99,6 +100,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
 }
 
 .footerIconLink {
