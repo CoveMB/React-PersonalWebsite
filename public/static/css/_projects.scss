@@ -77,7 +77,7 @@
   @include uiPrimitives.responsiveContainer(1160px);
   margin: clamp(56px, 8vw, 92px) auto;
   border: 0;
-  border-top: 1px solid rgb(var(--theme-deep-rgb) / 0.12);
+  border-top: 1px solid rgb(var(--theme-deep-rgb) / 0.32);
 }
 
 .projectCaseStudy {
