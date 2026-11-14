@@ -9,7 +9,8 @@
     "start": "serve out -p 3000",
     "deploy": "yarn build",
     "lint": "eslint .",
-    "test:theme": "node --test tests/theme.test.mjs"
+    "test:theme": "node --test tests/theme.test.mjs",
+    "test:role-fit": "node --test tests/roleFitEvidence.test.mjs"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.2.0",

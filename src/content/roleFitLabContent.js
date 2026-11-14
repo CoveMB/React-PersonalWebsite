@@ -11,7 +11,7 @@ export const roleFitLabSectionContent = {
   noteLabel: "Local note",
   placeholder:
     "Paste the role here. The assistant will generate a concise fit summary grounded in portfolio work and resume context.",
-  resultEyebrow: "Assistant output",
+  resultEyebrow: "Evidence-checked summary",
 };
 
 export const roleFitLabMessageContent = {
@@ -54,6 +54,6 @@ export const roleFitLabMessageContent = {
     ready:
       "Local lab is ready. Press Enter to generate, or use Shift+Enter for a new line.",
     success:
-      "Analysis ready. Paste another role and press Enter to compare a new fit.",
+      "Evidence-checked summary ready. Paste another role and press Enter to compare.",
   },
 };

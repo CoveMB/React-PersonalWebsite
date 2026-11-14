@@ -1,2 +1,2 @@
 export const ROLE_FIT_LAB_LEAD =
-  "This browser-side lab gives a quick role-fit read grounded in portfolio work and resume context. It is useful as a fast first pass, not the main hiring narrative.";
+  "This browser-side lab uses a local model to prioritize documented experience against a pasted role. The summary draws only on verified résumé evidence, flags requirements that are not established, and still needs human review.";

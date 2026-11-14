@@ -11,6 +11,7 @@ import {
   maximumJobDescriptionLength,
   selectRoleFitModelId,
 } from "../../utils/roleFit";
+import { formatGroundedRoleFit } from "../../utils/roleFitEvidence.mjs";
 
 const roleFitActionTypes = {
   fail: "fail",
@@ -35,7 +36,11 @@ const initialRoleFitState = {
 };
 
 const normalizeJobDescription = (jobDescription) =>
-  jobDescription.replace(/\s+/g, " ").trim();
+  jobDescription
+    .replace(/\r\n?/g, "\n")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 
 const getBrowserSupportMessage = () => {
   if (typeof window === "undefined") {
@@ -343,15 +348,17 @@ export const useRoleFitLab = () => {
         roleFitState.jobDescription,
       );
       const response = await roleFitEngine.chat.completions.create({
-        max_tokens: 320,
+        max_tokens: 64,
         messages: buildRoleFitMessages(normalizedJobDescription),
-        temperature: 0.3,
+        temperature: 0.1,
       });
-      const result = getAssistantText(response?.choices?.[0]?.message?.content);
-
-      if (!result) {
-        throw new Error(roleFitLabMessageContent.errors.emptyResponse);
-      }
+      const selectedEvidenceIds = getAssistantText(
+        response?.choices?.[0]?.message?.content,
+      );
+      const result = formatGroundedRoleFit(
+        normalizedJobDescription,
+        selectedEvidenceIds,
+      );
 
       dispatch({
         payload: {
