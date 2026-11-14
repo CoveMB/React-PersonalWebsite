@@ -196,6 +196,13 @@
   gap: 8px;
 }
 
+.roleFitActions :hover{
+  border-color: rgb(var(--theme-deep-rgb) / 0.3);
+  box-shadow: 0 14px 24px rgb(var(--theme-shadow-rgb) / 0.12);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
 .roleFitButtonContent .sk-cube-grid {
   width: 16px;
   height: 16px;

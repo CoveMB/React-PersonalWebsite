@@ -307,10 +307,12 @@
 
 .projectActionLink:hover,
 .projectActionLink:focus-visible {
-  border-color: rgb(var(--theme-deep-rgb) / 0.32);
+  border-color: rgb(var(--theme-deep-rgb) / 0.82);
+  color: rgb(var(--theme-deep-rgb) / 0.82);
   background-color: rgb(var(--theme-card-rgb) / 1);
   box-shadow: 0 14px 26px rgb(var(--theme-shadow-rgb) / 0.18);
   transform: translateY(-2px);
+  text-decoration: none;
 }
 
 .projectActionLink:focus-visible {
