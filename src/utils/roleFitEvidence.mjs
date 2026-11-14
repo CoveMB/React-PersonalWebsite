@@ -233,7 +233,7 @@ export const formatGroundedRoleFit = (jobDescription, modelResponse = "") => {
     ? gaps.slice(0, 5).map(({ labels, optional }) => optional
       ? "- Optional technologies mentioned in the posting but not documented in my résumé: " + humanList(labels) + "."
       : "- My résumé does not document professional experience with " + humanList(labels) + ", which the posting mentions."
-    ).join("\n")
+    ).join("\n") + "\n- This list is not exhaustive; other role requirements also need verification."
     : "- Any requirements not explicitly evidenced by the résumé need confirmation; the job posting itself is not proof of my experience.";
 
   return [

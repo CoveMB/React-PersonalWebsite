@@ -108,3 +108,10 @@ test("the local model is given verified evidence IDs, never permission to invent
   assert.match(evidenceChoices, /react:/);
   assert.doesNotMatch(evidenceChoices, /(?:java|spring):/i);
 });
+
+test("unrecognized requirements never become experience and gaps stay explicitly non-exhaustive", () => {
+  const output = formatGroundedRoleFit("Senior PHP Laravel REST API engineer, with Java.");
+  assert.match(output, /At Spockee, I built REST APIs/);
+  assert.doesNotMatch(output, /At .*PHP|At .*Laravel/);
+  assert.match(output, /list is not exhaustive/);
+});
