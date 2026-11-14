@@ -5,7 +5,7 @@ export const CAREER_EGERIA_SUMMARY =
   "Turn client goals and ways of working into websites, applications, and simpler digital systems, combining creative visual design, modular project scaffolding, capability lifecycle management, and AI-assisted tools from discovery through delivery.";
 
 export const CAREER_OPEN_ZEPPELIN_SUMMARY =
-  "Full-stack blockchain development across Sui tooling, Defender automations, contract operations, OpenZeppelin Contracts Wizard, Svelte interfaces, AWS microservices, and CI/CD, while facilitating retrospectives.";
+  "Full-stack blockchain development across OpenZeppelin Defender automation, Sui tooling, contract operations, Contracts Wizard, Svelte interfaces, AWS microservices, and CI/CD, while facilitating retrospectives.";
 
 export const CAREER_PSKI_SUMMARY =
   "Professional Scrum with Kanban I certification focused on delivery flow and continuous improvement.";
