@@ -152,10 +152,18 @@ export default function RoleFitReport({ assessment, aiAssessment, aiStatus, aiFa
         </p>
       ) : null}
       {aiStatus === 'failed' || aiStatus === 'invalid' || aiStatus === 'empty' ? (
-        <p className="roleFitAIProgress" role="status">
-          {roleFitAiFailureMessages[aiFailure?.code] ?? 'The local AI result could not be validated.'}
-          {' '}The three-section source-based comparison remains available without AI-generated notes.
-        </p>
+        <>
+          <p className="roleFitAIProgress" role="status">
+            {roleFitAiFailureMessages[aiFailure?.code] ?? 'The local AI result could not be validated.'}
+            {' '}The three-section source-based comparison remains available without AI-generated notes.
+          </p>
+          <details className="roleFitInventory roleFitAiDiagnostic">
+            <summary>Technical diagnostic (safe to share)</summary>
+            <p>Failure code: <code>{aiFailure?.code ?? 'unknown'}</code>.
+              {' '}Stage: <code>{aiFailure?.stage ?? 'validation'}</code>.
+              {' '}The job description and raw model output are not included.</p>
+          </details>
+        </>
       ) : null}
       {aiReady ? (
         <p className="roleFitValidationNotice">
