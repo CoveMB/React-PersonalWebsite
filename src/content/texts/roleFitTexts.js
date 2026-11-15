@@ -1,2 +1,2 @@
 export const ROLE_FIT_LAB_LEAD =
-  "This browser-side lab uses a local model to prioritize documented experience against a pasted role. The summary draws only on verified résumé evidence, flags requirements that are not established, and still needs human review.";
+  "Explore how a role's requirements compare with documented work: strongest direct examples, transferable skills, and consequential gaps. An immediate, transparent assessment runs in your browser without an AI model; optional local refinement cannot invent career claims.";

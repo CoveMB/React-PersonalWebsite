@@ -1,413 +1,190 @@
 import { useEffect, useReducer, useRef, useState } from "react";
-import {
-  CreateWebWorkerMLCEngine,
-  prebuiltAppConfig,
-} from "@mlc-ai/web-llm";
-import {
-  roleFitLabMessageContent,
-} from "../../content/roleFitLabContent";
-import {
-  buildRoleFitMessages,
-  maximumJobDescriptionLength,
-  selectRoleFitModelId,
-} from "../../utils/roleFit";
-import { formatGroundedRoleFit } from "../../utils/roleFitEvidence.mjs";
+import { roleFitLabMessageContent as copy } from "../../content/roleFitLabContent";
+import { maximumJobDescriptionLength, buildRoleFitEnhancementRequest,
+  validateRoleFitEnhancement, applyRoleFitEnhancement, selectRoleFitModelId,
+  getRolePostingValidationCode } from "../../utils/roleFit";
+import { normalizeRolePosting, parseRoleRequirements } from "../../utils/roleFitRequirements.mjs";
+import { getRoleFitEvidenceCatalog } from "../../utils/roleFitEvidence.mjs";
+import { matchRoleRequirements } from "../../utils/roleFitMatching.mjs";
+import { buildRoleFitAssessment } from "../../utils/roleFitAssessment.mjs";
+import { createRoleFitRevisionGuard, enhanceRoleFitWith } from "../../utils/roleFitEnhancement.mjs";
 
-const roleFitActionTypes = {
-  fail: "fail",
-  ready: "ready",
-  reset: "reset",
-  setStatus: "setStatus",
-  startGeneration: "startGeneration",
-  startLoading: "startLoading",
-  succeed: "succeed",
-  updateJobDescription: "updateJobDescription",
+const initialState = {
+  jobDescription: "", result: null, errorMessage: "", statusMessage: "",
+  modelId: "", isEnhancing: false,
+};
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "edit": return { ...state, jobDescription: action.value, result: null,
+      errorMessage: "", statusMessage: "", isEnhancing: false };
+    case "reset": return { ...initialState, modelId: state.modelId };
+    case "invalid": return { ...state, errorMessage: action.value };
+    case "analyzed": return { ...state, result: action.result, errorMessage: "",
+      statusMessage: copy.statusMessages.success, isEnhancing: false };
+    case "enhancing": return { ...state, isEnhancing: true, errorMessage: "",
+      statusMessage: copy.statusMessages.loading };
+    case "progress": return { ...state, statusMessage: action.message };
+    case "enhanced": return { ...state, result: action.result, isEnhancing: false,
+      modelId: action.modelId, statusMessage: copy.statusMessages.enhanced };
+    case "enhancementStopped": return { ...state, isEnhancing: false,
+      errorMessage: action.error || "", statusMessage: action.message };
+    default: return state;
+  }
 };
 
-const initialRoleFitState = {
-  errorMessage: "",
-  isEngineReady: false,
-  isGenerating: false,
-  isLoadingEngine: false,
-  jobDescription: "",
-  modelId: "",
-  result: "",
-  statusMessage: roleFitLabMessageContent.statusMessages.default,
-};
-
-const normalizeJobDescription = (jobDescription) =>
-  jobDescription
-    .replace(/\r\n?/g, "\n")
-    .replace(/[ \t]+/g, " ")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
-
-const getBrowserSupportMessage = () => {
-  if (typeof window === "undefined") {
-    return roleFitLabMessageContent.statusMessages.default;
-  }
-
-  if (typeof window.Worker === "undefined") {
-    return roleFitLabMessageContent.browserSupport.missingWorker;
-  }
-
-  if (typeof navigator === "undefined" || !navigator.gpu) {
-    return roleFitLabMessageContent.browserSupport.missingWebGpu;
-  }
-
-  return roleFitLabMessageContent.browserSupport.ready;
-};
-
-const getEngineStatusMessage = ({ isEngineReady, modelId, statusMessage }) => {
-  if (isEngineReady) {
-    return `${roleFitLabMessageContent.labels.loadedModel}: ${modelId}`;
-  }
-
-  return statusMessage;
-};
-
-const getJobDescriptionErrorMessage = (jobDescription) => {
-  const normalizedJobDescription = jobDescription.trim();
-
-  if (!normalizedJobDescription) {
-    return roleFitLabMessageContent.errors.missingJobDescription;
-  }
-
-  if (normalizedJobDescription.length < 80) {
-    return roleFitLabMessageContent.errors.shortJobDescription;
-  }
-
-  return "";
-};
-
-const createRoleFitWorker = () =>
-  new Worker(new URL("./roleFit.worker.js", import.meta.url), {
-    type: "module",
-  });
-
-const destroyRoleFitWorker = (workerReference) => {
-  workerReference.current?.terminate?.();
-  workerReference.current = null;
-};
-
-const getProgressMessage = ({ progress, text }) => {
-  const progressPercentage = Number.isFinite(progress)
-    ? ` (${Math.round(progress * 100)}%)`
-    : "";
-
-  if (text) {
-    return `${text}${progressPercentage}`;
-  }
-
-  return `${roleFitLabMessageContent.statusMessages.loading}${progressPercentage}`;
-};
-
-const getAssistantText = (responseContent) => {
-  if (typeof responseContent === "string") {
-    return responseContent.trim();
-  }
-
-  if (!Array.isArray(responseContent)) {
-    return "";
-  }
-
-  return responseContent
-    .map((contentPart) => {
-      if (typeof contentPart === "string") {
-        return contentPart;
-      }
-
-      return contentPart?.text ?? "";
-    })
-    .join("")
-    .trim();
-};
-
-const getGenerationFailureMessage = (error) => {
-  const errorMessage = error instanceof Error ? error.message : "";
-
-  if (/fetch|network/i.test(errorMessage)) {
-    return roleFitLabMessageContent.errors.downloadFailed;
-  }
-
-  if (/gpu|webgpu|support|shader/i.test(errorMessage)) {
-    return roleFitLabMessageContent.errors.incompatibleBrowser;
-  }
-
-  return (
-    errorMessage || roleFitLabMessageContent.errors.genericGenerationFailure
-  );
-};
-
-const getSubmitButtonLabel = ({ isGenerating, isLoadingEngine }) => {
-  if (isLoadingEngine) {
-    return roleFitLabMessageContent.buttonLabels.loading;
-  }
-
-  if (isGenerating) {
-    return roleFitLabMessageContent.buttonLabels.running;
-  }
-
-  return roleFitLabMessageContent.buttonLabels.analyze;
-};
-
-const supportsLocalRoleFit = () =>
-  typeof window !== "undefined" &&
+const canRunLocalModel = () => typeof window !== "undefined" &&
   typeof window.Worker !== "undefined" &&
-  typeof navigator !== "undefined" &&
-  Boolean(navigator.gpu);
+  typeof navigator !== "undefined" && Boolean(navigator.gpu);
 
-const reducer = (state, { payload, type }) => {
-  switch (type) {
-    case roleFitActionTypes.updateJobDescription:
-      return { ...state, errorMessage: "", jobDescription: payload };
-    case roleFitActionTypes.startLoading:
-      return {
-        ...state,
-        errorMessage: "",
-        isLoadingEngine: true,
-        statusMessage: payload,
-      };
-    case roleFitActionTypes.ready:
-      return {
-        ...state,
-        errorMessage: "",
-        isEngineReady: true,
-        isLoadingEngine: false,
-        modelId: payload.modelId,
-        statusMessage: payload.statusMessage,
-      };
-    case roleFitActionTypes.startGeneration:
-      return {
-        ...state,
-        errorMessage: "",
-        isGenerating: true,
-        result: "",
-        statusMessage: payload,
-      };
-    case roleFitActionTypes.succeed:
-      return {
-        ...state,
-        errorMessage: "",
-        isGenerating: false,
-        result: payload.result,
-        statusMessage: payload.statusMessage,
-      };
-    case roleFitActionTypes.fail:
-      return {
-        ...state,
-        errorMessage: payload,
-        isGenerating: false,
-        isLoadingEngine: false,
-      };
-    case roleFitActionTypes.setStatus:
-      return { ...state, statusMessage: payload };
-    case roleFitActionTypes.reset:
-      return {
-        ...state,
-        errorMessage: "",
-        isGenerating: false,
-        jobDescription: "",
-        result: "",
-        statusMessage: state.isEngineReady
-          ? roleFitLabMessageContent.statusMessages.ready
-          : roleFitLabMessageContent.statusMessages.default,
-      };
-    default:
-      return state;
-  }
+export const getJobDescriptionErrorMessage = (input) => {
+  const code = getRolePostingValidationCode(input);
+  return code === "too_long" ? copy.errors.tooLong
+    : code === "empty" ? copy.errors.missingJobDescription : "";
+};
+const assistantText = (content) => typeof content === "string" ? content.trim()
+  : Array.isArray(content) ? content.map((part) => typeof part === "string" ? part : part?.text ?? "").join("").trim() : "";
+const progressMessage = (report) => {
+  const percentage = Number.isFinite(report?.progress) ? ` (${Math.round(report.progress * 100)}%)` : "";
+  return `${report?.text || copy.statusMessages.loading}${percentage}`;
 };
 
 export const useRoleFitLab = () => {
+  const [roleFitState, dispatch] = useReducer(reducer, initialState);
+  const [canEnhance, setCanEnhance] = useState(false);
+  const gateReference = useRef(createRoleFitRevisionGuard());
   const engineReference = useRef(null);
-  const engineLoadPromiseReference = useRef(null);
-  const generationLockReference = useRef(false);
+  const enginePromiseReference = useRef(null);
   const workerReference = useRef(null);
-  const [ browserSupportMessage, setBrowserSupportMessage ] =
-    useState(roleFitLabMessageContent.statusMessages.default);
-  const [ roleFitState, dispatch ] = useReducer(reducer, initialRoleFitState);
+  const enhancingRevisionReference = useRef(null);
 
   useEffect(() => {
-    setBrowserSupportMessage(getBrowserSupportMessage());
-
+    // StrictMode invokes cleanup/setup twice in development. The second setup
+    // must receive a fresh, active revision gate.
+    gateReference.current = createRoleFitRevisionGuard();
+    setCanEnhance(canRunLocalModel());
     return () => {
-      engineReference.current?.unload?.().catch(() => undefined);
-      engineLoadPromiseReference.current = null;
-      generationLockReference.current = false;
-      destroyRoleFitWorker(workerReference);
+      gateReference.current.dispose();
+      enhancingRevisionReference.current = null;
+      enginePromiseReference.current = null;
+      try { void engineReference.current?.instance?.unload?.(); } catch { /* best effort */ }
+      engineReference.current = null;
+      workerReference.current?.terminate();
+      workerReference.current = null;
     };
   }, []);
 
   const updateJobDescription = (event) => {
-    dispatch({
-      payload: event.target.value,
-      type: roleFitActionTypes.updateJobDescription,
-    });
+    gateReference.current.bump();
+    dispatch({ type: "edit", value: event.target.value });
   };
-
   const resetRoleFit = () => {
-    dispatch({ type: roleFitActionTypes.reset });
+    gateReference.current.bump();
+    dispatch({ type: "reset" });
+  };
+  const analyzeRole = () => {
+    const jobDescription = roleFitState.jobDescription;
+    const error = getJobDescriptionErrorMessage(jobDescription);
+    if (error) { dispatch({ type: "invalid", value: error }); return; }
+    gateReference.current.bump();
+    const jobText = normalizeRolePosting(jobDescription);
+    const requirements = parseRoleRequirements(jobText);
+    const evidenceCatalog = getRoleFitEvidenceCatalog();
+    const matches = matchRoleRequirements(requirements, evidenceCatalog);
+    const result = buildRoleFitAssessment({ jobText, requirements, matches, evidenceCatalog });
+    dispatch({ type: "analyzed", result });
   };
 
-  const loadRoleFitEngine = async () => {
-    if (engineReference.current) {
-      return engineReference.current;
-    }
-
-    if (engineLoadPromiseReference.current) {
-      return engineLoadPromiseReference.current;
-    }
-
-    const modelId = selectRoleFitModelId(prebuiltAppConfig.model_list);
-
-    if (!modelId) {
-      throw new Error(roleFitLabMessageContent.errors.missingModel);
-    }
-
-    const loadPromise = (async () => {
-      dispatch({
-        payload: roleFitLabMessageContent.statusMessages.loading,
-        type: roleFitActionTypes.startLoading,
-      });
-
-      destroyRoleFitWorker(workerReference);
-      workerReference.current = createRoleFitWorker();
-
+  const loadEngine = async (revision) => {
+    const gate = gateReference.current;
+    if (engineReference.current) return { engine: engineReference.current.instance, modelId: engineReference.current.modelId };
+    if (enginePromiseReference.current) return enginePromiseReference.current;
+    const promise = (async () => {
+      // Dynamic import: the baseline contains no WebGPU or Worker dependency.
+      const { CreateWebWorkerMLCEngine, prebuiltAppConfig } = await import("@mlc-ai/web-llm");
+      const modelId = selectRoleFitModelId(prebuiltAppConfig.model_list);
+      if (!modelId) throw new Error(copy.errors.missingModel);
+      const worker = new Worker(new URL("./roleFit.worker.js", import.meta.url), { type: "module" });
+      workerReference.current = worker;
       try {
-        const nextEngine = await CreateWebWorkerMLCEngine(
-          workerReference.current,
-          modelId,
-          {
-            initProgressCallback: (progressReport) => {
-              dispatch({
-                payload: getProgressMessage(progressReport),
-                type: roleFitActionTypes.setStatus,
-              });
-            },
-            logLevel: "ERROR",
+        const engine = await CreateWebWorkerMLCEngine(worker, modelId, {
+          initProgressCallback: (report) => {
+            if (gate.isCurrent(revision)) dispatch({ type: "progress", message: progressMessage(report) });
           },
-        );
-
-        engineReference.current = nextEngine;
-
-        dispatch({
-          payload: {
-            modelId,
-            statusMessage: roleFitLabMessageContent.statusMessages.ready,
-          },
-          type: roleFitActionTypes.ready,
+          logLevel: "ERROR",
         });
-
-        return nextEngine;
+        if (!gate.isCurrent(revision)) {
+          void engine.unload?.();
+          worker.terminate();
+          if (workerReference.current === worker) workerReference.current = null;
+          throw new Error("Superseded local-model request");
+        }
+        // Keep the identifier alongside the engine; no global cache.
+        engineReference.current = { instance: engine, modelId };
+        return { engine, modelId };
       } catch (error) {
-        destroyRoleFitWorker(workerReference);
+        worker.terminate();
+        if (workerReference.current === worker) workerReference.current = null;
         throw error;
-      } finally {
-        engineLoadPromiseReference.current = null;
       }
     })();
-
-    engineLoadPromiseReference.current = loadPromise;
-    return loadPromise;
+    enginePromiseReference.current = promise;
+    try { return await promise; } finally { if (enginePromiseReference.current === promise) enginePromiseReference.current = null; }
   };
 
-  const generateRoleFit = async () => {
-    if (generationLockReference.current) {
-      return;
-    }
-
-    const validationErrorMessage = getJobDescriptionErrorMessage(
-      roleFitState.jobDescription,
-    );
-
-    if (validationErrorMessage) {
-      dispatch({
-        payload: validationErrorMessage,
-        type: roleFitActionTypes.fail,
-      });
-      return;
-    }
-
-    if (!supportsLocalRoleFit()) {
-      dispatch({
-        payload: roleFitLabMessageContent.errors.browserUnsupported,
-        type: roleFitActionTypes.fail,
-      });
-      return;
-    }
-
-    dispatch({
-      payload: roleFitLabMessageContent.statusMessages.generating,
-      type: roleFitActionTypes.startGeneration,
+  const enhanceRole = async () => {
+    if (!roleFitState.result || !canEnhance || roleFitState.isEnhancing) return;
+    const gate = gateReference.current;
+    const revision = gate.current();
+    if (enhancingRevisionReference.current === revision) return;
+    enhancingRevisionReference.current = revision;
+    const jobText = normalizeRolePosting(roleFitState.jobDescription);
+    const requirements = parseRoleRequirements(jobText);
+    const evidenceCatalog = getRoleFitEvidenceCatalog();
+    const context = { jobText, requirements, evidenceCatalog };
+    let chosenModelId = "";
+    dispatch({ type: "enhancing" });
+    const outcome = await enhanceRoleFitWith({
+      baseline: roleFitState.result, gate, revision,
+      producer: async () => {
+        const loaded = await loadEngine(revision);
+        chosenModelId = loaded.modelId;
+        if (!gate.isCurrent(revision)) return "";
+        const response = await loaded.engine.chat.completions.create({
+          messages: buildRoleFitEnhancementRequest(context).messages,
+          max_tokens: 420,
+          temperature: 0.1,
+        });
+        return assistantText(response?.choices?.[0]?.message?.content);
+      },
+      validate: (raw) => validateRoleFitEnhancement(raw, context),
+      apply: (baseline, suggestions) => applyRoleFitEnhancement(baseline, suggestions, context),
     });
-    generationLockReference.current = true;
-
-    try {
-      const roleFitEngine = await loadRoleFitEngine();
-      const normalizedJobDescription = normalizeJobDescription(
-        roleFitState.jobDescription,
-      );
-      const response = await roleFitEngine.chat.completions.create({
-        max_tokens: 64,
-        messages: buildRoleFitMessages(normalizedJobDescription),
-        temperature: 0.1,
-      });
-      const selectedEvidenceIds = getAssistantText(
-        response?.choices?.[0]?.message?.content,
-      );
-      const result = formatGroundedRoleFit(
-        normalizedJobDescription,
-        selectedEvidenceIds,
-      );
-
-      dispatch({
-        payload: {
-          result,
-          statusMessage: roleFitLabMessageContent.statusMessages.success,
-        },
-        type: roleFitActionTypes.succeed,
-      });
-    } catch (error) {
-      dispatch({
-        payload: getGenerationFailureMessage(error),
-        type: roleFitActionTypes.fail,
-      });
-    } finally {
-      generationLockReference.current = false;
-    }
-  };
-
-  const isBusy = roleFitState.isGenerating || roleFitState.isLoadingEngine;
-  const engineStatusMessage = getEngineStatusMessage(roleFitState);
-  const submitButtonLabel = getSubmitButtonLabel(roleFitState);
-
-  const handleGenerateClick = () => {
-    if (isBusy) {
-      return;
-    }
-
-    void generateRoleFit();
+    if (enhancingRevisionReference.current === revision) enhancingRevisionReference.current = null;
+    if (!gate.isCurrent(revision)) return;
+    if (outcome.status === "applied") dispatch({ type: "enhanced", result: outcome.assessment, modelId: chosenModelId });
+    else dispatch({ type: "enhancementStopped",
+      error: outcome.status === "failed" ? copy.errors.enhancementFailed : "",
+      message: outcome.status === "failed" ? copy.statusMessages.baselinePreserved : copy.statusMessages.noNewEvidence });
   };
 
   const handleJobDescriptionKeyDown = (event) => {
-    if (event.key !== "Enter" || event.shiftKey) {
-      return;
+    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      analyzeRole();
     }
-
-    event.preventDefault();
-    handleGenerateClick();
   };
-
   return {
-    browserSupportMessage,
-    engineStatusMessage,
-    handleGenerateClick,
-    handleJobDescriptionKeyDown,
-    isBusy,
-    maximumJobDescriptionLength,
-    resetRoleFit,
     roleFitState,
-    submitButtonLabel,
+    maximumJobDescriptionLength,
     updateJobDescription,
+    resetRoleFit,
+    handleGenerateClick: analyzeRole,
+    handleJobDescriptionKeyDown,
+    enhanceRole,
+    canEnhance,
+    isBusy: roleFitState.isEnhancing,
+    submitButtonLabel: copy.buttonLabels.analyze,
+    browserSupportMessage: canEnhance ? copy.browserSupport.ready : copy.browserSupport.unavailable,
+    engineStatusMessage: roleFitState.statusMessage,
   };
 };
