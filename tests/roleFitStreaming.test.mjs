@@ -179,3 +179,16 @@ test('abort before the queued completion task runs must not start WebGPU inferen
   await Promise.resolve();
   assert.equal(started, false);
 });
+
+test('aborting before queued worker initialization must not call the loader', async () => {
+  const controller = new AbortController();
+  let started = false;
+  const pending = awaitRoleFitModelReady({
+    start: () => { started = true; return never(); },
+    signal: controller.signal, readyTimeoutMs: 5000,
+  });
+  controller.abort();
+  await assert.rejects(pending, error => error.code === 'generation_aborted');
+  await Promise.resolve();
+  assert.equal(started, false);
+});
