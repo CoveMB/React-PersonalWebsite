@@ -1,21 +1,21 @@
 import { ROLE_FIT_LAB_LEAD } from './texts/roleFitTexts';
 
 export const roleFitLabSectionContent = {
-  badge: 'Local AI · Experimental',
+  badge: 'On-device AI · Evidence-led',
   contactLinkLabel: 'Send me the role directly',
   contactPrompt: 'Prefer a direct conversation instead?',
   eyebrow: 'Optional lab',
-  fieldHint: 'Paste a role description. Enter inserts a new line; Ctrl+Enter (or Cmd+Enter) starts both assessments. Re-analyze any time.',
+  fieldHint: 'Paste a job description. Enter adds a line; Ctrl+Enter (or Cmd+Enter) analyzes the role. You can re-analyze at any time.',
   inputLabel: 'Role description',
   lead: ROLE_FIT_LAB_LEAD,
   noteLabel: 'Privacy',
-  placeholder: 'Paste a job posting to compare its requirements with documented portfolio and résumé work.',
+  placeholder: 'Paste the job posting. The analysis compares each identified requirement with documented résumé and project experience.',
 };
 
 export const roleFitLabMessageContent = {
   browserSupport: {
-    ready: 'Analyze starts a model-written, unverified interpretation and an independent mechanical assessment. The first AI run downloads model files. For long postings, the model reads the first 5,000 characters; the mechanical report covers the full posting. Your pasted text stays on this device.',
-    unavailable: 'The mechanical assessment runs without a GPU. This browser cannot run the experimental local AI model (WebGPU/Worker required); your role text stays on this device.',
+    ready: 'Analysis runs locally. Requirements are compared with public résumé and project evidence, then the on-device model may add short interpretations. Its first run downloads model files and it analyzes a bounded selection of requirements from the full posting. The posting is not uploaded.',
+    unavailable: 'This browser cannot run the on-device model (WebGPU and Worker required). A clearly labeled evidence-only comparison is available instead. Your pasted job description stays on this device.',
   },
   buttonLabels: { analyze: 'Analyze role' },
   errors: {

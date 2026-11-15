@@ -1,2 +1,2 @@
 export const ROLE_FIT_LAB_LEAD =
-  'Explore an experimental, model-written comparison of a job posting with public résumé and project excerpts. The AI interpretation is unverified and may be wrong; a separate mechanical assessment appears below to help you check it.';
+  'Paste a job description to see which requirements are directly demonstrated, which relate to transferable experience, and which are not established by my published work. On supported devices, a local AI model adds concise, explicitly unverified interpretations without replacing the source-backed classification.';

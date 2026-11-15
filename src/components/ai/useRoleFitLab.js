@@ -20,7 +20,8 @@ const reducer = (state, action) => {
       statusMessage: action.hasModel ? copy.statusMessages.loading : '',
       analysisId: state.analysisId + 1 };
     case 'progress': return { ...state, statusMessage: action.message };
-    case 'aiReady': return { ...state, aiAssessment: action.result, aiStatus: action.result.kind === 'empty' ? 'empty' : 'ready',
+    case 'aiReady': return { ...state, aiAssessment: action.result,
+      aiStatus: action.result.kind === 'accepted' ? 'ready' : action.result.kind === 'empty' ? 'empty' : 'failed',
       statusMessage: '', aiError: '', modelId: action.modelId };
     case 'aiFailed': return { ...state, aiStatus: 'failed', aiError: copy.errors.modelFailed, statusMessage: '' };
     default: return state;
@@ -155,6 +156,7 @@ export const useRoleFitLab = () => {
         return {
           text: assistantText(response?.choices?.[0]?.message?.content),
           finishReason: response?.choices?.[0]?.finish_reason,
+          allowedIds: request.allowedIds,
         };
       } : undefined,
       onAI: (result) => dispatch({ type: 'aiReady', result, modelId: selectedModelId }),
