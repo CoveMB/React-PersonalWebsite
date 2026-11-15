@@ -304,3 +304,20 @@ test('alternative or ambiguous lists do not create duplicate related-experience 
   const ids = Object.values(sections).flat().map(row => row.requirementId);
   assert.equal(new Set(ids).size, ids.length);
 });
+
+test('Wissen framework example list shows relevant Node.js backend transfer while retaining unverified Java-family requirements', () => {
+  const posting = [
+    'Role: Senior Java Software Engineer',
+    'Required skills:',
+    'Experience with Java/J2EE, DB technologies.',
+    'Experience with Java frameworks like Spring, Hibernate, Spring boot.',
+    'Experience in building and consuming RESTful APIs and Microservices.',
+  ].join('\n');
+  const { sections } = buildThreeSectionRoleFit(assess(posting));
+  assert.ok(sections.notEstablished.some(row => /Java\/J2EE/.test(row.requirement.quote)));
+  assert.ok(sections.notEstablished.some(row => /frameworks like Spring/.test(row.requirement.quote)));
+  assert.ok(sections.transferable.some(row =>
+    /frameworks like Spring/.test(row.relatedToQuote ?? '') &&
+    row.evidence.some(source => source.capabilities.some(key => ['koa', 'express', 'nodejs'].includes(key)))
+  ), 'backend framework equivalence is not assumed; concrete related work is still visible');
+});
