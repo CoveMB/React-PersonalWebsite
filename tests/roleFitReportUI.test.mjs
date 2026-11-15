@@ -54,3 +54,13 @@ test('privacy copy no longer promises two competing reports or a first-five-thou
   assert.match(content, /not uploaded/);
   assert.match(content, /clearly labeled evidence-only comparison/i);
 });
+
+test('AI failure explanation distinguishes invalid JSON from generation and download failures', () => {
+  assert.match(report, /aiFailure/);
+  assert.match(report, /roleFitAiFailureMessages/);
+  assert.match(hook, /classifyRoleFitAIError/);
+  assert.match(content, /invalid_json/);
+  assert.match(content, /generation_limit/);
+  assert.match(content, /download_failed/);
+  assert.doesNotMatch(report, /The local AI could not produce a usable, source-bound interpretation/);
+});
