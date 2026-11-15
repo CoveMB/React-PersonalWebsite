@@ -3,7 +3,7 @@ import { roleFitLabMessageContent as copy } from '../../content/roleFitLabConten
 import { maximumJobDescriptionLength, getRolePostingValidationCode, selectRoleFitModelCandidates } from '../../utils/roleFit';
 import { buildRoleFitAIRequest, roleFitAIGenerationOptions, runRoleFitAnalyses, classifyRoleFitAIError } from '../../utils/roleFitAI.mjs';
 import { createRoleFitRevisionGuard } from '../../utils/roleFitEnhancement.mjs';
-import { streamRoleFitAI, awaitRoleFitModelReady } from '../../utils/roleFitStreaming.mjs';
+import { streamRoleFitAI, awaitRoleFitModelReady, runRoleFitWithFallback, RoleFitStreamError } from '../../utils/roleFitStreaming.mjs';
 
 const initialState = {
   jobDescription: '', result: null, aiAssessment: null, aiStatus: 'idle',
@@ -95,12 +95,13 @@ export const useRoleFitLab = () => {
     dispatch({ type: 'reset' });
   };
 
-  const loadEngine = async (revision) => {
+  const loadEngine = async (revision, excludedModelIds = []) => {
     const gate = gateReference.current;
-    if (engineReference.current) return {
+    if (engineReference.current && !excludedModelIds.includes(engineReference.current.modelId)) return {
       engine: engineReference.current.instance,
       modelId: engineReference.current.modelId,
     };
+    if (engineReference.current) stopModel({ workerReference, engineReference, enginePromiseReference });
     if (enginePromiseReference.current?.revision === revision) return enginePromiseReference.current.promise;
     const promise = (async () => {
       // Download/load only after explicit Analyze; do not infer GPU memory
@@ -111,7 +112,7 @@ export const useRoleFitLab = () => {
       if (!adapter) throw new Error('WebGPU adapter unavailable');
       const candidates = selectRoleFitModelCandidates(prebuiltAppConfig.model_list, {
         supportsF16: adapter.features.has('shader-f16'),
-      });
+      }).filter(modelId => !excludedModelIds.includes(modelId));
       if (!candidates.length) throw new Error(copy.errors.missingModel);
       let previousError = null;
       for (const modelId of candidates) {
@@ -178,31 +179,49 @@ export const useRoleFitLab = () => {
       producer: hasModel ? async (context) => {
         let stage = 'load';
         try {
-          const { engine, modelId } = await loadEngine(revision);
-          selectedModelId = modelId;
-          if (!gate.isCurrent(revision)) return '';
-          stage = 'generation';
           const request = buildRoleFitAIRequest(context);
-          const response = await streamRoleFitAI({
-            createCompletion: options => engine.chat.completions.create(options),
-            request: { messages: request.messages, ...roleFitAIGenerationOptions },
+          const result = await runRoleFitWithFallback({
             signal: controller.signal,
-            onProgress: message => {
-              if (gate.isCurrent(revision)) dispatch({ type: 'progress', message });
+            loadModel: async excludedIds => {
+              stage = 'load';
+              const loaded = await loadEngine(revision, excludedIds);
+              selectedModelId = loaded.modelId;
+              return loaded;
+            },
+            generate: async ({ engine }) => {
+              stage = 'generation';
+              if (!gate.isCurrent(revision) || controller.signal.aborted) {
+                throw new RoleFitStreamError('generation_aborted');
+              }
+              const generated = await streamRoleFitAI({
+                createCompletion: options => engine.chat.completions.create(options),
+                request: { messages: request.messages, ...roleFitAIGenerationOptions },
+                signal: controller.signal,
+                onProgress: message => {
+                  if (gate.isCurrent(revision)) dispatch({ type: 'progress', message });
+                },
+              });
+              return {
+                text: generated.text,
+                finishReason: generated.finishReason,
+                allowedIds: request.allowedIds,
+              };
+            },
+            dispose: () => stopModel({ workerReference, engineReference, enginePromiseReference }),
+            onRetry: () => {
+              if (gate.isCurrent(revision)) dispatch({
+                type: 'progress',
+                message: 'First model was too slow to begin generation. Trying a smaller local model…',
+              });
             },
           });
-          return {
-            text: response.text,
-            finishReason: response.finishReason,
-            allowedIds: request.allowedIds,
-          };
+          return result;
         } catch (cause) {
-          // A pending WebLLM Worker request can stay unresolved after a
-          // timeout. Terminate it so a fresh attempt cannot reuse that engine.
-          if (gate.isCurrent(revision) && stage === 'generation') {
+          // A WebLLM Worker may remain blocked after a timeout; do not reuse it.
+          if (gate.isCurrent(revision) && (stage === 'generation' || cause?.code === 'first_token_timeout')) {
             stopModel({ workerReference, engineReference, enginePromiseReference });
           }
-          throw { stage, cause }; // Only sanitized codes reach the failure label.
+          throw { stage: cause?.code === 'first_token_timeout' ? 'generation' : stage, cause };
         }
       } : undefined,
       onAI: (result) => dispatch({ type: 'aiReady', result, modelId: selectedModelId }),

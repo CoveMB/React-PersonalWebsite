@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { streamRoleFitAI, roleFitGenerationLimits, awaitRoleFitModelReady } from '../src/utils/roleFitStreaming.mjs';
+import { streamRoleFitAI, roleFitGenerationLimits, awaitRoleFitModelReady, runRoleFitWithFallback, RoleFitStreamError } from '../src/utils/roleFitStreaming.mjs';
 
 const request = { messages: [{ role: 'user', content: 'Hello' }], response_format: { type: 'json_object' } };
 const smallLimits = { startupMs: 30, firstChunkMs: 30, idleMs: 25, totalMs: 120, maxOutputChars: 8000 };
@@ -191,4 +191,73 @@ test('aborting before queued worker initialization must not call the loader', as
   await assert.rejects(pending, error => error.code === 'generation_aborted');
   await Promise.resolve();
   assert.equal(started, false);
+});
+
+
+test('first-token timeout retries exactly once on a smaller model and returns that model output', async () => {
+  const loaded = [], retried = [], disposed = [];
+  const response = await runRoleFitWithFallback({
+    loadModel: async excludedIds => {
+      loaded.push([...excludedIds]);
+      return { modelId: excludedIds.length ? 'Qwen2.5-1.5B' : 'Qwen2.5-3B' };
+    },
+    generate: async ({ modelId }) => {
+      if (modelId === 'Qwen2.5-3B') throw new RoleFitStreamError('first_token_timeout');
+      return { text: '{"direct":[],"transferable":[],"notEstablished":[]}', finishReason: 'stop' };
+    },
+    dispose: model => { disposed.push(model.modelId); },
+    onRetry: modelId => retried.push(modelId),
+  });
+  assert.deepEqual(loaded, [[], ['Qwen2.5-3B']]);
+  assert.deepEqual(disposed, ['Qwen2.5-3B']);
+  assert.deepEqual(retried, ['Qwen2.5-3B']);
+  assert.equal(response.modelId, 'Qwen2.5-1.5B');
+  assert.equal(response.text, '{"direct":[],"transferable":[],"notEstablished":[]}');
+});
+
+test('a second first-token timeout exits after one retry rather than infinite attempts', async () => {
+  let loads = 0;
+  await assert.rejects(runRoleFitWithFallback({
+    loadModel: async excludes => ({ modelId: ++loads === 1 ? '3B' : '1.5B' }),
+    generate: async () => { throw new RoleFitStreamError('first_token_timeout'); },
+    dispose: () => {},
+  }), error => error.code === 'first_token_timeout');
+  assert.equal(loads, 2);
+});
+
+test('generation stalls with partial output do not retry and preserve the error', async () => {
+  let loads = 0;
+  const error = await runRoleFitWithFallback({
+    loadModel: async () => { loads++; return { modelId: '3B' }; },
+    generate: async () => { throw new RoleFitStreamError('generation_stalled', '{"direct":['); },
+    dispose: () => {},
+  }).catch(error => error);
+  assert.equal(loads, 1);
+  assert.equal(error.code, 'generation_stalled');
+  assert.equal(error.partialText, '{"direct":[');
+});
+
+test('abort during or before fallback does not begin another model', async () => {
+  const controller = new AbortController();
+  let loads = 0;
+  await assert.rejects(runRoleFitWithFallback({
+    loadModel: async () => ({ modelId: '3B' }),
+    generate: async () => { throw new RoleFitStreamError('first_token_timeout'); },
+    dispose: () => { controller.abort(); },
+    signal: controller.signal,
+    onRetry: () => { loads++; },
+  }), error => error.code === 'generation_aborted');
+  assert.equal(loads, 0);
+});
+
+test('missing fallback keeps original first-token timeout, not a misleading model-loading error', async () => {
+  const error = await runRoleFitWithFallback({
+    loadModel: async excludes => {
+      if (excludes.length) throw new Error('No compatible candidate');
+      return { modelId: '3B' };
+    },
+    generate: async () => { throw new RoleFitStreamError('first_token_timeout'); },
+    dispose: () => {},
+  }).catch(error => error);
+  assert.equal(error.code, 'first_token_timeout');
 });

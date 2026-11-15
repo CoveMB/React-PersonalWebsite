@@ -154,3 +154,39 @@ export function awaitRoleFitModelReady({
     })).then(engine => finish(resolve, engine), error => finish(reject, error));
   });
 }
+
+// A first-token timeout can be slow prompt prefill rather than a broken model.
+// Retry once on the next smaller model already registered in the local WebLLM
+// catalog. Do not retry mid-response stalls (partial text must be preserved),
+// arbitrary errors, or cancelled requests. No server inference is involved.
+export async function runRoleFitWithFallback({
+  loadModel, generate, dispose, onRetry = () => {}, signal,
+}) {
+  const excludedIds = [];
+  let firstTokenError = null;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    if (signal?.aborted) throw new RoleFitStreamError('generation_aborted');
+    let loaded;
+    try {
+      loaded = await loadModel([...excludedIds]);
+    } catch (error) {
+      // A first model did run but timed out; don't replace that finding with
+      // the misleading "no compatible fallback available" explanation.
+      if (firstTokenError) throw firstTokenError;
+      throw error;
+    }
+    if (signal?.aborted) throw new RoleFitStreamError('generation_aborted');
+    try {
+      return { ...await generate(loaded), modelId: loaded.modelId };
+    } catch (error) {
+      // Release the failed worker before another GPU model is initialized.
+      await dispose(loaded);
+      if (signal?.aborted) throw new RoleFitStreamError('generation_aborted');
+      if (error?.code !== 'first_token_timeout' || attempt > 0) throw error;
+      firstTokenError = error;
+      excludedIds.push(loaded.modelId);
+      onRetry(loaded.modelId);
+    }
+  }
+  throw firstTokenError ?? new RoleFitStreamError('generation_failed');
+}
