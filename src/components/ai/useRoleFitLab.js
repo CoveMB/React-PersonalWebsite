@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { roleFitLabMessageContent as copy } from '../../content/roleFitLabContent';
 import { maximumJobDescriptionLength, getRolePostingValidationCode, selectRoleFitModelId } from '../../utils/roleFit';
-import { buildRoleFitAIRequest, runRoleFitAnalyses } from '../../utils/roleFitAI.mjs';
+import { buildRoleFitAIRequest, roleFitAIGenerationOptions, runRoleFitAnalyses } from '../../utils/roleFitAI.mjs';
 import { createRoleFitRevisionGuard } from '../../utils/roleFitEnhancement.mjs';
 
 const initialState = {
@@ -150,10 +150,12 @@ export const useRoleFitLab = () => {
         const request = buildRoleFitAIRequest(context);
         const response = await engine.chat.completions.create({
           messages: request.messages,
-          max_tokens: 560,
-          temperature: 0.15,
+          ...roleFitAIGenerationOptions,
         });
-        return assistantText(response?.choices?.[0]?.message?.content);
+        return {
+          text: assistantText(response?.choices?.[0]?.message?.content),
+          finishReason: response?.choices?.[0]?.finish_reason,
+        };
       } : undefined,
       onAI: (result) => dispatch({ type: 'aiReady', result, modelId: selectedModelId }),
       onError: () => dispatch({ type: 'aiFailed' }),

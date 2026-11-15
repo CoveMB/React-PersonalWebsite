@@ -20,11 +20,18 @@ test('AI card cannot render deterministic fallback content before actual model c
   assert.match(ai,/unverified|not verified|unreviewed/i);
 });
 test('AI generation prompt uses source quotes and enough tokens to produce all sections',()=>{
-  assert.match(hook,/max_tokens:\s*(?:[4-9]\d\d|1\d\d\d)/);
+  assert.match(hook,/roleFitAIGenerationOptions/);
   assert.doesNotMatch(hook,/buildRoleFitRecruiterSummary/);
   assert.match(hook,/buildRoleFitAIRequest/);
 });
 test('model-authored bullets are announced as a semantic list, not decorative paragraphs', () => {
   assert.match(ai, /<ul\b[^>]*className="roleFitAIModelBulletList"/);
   assert.match(ai, /<li\b[^>]*className="roleFitAIModelBullet"/);
+});
+test('model repetition and incomplete output warnings remain clearly labeled as formatting, not assessment', () => {
+  assert.match(ai, /assessment\?\.presentationAdjusted/);
+  assert.match(ai, /assessment\?\.missingSections/);
+  assert.match(ai, /assessment\?\.outputLimitReached/);
+  assert.match(ai, /No claims were inserted or reclassified/);
+  assert.match(hook, /finish_reason/);
 });

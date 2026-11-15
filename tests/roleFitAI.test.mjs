@@ -214,3 +214,166 @@ test('the system never asserts owner-confirmed Java absence when the evidence re
   assert.doesNotMatch(request.messages[0].content, /candidate confirmed NO PROFESSIONAL JAVA EXPERIENCE/i);
   assert.doesNotMatch(request.messages[1].content, /CONFIRMED CANDIDATE LIMITATION/);
 });
+
+test('repetitive model-written bullets are presented at most three times per section without substituting claims', () => {
+  const response = [
+    '#### Directly demonstrated',
+    '- Built REST APIs with Koa.',
+    '- Built React interfaces.',
+    '- Developed event-driven services.',
+    '- This fourth distinct model sentence must be omitted from the compact card.',
+    '#### Transferable experience',
+    '- Built and deployed services on AWS, including Lambda, DynamoDB, SNS, SQS, and EventBridge.',
+    '- Deployed services on AWS, including Lambda, DynamoDB, SNS, SQS, and EventBridge.',
+    ...Array(18).fill('- Built and maintained CI/CD pipelines.'),
+    '- Worked with Scrum and Kanban.',
+    '#### Not established',
+    '- Professional Java experience is not demonstrated.',
+  ].join('\n');
+  const result = interpretRoleFitAIResponse(response, { jobText: javaRole });
+  assert.equal(result.kind, 'generated');
+  assert.ok(result.presentationAdjusted, 'the UI should be able to disclose editorial trimming');
+  assert.ok(result.omittedBullets >= 17);
+  assert.match(result.text, /#### Directly demonstrated/);
+  assert.match(result.text, /#### Not established/);
+  assert.match(result.text, /Professional Java experience/);
+  assert.equal((result.text.match(/Built and maintained CI\/CD pipelines\./g) ?? []).length, 1);
+  assert.equal((result.text.split("\n").filter((line) => /services on AWS, including/.test(line)) ?? []).length, 1,
+    'the identical AWS fact with a leading verb should not appear twice');
+  assert.doesNotMatch(result.text, /fourth distinct model sentence/);
+  assert.equal(result.original, response, 'full model wording must remain available in diagnostics');
+  assert.equal('sections' in result, false, 'never insert deterministic category evaluations');
+});
+
+test('distinct source-relevant model sentences remain unchanged when already concise', () => {
+  const response = [
+    '### Directly demonstrated', '- Built React interfaces. [react]', '- Built REST APIs. [rest-apis]',
+    '### Transferable experience', '- Node.js systems are relevant to a Java role, but differ.',
+    '### Not established', '- Professional Java experience is not documented.',
+  ].join('\n');
+  const result = interpretRoleFitAIResponse(response);
+  assert.equal(result.text, response);
+  assert.equal(result.presentationAdjusted, false);
+  assert.equal(result.omittedBullets, 0);
+});
+
+test('the AI presentation boundary never fills a missing category or invents replacement experience', () => {
+  const response = '### Transferable experience\n' + Array(20).fill('- AWS infrastructure and CI/CD experience.').join('\n');
+  const result = interpretRoleFitAIResponse(response);
+  assert.equal((result.text.match(/AWS infrastructure and CI\/CD experience/g) ?? []).length, 1);
+  assert.doesNotMatch(result.text, /### Not established|### Directly demonstrated/);
+  assert.equal(result.original, response);
+});
+
+test('legacy JSON model notes are also capped to three authored statements per category', () => {
+  const notes = Array.from({ length: 8 }, (_, i) => ({ note: `Unique model statement ${i + 1} about portfolio.` }));
+  const response = JSON.stringify({ directlyDemonstrated: notes, transferableExperience: [], notEstablished: [] });
+  const result = interpretRoleFitAIResponse(response);
+  assert.equal((result.text.match(/Unique model statement/g) ?? []).length, 3);
+  assert.equal(result.omittedBullets, 5);
+  assert.ok(result.presentationAdjusted);
+  assert.doesNotMatch(result.text, /Unique model statement 8/);
+});
+
+test('pinned WebLLM generation options use a bounded response and provisional anti-repetition settings', async () => {
+  const { roleFitAIGenerationOptions } = await import('../src/utils/roleFitAI.mjs');
+  assert.ok(roleFitAIGenerationOptions.temperature > 0.15 && roleFitAIGenerationOptions.temperature <= 0.7);
+  assert.ok(roleFitAIGenerationOptions.repetition_penalty > 1 && roleFitAIGenerationOptions.repetition_penalty < 1.25);
+  assert.ok(roleFitAIGenerationOptions.frequency_penalty > 0 && roleFitAIGenerationOptions.frequency_penalty < 1);
+  assert.ok(roleFitAIGenerationOptions.max_tokens >= 400 && roleFitAIGenerationOptions.max_tokens <= 520);
+  const hook = readFileSync(new URL('../src/components/ai/useRoleFitLab.js', import.meta.url), 'utf8');
+  assert.match(hook, /roleFitAIGenerationOptions/);
+  assert.doesNotMatch(hook, /max_tokens:\s*560/);
+});
+
+test('the prompt explicitly prioritizes unique concise findings and completing the gaps section', () => {
+  const prompt = buildRoleFitAIRequest({ jobText: javaRole, evidenceCatalog }).messages[0].content;
+  assert.match(prompt, /repea(?:t|ted)|duplicat/i);
+  assert.match(prompt, /at most two|maximum two|up to two/i);
+  assert.match(prompt, /Not established/i);
+  assert.match(prompt, /stop|finish|complete/i);
+});
+
+test('incomplete three-section model output is disclosed without generating absent findings', () => {
+  const response = '### Directly demonstrated\n- Built a sourced React application. [react]';
+  const result = interpretRoleFitAIResponse(response);
+  assert.deepEqual(result.missingSections, ['Transferable experience', 'Not established']);
+  assert.equal(result.text, response);
+  assert.ok(!result.presentationAdjusted);
+});
+
+test('repeated model headings do not bypass the category limit', () => {
+  const response = [
+    '### Directly demonstrated', '- First valid model claim.',
+    '### Directly demonstrated', ...Array(15).fill('- Second repetitive model claim.'),
+    '### Transferable experience', '- One model-authored comparison.',
+    '### Not established', '- One model-authored gap.',
+  ].join('\n');
+  const result = interpretRoleFitAIResponse(response);
+  assert.equal((result.text.match(/### Directly demonstrated/g) ?? []).length, 1);
+  assert.doesNotMatch(result.text, /Second repetitive model claim/);
+  assert.match(result.text, /One model-authored gap/);
+  assert.ok(result.omittedBullets >= 15);
+});
+
+test('the AI run reports model token-limit completion without modifying model claims', async () => {
+  const { gate, revision } = makeGate();
+  let rendered;
+  const output = '### Directly demonstrated\n- Wrote unique applicant description.';
+  const result = await runRoleFitAnalyses({
+    jobDescription: javaRole, gate, revision, evidenceCatalog,
+    producer: async () => ({ text: output, finishReason: 'length' }),
+    onAI: (assessment) => { rendered = assessment; },
+  });
+  assert.equal(result.status, 'ready');
+  assert.equal(rendered.outputLimitReached, true);
+  assert.equal(rendered.text, output);
+  assert.deepEqual(rendered.missingSections, ['Transferable experience', 'Not established']);
+});
+
+test('near-identical bullets naming different technologies are not silently deduplicated', () => {
+  const text = [
+    '### Directly demonstrated',
+    '- Developed a reference application with reusable modules using React, Node.js, TypeScript, Docker, AWS and automated tests.',
+    '- Developed a reference application with reusable modules using Vue, Node.js, TypeScript, Docker, AWS and automated tests.',
+    '### Transferable experience',
+    '- Different runtime expertise can be transferable.',
+    '### Not established',
+    '- Java is not documented.',
+  ].join('\n');
+  const result = interpretRoleFitAIResponse(text);
+  assert.equal(result.text, text, 'different technologies are distinct model-authored statements, not formatting duplicates');
+});
+
+test('plain and bold model headings receive the same concise display protection', () => {
+  const response = [
+    '**Directly demonstrated**', ...Array(9).fill('- Delivered a unique model-authored statement.'),
+    'Transferable experience:', '- React work may transfer to another stack.',
+    '**Not established:**', '- Java experience is undocumented.',
+  ].join('\n');
+  const result = interpretRoleFitAIResponse(response);
+  assert.deepEqual(result.missingSections, []);
+  assert.equal((result.text.match(/Delivered a unique model-authored statement/g) ?? []).length, 1);
+  assert.match(result.text, /Java experience is undocumented/);
+});
+
+test('duplicate model headings without bullets are still marked as presentation adjustments', () => {
+  const response = '### Directly demonstrated\n### Directly demonstrated\n### Transferable experience\n### Not established';
+  const result = interpretRoleFitAIResponse(response);
+  assert.equal((result.text.match(/### Directly demonstrated/g) ?? []).length, 1);
+  assert.equal(result.presentationAdjusted, true);
+  assert.equal(result.omittedBullets, 0);
+  assert.equal(result.original, response);
+});
+
+test('word-order changes with opposite implications are not flattened by repetition cleanup', () => {
+  const text = [
+    '### Transferable experience',
+    '- React experience may transfer to Vue development but does not demonstrate direct Vue expertise in this role.',
+    '- Vue experience may transfer to React development but does not demonstrate direct React expertise in this role.',
+    '### Directly demonstrated', '- Built REST APIs using Koa.',
+    '### Not established', '- Java is undocumented.',
+  ].join('\n');
+  const result = interpretRoleFitAIResponse(text);
+  assert.equal(result.text, text, 'reversed subjects change the meaning and must remain separate');
+});
