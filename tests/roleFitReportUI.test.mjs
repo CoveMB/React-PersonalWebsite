@@ -1,22 +1,30 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { readFileSync } from 'node:fs';
-const aiReport = readFileSync(new URL('../src/components/ai/RoleFitAIReport.jsx', import.meta.url), 'utf8');
-const aiSection = readFileSync(new URL('../src/components/ai/AI.jsx', import.meta.url), 'utf8');
+import {readFileSync} from 'node:fs';
+const ai = readFileSync(new URL('../src/components/ai/RoleFitAIReport.jsx', import.meta.url),'utf8');
+const section = readFileSync(new URL('../src/components/ai/AI.jsx', import.meta.url),'utf8');
+const hook = readFileSync(new URL('../src/components/ai/useRoleFitLab.js', import.meta.url),'utf8');
 
-test('AI assessment is the first card, the mechanical report remains independent underneath', () => {
-  assert.ok(aiSection.indexOf('<RoleFitAIReport') < aiSection.indexOf('<RoleFitReport'));
-  assert.match(aiSection, /mechanicalAssessment=\{roleFitState\.result\}/);
+test('AI is a distinct first card; mechanical report remains below',()=>{
+  assert.ok(section.indexOf('<RoleFitAIReport') < section.indexOf('<RoleFitReport'));
+  assert.match(section,/<RoleFitReport assessment=\{roleFitState\.result\}/);
+  assert.doesNotMatch(section,/mechanicalAssessment=\{roleFitState\.result\}/);
 });
-test('recruiter UI renders source-backed experience statements, not job quotes or model notes', () => {
-  assert.match(aiReport, /selection\.title/);
-  assert.match(aiReport, /selection\.summary/);
-  assert.match(aiReport, /selection\.sources/);
-  assert.doesNotMatch(aiReport, /No source-checked item was selected|Model interpretation \(unverified\)/);
+test('AI card cannot render deterministic fallback content before actual model completion',()=>{
+  assert.doesNotMatch(ai,/buildRoleFitRecruiterSummary|fallbackSections|assessment\?\.sections|safeBaseline|RecruiterItem/);
+  assert.match(ai,/status === ['"]running['"]/);
+  assert.match(ai,/status === ['"]unavailable['"]/);
+  assert.match(ai,/status === ['"]failed['"]/);
+  assert.match(ai,/status === ['"]ready['"]/);
+  assert.match(ai,/assessment\?\.text/);
+  assert.match(ai,/unverified|not verified|unreviewed/i);
 });
-test('unverified raw model JSON is diagnostic-only and a missing AI model keeps readable fallback', () => {
-  assert.match(aiReport, /<details[^>]*>/);
-  assert.match(aiReport, /<pre>\{assessment\.original\}<\/pre>/);
-  assert.match(aiReport, /buildRoleFitRecruiterSummary/);
-  assert.match(aiReport, /model.*unavailable|unavailable.*model/i);
+test('AI generation prompt uses source quotes and enough tokens to produce all sections',()=>{
+  assert.match(hook,/max_tokens:\s*(?:[4-9]\d\d|1\d\d\d)/);
+  assert.doesNotMatch(hook,/buildRoleFitRecruiterSummary/);
+  assert.match(hook,/buildRoleFitAIRequest/);
+});
+test('model-authored bullets are announced as a semantic list, not decorative paragraphs', () => {
+  assert.match(ai, /<ul\b[^>]*className="roleFitAIModelBulletList"/);
+  assert.match(ai, /<li\b[^>]*className="roleFitAIModelBullet"/);
 });

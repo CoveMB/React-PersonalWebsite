@@ -1,7 +1,7 @@
 import { ROLE_FIT_LAB_LEAD } from './texts/roleFitTexts';
 
 export const roleFitLabSectionContent = {
-  badge: 'Local AI · Evidence-grounded',
+  badge: 'Local AI · Experimental',
   contactLinkLabel: 'Send me the role directly',
   contactPrompt: 'Prefer a direct conversation instead?',
   eyebrow: 'Optional lab',
@@ -14,8 +14,8 @@ export const roleFitLabSectionContent = {
 
 export const roleFitLabMessageContent = {
   browserSupport: {
-    ready: 'Analyze starts both assessments. The local model ranks verified requirement matches; its first use may download substantial files. Pasted role text stays on this device.',
-    unavailable: 'The mechanical assessment works without a GPU. This browser cannot run the local AI model (WebGPU/Worker required); your role text stays on this device.',
+    ready: 'Analyze starts a model-written, unverified interpretation and an independent mechanical assessment. The first AI run downloads model files. For long postings, the model reads the first 5,000 characters; the mechanical report covers the full posting. Your pasted text stays on this device.',
+    unavailable: 'The mechanical assessment runs without a GPU. This browser cannot run the experimental local AI model (WebGPU/Worker required); your role text stays on this device.',
   },
   buttonLabels: { analyze: 'Analyze role' },
   errors: {

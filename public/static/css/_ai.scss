@@ -745,3 +745,38 @@
 @media (prefers-reduced-motion: reduce) {
   .roleFitAIResultCard * { scroll-behavior: auto; }
 }
+
+/* The AI card presents the model's own words, never a deterministic preview. */
+.roleFitAIModelText {
+  margin-top: 1.3rem;
+  color: var(--theme-body);
+  overflow-wrap: anywhere;
+}
+.roleFitAIModelHeading {
+  margin: 1.35rem 0 0.6rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgb(var(--theme-deep-rgb) / 0.16);
+  color: var(--theme-deep);
+  font-size: 1.02rem;
+  line-height: 1.5;
+}
+.roleFitAIModelLine,
+.roleFitAIModelBullet {
+  margin: 0.45rem 0;
+  font-size: 0.94rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.roleFitAIModelBulletList {
+  margin: 0.45rem 0;
+  padding-left: 1.2rem;
+  list-style-type: disc;
+}
+.roleFitAIModelBullet { padding-left: 0.1rem; }
+.roleFitAIModelText strong { color: var(--theme-deep); }
+.roleFitAIWarningDetail {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgb(var(--theme-body-rgb) / 0.84);
+}
+

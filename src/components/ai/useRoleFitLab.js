@@ -150,7 +150,7 @@ export const useRoleFitLab = () => {
         const request = buildRoleFitAIRequest(context);
         const response = await engine.chat.completions.create({
           messages: request.messages,
-          max_tokens: 256,
+          max_tokens: 560,
           temperature: 0.15,
         });
         return assistantText(response?.choices?.[0]?.message?.content);
