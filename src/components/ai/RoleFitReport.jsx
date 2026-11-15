@@ -68,8 +68,9 @@ function RequirementItem({ row, category }) {
       </strong>
       {row.relatedToRequirementId ? (
         <p className="roleFitRationale">
-          Related to “{row.relatedToQuote}”. The full combined requirement remains
-          not established; this does not demonstrate professional experience with the required stack.
+          Related to “{row.relatedToQuote}”. {row.relatedGroupKind === 'example'
+            ? 'This is an illustrative framework list; related work does not establish experience with the named frameworks.'
+            : 'The full combined requirement remains not established; related work does not satisfy its entire required stack.'}
         </p>
       ) : null}
       {category !== 'notEstablished' && row.evidence.length ? (
