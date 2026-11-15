@@ -1,3 +1,5 @@
+> **Historical specification — superseded by [the current three-category AI Lab design](../../ai-lab-three-category-assessment.md).** The new interface keeps model-written notes, validates categories and source associations, and no longer shows two competing cards.
+
 # Genuine local-model AI assessment — corrected product contract
 
 ## Priority
