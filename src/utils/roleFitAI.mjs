@@ -204,7 +204,7 @@ export function buildRoleFitAIRequest({ jobText, evidenceCatalog = getRoleFitEvi
 
 export function interpretRoleFitAIResponse(raw, { assessment, allowedIds, evidenceCatalog = getRoleFitEvidenceCatalog(), outputLimitReached = false } = {}) {
   if (typeof raw !== 'string' || !raw.trim())
-    return { kind: 'empty', failureCode: 'empty_response', sections: null, outputLimitReached };
+    return { kind: 'empty', failureCode: outputLimitReached ? 'generation_limit' : 'empty_response', sections: null, outputLimitReached };
   if (raw.length > 8000)
     return { kind: 'invalid', failureCode: 'response_too_long', sections: null, outputLimitReached };
   if (!assessment)
@@ -264,7 +264,7 @@ export function interpretRoleFitAIResponse(raw, { assessment, allowedIds, eviden
   const count = Object.values(sections).reduce((n, items) => n + items.length, 0);
   return {
     kind: count ? 'accepted' : 'invalid',
-    ...(!count ? { failureCode: outputLimitReached ? 'generation_limit' : 'no_valid_notes' } : {}),
+    ...(!count ? { failureCode: outputLimitReached ? 'generation_limit' : rejectedCount ? 'no_valid_notes' : 'no_notes_generated' } : {}),
     sections, selectedCount: count, rejectedCount, outputLimitReached,
   };
 }
