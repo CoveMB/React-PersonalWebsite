@@ -149,6 +149,16 @@ test('model statements claiming unsupported numbers, credentials or source IDs a
   }
 });
 
+test('a model cannot smuggle unrelated technology into a source-linked direct note', () => {
+  const assessment = assess(job);
+  const row = find(assessment, /^REST APIs/);
+  const result = interpretRoleFitAIResponse(JSON.stringify({
+    direct: [modelItem(row, 'Developed enterprise Java Spring Boot services using REST APIs for this employer.')],
+    transferable: [], notEstablished: [],
+  }), {assessment});
+  assert.equal(result.kind, 'invalid');
+});
+
 test('model notes are supplementary, preserve source-backed categories and never overwrite evidence excerpts', () => {
   const assessment = assess(job);
   const direct = find(assessment, /^REST APIs/);
