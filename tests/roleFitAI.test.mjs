@@ -159,6 +159,22 @@ test('a model cannot smuggle unrelated technology into a source-linked direct no
   assert.equal(result.kind, 'invalid');
 });
 
+test('a gap interpretation must explicitly acknowledge that evidence is missing', () => {
+  const assessment = assess(job);
+  const gap = find(assessment, /^Java and Spring Boot/);
+  const misleading = interpretRoleFitAIResponse(JSON.stringify({
+    direct: [], transferable: [],
+    notEstablished: [modelItem(gap, 'The candidate has extensive Java and Spring Boot industry experience.')],
+  }), { assessment });
+  assert.equal(misleading.kind, 'invalid');
+
+  const qualified = interpretRoleFitAIResponse(JSON.stringify({
+    direct: [], transferable: [],
+    notEstablished: [modelItem(gap, 'The published sources do not establish professional Java and Spring Boot experience.')],
+  }), { assessment });
+  assert.equal(qualified.kind, 'accepted');
+});
+
 test('model notes are supplementary, preserve source-backed categories and never overwrite evidence excerpts', () => {
   const assessment = assess(job);
   const direct = find(assessment, /^REST APIs/);
