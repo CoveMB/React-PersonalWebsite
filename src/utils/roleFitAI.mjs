@@ -18,7 +18,10 @@ export function classifyRoleFitAIError(error, stage = 'generation') {
   // Only fixed, non-sensitive codes leave this boundary. Never expose raw
   // engine exceptions, model text, URLs or the pasted employer posting.
   const phase = stage === 'load' ? 'load' : 'generation';
-  const value = String(error?.message ?? error?.cause?.message ?? error ?? '').slice(0, 700);
+  const known = new Set(['stream_startup_timeout', 'first_token_timeout',
+    'generation_stalled', 'generation_timeout', 'model_ready_timeout', 'invalid_stream']);
+  if (known.has(error?.code)) return { stage: phase, code: error.code };
+  const value = String(error?.cause?.message ?? error?.message ?? error ?? '').slice(0, 700);
   let code;
   if (/out.of.memory|memory.limit|(?:^|\W)oom(?:\W|$)|allocation.failed/i.test(value)) code = 'memory_limit';
   else if (/response[_ -]?format|json.mode|xgrammar|grammar|schema.*unsupported/i.test(value)) code = 'structured_output_unsupported';
