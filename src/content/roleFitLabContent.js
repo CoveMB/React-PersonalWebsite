@@ -44,7 +44,7 @@ export const roleFitAiFailureMessages = Object.freeze({
   generation_failed: "The local AI model encountered an error during text generation.",
   model_ready_timeout: "The model reported 100% loaded but did not finish initializing. The attempt was stopped.",
   stream_startup_timeout: "The model did not start returning its response. The attempt was stopped.",
-  first_token_timeout: "The model started generation but did not produce its first token before the safety limit.",
+  first_token_timeout: "The local model did not deliver its first token within the time limit while preparing the prompt or generating. A smaller model was attempted if available. This does not establish whether WebGPU stalled.",
   generation_stalled: "The model began responding, but generation stopped progressing before it finished.",
   generation_timeout: "The local model exceeded its maximum generation duration. The attempt was stopped.",
   invalid_stream: "The model returned an unsupported streaming response.",
