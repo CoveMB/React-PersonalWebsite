@@ -75,3 +75,9 @@ test('privacy note does not promise remote processing; original model response i
   assert.doesNotMatch(hook, /localStorage|sessionStorage|fetch\s*\(/);
   assert.doesNotMatch(aiCard(), /fetch\s*\(|navigator\.sendBeacon|localStorage/);
 });
+
+test('accepted AI answers with no rejections do not show a misleading rejected-output panel', () => {
+  const src = aiCard();
+  assert.match(src, /status !== 'ready'/);
+  assert.doesNotMatch(src, /const hasRejectedResponse = Boolean\(assessment\?\.rawModelOutput\) \|\|/);
+});
