@@ -103,3 +103,14 @@ test('interrupted model output is displayed in the AI card but never as a verifi
   assert.doesNotMatch(report, /aiFailure|partialOutput/);
   assert.doesNotMatch(hook, /localStorage|sessionStorage/);
 });
+
+test('first-token timeout retries a smaller local model without modifying the card layout', () => {
+  assert.match(hook, /runRoleFitWithFallback/);
+  assert.match(hook, /loadEngine\(revision, excludedIds\)/);
+  assert.match(hook, /onRetry:/);
+  assert.match(hook, /Trying a smaller local model/);
+  assert.match(hook, /stopModel\(\{ workerReference, engineReference, enginePromiseReference \}\)/);
+  assert.match(section, /<RoleFitAIReport/);
+  assert.match(section, /<RoleFitReport/);
+  assert.match(report, /roleFitThreeWayGrid/);
+});
