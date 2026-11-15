@@ -271,8 +271,9 @@ test('malformed model output and zero usable claims have different safe failure 
   const assessment = assess(job);
   assert.equal(interpretRoleFitAIResponse('not valid JSON', { assessment }).failureCode, 'invalid_json');
   assert.equal(interpretRoleFitAIResponse('{"direct":[]}', { assessment }).failureCode, 'invalid_schema');
-  assert.equal(interpretRoleFitAIResponse('{"direct":[],"transferable":[],"notEstablished":[]}', { assessment }).failureCode, 'no_valid_notes');
+  assert.equal(interpretRoleFitAIResponse('{"direct":[],"transferable":[],"notEstablished":[]}', { assessment }).failureCode, 'no_notes_generated');
   assert.equal(interpretRoleFitAIResponse('', { assessment }).failureCode, 'empty_response');
+  assert.equal(interpretRoleFitAIResponse('{"direct":[{"id":"req-999","note":"Model fabricated a made-up candidate claim here."}],"transferable":[],"notEstablished":[]}', { assessment }).failureCode, 'no_valid_notes');
   assert.equal(interpretRoleFitAIResponse('{"direct":', { assessment, outputLimitReached: true }).failureCode, 'generation_limit');
 });
 
