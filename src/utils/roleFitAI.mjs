@@ -2,6 +2,7 @@ import { getRoleFitEvidenceCatalog, isPositiveEvidenceEligible } from './roleFit
 import { normalizeRolePosting, parseRoleRequirements } from './roleFitRequirements.mjs';
 import { matchRoleRequirements } from './roleFitMatching.mjs';
 import { buildRoleFitAssessment } from './roleFitAssessment.mjs';
+import { findCapabilities } from './roleFitTaxonomy.mjs';
 
 // A local language model writes short interpretations. Only source-anchored
 // requirement/category combinations can be displayed; it cannot create
@@ -153,11 +154,17 @@ export function interpretRoleFitAIResponse(raw, { assessment, allowedIds, output
       const note = typeof entry?.note === 'string' ? entry.note.replace(/\s+/g, ' ').trim() : '';
       const normalizedNote = note.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
       const row = byId.get(id);
+      const permittedKeys = new Set([
+        ...(row?.requirement?.options ?? []).map((option) => option.key),
+        ...(row?.evidence ?? []).flatMap((source) => source.capabilities),
+      ]);
+      const mentionsUnsupportedTechnology = findCapabilities(note)
+        .some(({ key }) => !permittedKeys.has(key));
       // No invented requirements, cross-category promotions, unsupported
       // positive sources, duplicated wording, or quantitative résumé claims.
       const valid = typeof id === 'string' && row && (!providedIds || providedIds.has(id)) && roleCategory(row) === category &&
         !seenIds.has(id) && note.length >= 18 && note.length <= 245 &&
-        !seenNotes.has(normalizedNote) &&
+        !seenNotes.has(normalizedNote) && !mentionsUnsupportedTechnology &&
         !/\b(?:\d+\s*(?:years?|yrs?|%|million|billion)\b|certified|expert-level)\b/i.test(note) &&
         !/https?:\/\/|@[\w.-]+|\[[^\]]+\]/i.test(note) &&
         (category === 'notEstablished' || row.evidence.some(isPositiveEvidenceEligible));
