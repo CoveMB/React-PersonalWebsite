@@ -42,7 +42,7 @@ function waitForGeneration(operation, timeoutMs, timeoutCode, signal, partialTex
     }
     timer = setTimeout(() =>
       finish(reject, new RoleFitStreamError(timeoutCode, partialText())), Math.max(1, timeoutMs));
-    Promise.resolve().then(operation).then(
+    Promise.resolve().then(() => settled ? undefined : operation()).then(
       value => finish(resolve, value),
       error => finish(reject, error),
     );
