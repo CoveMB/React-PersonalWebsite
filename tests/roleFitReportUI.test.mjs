@@ -70,3 +70,10 @@ test('partial transfer wording distinguishes ambiguous illustrative lists from m
   assert.match(report, /illustrative framework list/);
   assert.match(report, /full combined requirement remains/);
 });
+
+test('collapsed technical diagnostic exposes safe error code and stage without the job posting', () => {
+  assert.match(report, /Technical diagnostic/);
+  assert.match(report, /aiFailure\?\.code/);
+  assert.match(report, /aiFailure\?\.stage/);
+  assert.doesNotMatch(report, /JSON\.stringify\(assessment\)|JSON\.stringify\(aiAssessment\)/);
+});
