@@ -1,4 +1,5 @@
 import { inferRoleTitle } from "./roleFitRequirements.mjs";
+import { getTransferableRelations } from "./roleFitTaxonomy.mjs";
 
 const importanceOrder = { core: 0, required: 1, unspecified: 2, preferred: 3 };
 const sourceOrder = { direct: 0, transferable: 1, not_documented: 2, needs_confirmation: 3 };
@@ -31,13 +32,38 @@ export const buildRoleFitAssessment = ({ jobText, requirements, matches, evidenc
   const substantive = details.filter(({ requirement }) =>
     !requirement.excluded && ["technical", "practice", "tenure"].includes(requirement.category));
   const aligned = substantive.filter(({ status }) => ["direct", "transferable"].includes(status)).sort(prioritized);
+  // A single excerpt cannot substantiate a multi-capability match unless it
+  // actually covers each required capability. Pick a minimal citation cover,
+  // not one arbitrarily convenient quote for a whole conjunction.
+  const supportsKey = (source, key, status) =>
+    source.capabilities.includes(key) ||
+    (status === "transferable" && getTransferableRelations(key)
+      .some(({ candidateKey }) => source.capabilities.includes(candidateKey)));
+  const citationCover = (row) => {
+    const keys = row.requirement.options.map(({ key }) => key);
+    const remaining = new Set(keys);
+    const selected = [];
+    const candidates = [...row.evidence];
+    while (remaining.size && candidates.length) {
+      candidates.sort((a, b) =>
+        [...remaining].filter((key) => supportsKey(b, key, row.status)).length -
+        [...remaining].filter((key) => supportsKey(a, key, row.status)).length);
+      const best = candidates.shift();
+      const covered = [...remaining].filter((key) => supportsKey(best, key, row.status));
+      if (!covered.length) break;
+      selected.push(best);
+      for (const key of covered) remaining.delete(key);
+      if (row.requirement.optionRule === "anyOf") break;
+    }
+    return selected;
+  };
   const usedSources = new Set();
   const highlights = [];
   for (const item of aligned) {
-    const candidate = item.evidence.find(({ id }) => !usedSources.has(id));
-    if (!candidate) continue;
-    usedSources.add(candidate.id);
-    highlights.push({ ...item, evidence: [candidate] });
+    const sources = citationCover(item);
+    if (!sources.some(({ id }) => !usedSources.has(id))) continue;
+    sources.forEach(({ id }) => usedSources.add(id));
+    highlights.push({ ...item, evidence: sources });
     if (highlights.length >= 4) break;
   }
 

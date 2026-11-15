@@ -21,7 +21,7 @@ function EvidenceSource({ item }) {
   return (
     <div className="roleFitSource">
       <span className="roleFitSourceLabel">{item.sourceType === "project" ? "Project case study" : "Published résumé"} · {item.sourceId}</span>
-      <blockquote>“{item.sourceQuote}”</blockquote>
+      <blockquote>“{item.sourceQuote.replace(/\*\*/g, "")}”</blockquote>
       {item.sourceUrl ? <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer">View source</a> : null}
       {item.experienceType === "other" ? <small>Project evidence; duration and professional depth are not inferred.</small> : null}
     </div>
@@ -34,7 +34,7 @@ function RequirementSummary({ row, includeSources = false }) {
     <li className="roleFitRequirementItem">
       <div className="roleFitRequirementTopline">
         <strong>{row.requirement.quote}</strong>
-        <span className="roleFitStatusTag">{statusCopy[row.status]}</span>
+        <span className="roleFitStatusTag">{row.requirement.excluded ? "Not required" : statusCopy[row.status]}</span>
       </div>
       {rationale ? <p className="roleFitRationale">{rationale}</p> : null}
       {row.requirement.optionRule === "anyOf" ? <p className="roleFitRationale">Any one of the listed alternatives can satisfy this requirement.</p> : null}
@@ -63,7 +63,7 @@ export default function RoleFitReport({ assessment }) {
           <ul className="roleFitHighlightList">
             {assessment.highlights.map((row) => (
               <li key={row.requirementId}>
-                <div className="roleFitHighlightHeading"><strong>{row.evidence[0]?.label}</strong><span className="roleFitStatusTag">{statusCopy[row.status]}</span></div>
+                <div className="roleFitHighlightHeading"><strong>{row.evidence[0]?.label}</strong><span className="roleFitStatusTag">{row.requirement.excluded ? "Not required" : statusCopy[row.status]}</span></div>
                 <p className="roleFitEvidenceRelation">Relevant to “{row.requirement.quote}”</p>
                 {row.rationaleCode in transferReasonText ? <p className="roleFitRationale">{transferReasonText[row.rationaleCode]}</p> : null}
                 {row.evidence.map((item) => <EvidenceSource key={item.id} item={item} />)}

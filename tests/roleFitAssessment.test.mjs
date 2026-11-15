@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { parseRoleRequirements } from '../src/utils/roleFitRequirements.mjs';
+import { normalizeRolePosting, parseRoleRequirements } from '../src/utils/roleFitRequirements.mjs';
 import { matchRoleRequirements } from '../src/utils/roleFitMatching.mjs';
 import { buildRoleFitAssessment } from '../src/utils/roleFitAssessment.mjs';
 import { getRoleFitEvidenceCatalog } from '../src/utils/roleFitEvidence.mjs';
@@ -47,4 +47,22 @@ test('no hallucinated percentages or applicant recommendation',()=>{
   const result=assess('Java and Spring mandatory. React optional.');
   assert.doesNotMatch(result.conclusion.summary,/\d+%|should apply|should not apply/i);
   assert.ok(result.highlights.length<=4);
+});
+
+test('a compound direct-match highlight cites sources for every asserted capability', () => {
+  const jobText = normalizeRolePosting('Required: REST APIs and microservices.\nRequired: Git, CI/CD and Agile.');
+  const requirements = parseRoleRequirements(jobText);
+  const evidenceCatalog = getRoleFitEvidenceCatalog();
+  const matches = matchRoleRequirements(requirements,evidenceCatalog);
+  const assessment = buildRoleFitAssessment({jobText,requirements,matches,evidenceCatalog});
+  const restGroup=assessment.highlights.find(item=>item.requirement.quote.includes('REST'));
+  assert.ok(restGroup,'expected a highlighted REST/microservices group');
+  assert.equal(restGroup.status,'direct');
+  assert.ok(restGroup.evidence.some(x=>x.capabilities.includes('rest')),'REST source');
+  assert.ok(restGroup.evidence.some(x=>x.capabilities.includes('microservices')),'microservices source');
+  const delivery=assessment.highlights.find(item=>item.requirement.quote.includes('Git'));
+  assert.ok(delivery,'expected a highlighted Git/CI/CD/Agile group');
+  for(const key of ['git','cicd','agile']){
+    assert.ok(delivery.evidence.some(x=>x.capabilities.includes(key)),`missing ${key} source`);
+  }
 });

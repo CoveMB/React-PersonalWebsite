@@ -28,8 +28,8 @@ The initial report is short, with an expandable audit inventory. Source descript
 
 ## Automated checks performed locally
 
-- `node --test tests/roleFitRequirements.test.mjs tests/roleFitMatching.test.mjs tests/roleFitAssessment.test.mjs tests/roleFitEnhancement.test.mjs tests/roleFitCorpus.test.mjs` — **63 tests passed**, after fixing parser grouping and assessment issues surfaced by earlier red test runs. 30 annotated corpus scenarios are included.
-- Source integrity is separately asserted by `tests/roleFitEvidence.test.mjs`, which compares every positive quote against the committed public résumé and published `projectTexts.js`. It must be run in a complete checkout before merging.
+- `node --test tests/roleFitRequirements.test.mjs tests/roleFitMatching.test.mjs tests/roleFitAssessment.test.mjs tests/roleFitEnhancement.test.mjs tests/roleFitCorpus.test.mjs` — **64 tests passed**, after fixing parser grouping and assessment issues surfaced by earlier red test runs. 30 annotated corpus scenarios are included.
+- The GitHub source excerpts were independently checked against the current branch: **19/19** curated positive quotations were found in their intended public source files. Source integrity is also separately asserted by `tests/roleFitEvidence.test.mjs`, which compares every positive quote against the committed public résumé and published `projectTexts.js`. It must be run in a complete checkout before merging.
 - `node --check` succeeded for the pure `.mjs` modules and JS hook. Tests cover owner-confirmed absence, source IDs, opt-in model validation, stale revisions, truncation limits, unknown skills, and multiple question formats.
 
 ### Not verified in this execution environment
@@ -49,7 +49,7 @@ The execution environment cannot download GitHub/npm packages or create a full s
 These were manual, separately focused passes over the implementation by the same author, **not independent external review agents**.
 
 - **Evidence and semantics:** Checked Java vs JavaScript, Spring and alternative groups. Corrected overly broad unsupported-tech statements against the Python/Kubernetes project narratives. Verified that planned and learning-only items cannot become positive sources.
-- **Parser and assessment:** Hand-inspected the Wissen rendering data. Split the common “HTML, CSS, JavaScript, and frameworks such as Angular, React, or Vue” mixed list into two auditable requirements, and fixed a duplicate-highlight source selection bug.
+- **Parser and assessment:** Hand-inspected the Wissen rendering data. Split the common “HTML, CSS, JavaScript, and frameworks such as Angular, React, or Vue” mixed list into two auditable requirements, and fixed a duplicate-highlight source selection bug. A later review caught multi-capability highlight cards that showed only a single citation; the report now selects a minimal set of supporting sources sufficient to cover each direct-match conjunction (regression-tested RED → GREEN).
 - **Async and security:** Added a revision guard to prevent old enhancements replacing later analyses. Protected source excerpts and forbidden contact data in model prompts; outputs are never interpreted as résumé facts.
 - **UX and accessibility:** Uses an immediate report, semantic headings, focus on report change, disclosure for the full inventory, visible length rejection, natural Enter/newline, and Ctrl/Cmd+Enter to analyze. Responsive and reduced-motion CSS included; real-browser verification remains outstanding.
 - **Performance and maintainability:** 12k/60-group limits, bounded prompt/output, no eager model import, no server/database/vector search, and no duplicated candidate profile created for inference.
