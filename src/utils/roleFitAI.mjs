@@ -59,7 +59,7 @@ function relatedTransferFacets(row, evidenceCatalog) {
       !['technical', 'practice'].includes(requirement.category) ||
       requirement.options.length < 2 || requirement.options.length > 5) return [];
   const evidenceById = new Map(evidenceCatalog.map((item) => [item.id, item]));
-  return requirement.options.flatMap((option) => {
+  const facets = requirement.options.flatMap((option) => {
     const id = `${row.requirementId}:related:${option.key}`;
     const individual = {
       ...requirement, id, quote: option.label,
@@ -74,7 +74,16 @@ function relatedTransferFacets(row, evidenceCatalog) {
       ...match, requirementId: id, requirement: individual, evidence,
       relatedToRequirementId: row.requirementId,
       relatedToQuote: requirement.quote,
+      relatedGroupKind: frameworkExamples ? 'example' : 'conjunction',
     }];
+  });
+  const cited = new Set();
+  return facets.filter((facet) => {
+    // Do not repeat one Node/Koa project as independent transfer proof for
+    // multiple named frameworks in the same illustrative job-list clause.
+    if (facet.evidence.some((source) => cited.has(source.id))) return false;
+    facet.evidence.forEach((source) => cited.add(source.id));
+    return true;
   });
 }
 
