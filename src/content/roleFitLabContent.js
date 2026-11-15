@@ -1,59 +1,36 @@
 import { ROLE_FIT_LAB_LEAD } from "./texts/roleFitTexts";
 
 export const roleFitLabSectionContent = {
-  badge: "Local role-fit assistant",
+  badge: "Evidence-grounded · Local",
   contactLinkLabel: "Send me the role directly",
   contactPrompt: "Prefer a direct conversation instead?",
   eyebrow: "Optional lab",
-  fieldHint: "Press Enter to generate. Use Shift+Enter for a new line.",
+  fieldHint: "Paste a role description. Enter inserts a new line; Ctrl+Enter (or Cmd+Enter) analyzes it. No account or GPU required.",
   inputLabel: "Role description",
   lead: ROLE_FIT_LAB_LEAD,
-  noteLabel: "Local note",
-  placeholder:
-    "Paste the role here. The assistant will generate a concise fit summary grounded in portfolio work and resume context.",
-  resultEyebrow: "Assistant output",
+  noteLabel: "Privacy",
+  placeholder: "Paste the job posting here to compare its requirements with documented portfolio and résumé work.",
+  enhancementTitle: "Optional AI interpretation",
+  enhancementNote: "Runs on your device after you choose it; first use downloads model files and may be slow. The immediate report remains available if it fails.",
 };
 
 export const roleFitLabMessageContent = {
   browserSupport: {
-    missingWebGpu:
-      "This feature needs WebGPU, so it works best on recent Chrome or Edge desktop browsers.",
-    missingWorker:
-      "This browser does not support the worker needed for the local lab.",
-    ready:
-      "Your pasted job description stays in the browser. The first use needs to download the model, which may take some time.",
+    ready: "The immediate analysis runs here without a model. Optional enhancement needs WebGPU and a separate model download; the posting is not uploaded.",
+    unavailable: "The immediate analysis works here. Optional local-model enhancement needs a browser with WebGPU and Worker support.",
   },
-  buttonLabels: {
-    analyze: "Analyze",
-    loading: "Loading lab",
-    running: "Running analysis",
-  },
+  buttonLabels: { analyze: "Analyze requirements" },
   errors: {
-    browserUnsupported:
-      "This feature needs WebGPU and a worker-enabled browser, ideally recent Chrome or Edge on desktop.",
-    downloadFailed:
-      "The model files could not be downloaded on this connection.",
-    emptyResponse: "The model returned an empty response.",
-    genericGenerationFailure:
-      "The local lab could not analyze this role on this device.",
-    incompatibleBrowser:
-      "This browser could not start the local lab model. Try a recent Chrome or Edge desktop build.",
-    missingJobDescription: "Paste a job description first.",
+    missingJobDescription: "Paste a role description first.",
+    tooLong: "This posting exceeds 12,000 characters. Remove some text before analyzing; nothing has been silently truncated.",
     missingModel: "No compatible local model was found.",
-    shortJobDescription:
-      "Add a little more detail so the assistant has enough context.",
-  },
-  labels: {
-    loadedModel: "Loaded model",
-    localLab: "local lab",
+    enhancementFailed: "Local enhancement failed on this device. Your immediate assessment is unchanged.",
   },
   statusMessages: {
-    default: "",
-    generating: "Running the local role-fit analysis...",
-    loading: "Preparing the local lab model...",
-    ready:
-      "Local lab is ready. Press Enter to generate, or use Shift+Enter for a new line.",
-    success:
-      "Analysis ready. Paste another role and press Enter to compare a new fit.",
+    loading: "Loading the optional local model…",
+    success: "Evidence-grounded assessment ready.",
+    enhanced: "Validated local enhancement applied; sourced evidence rules remain in force.",
+    baselinePreserved: "The immediate assessment remains available.",
+    noNewEvidence: "The model did not offer usable verified refinements; the immediate assessment remains available.",
   },
 };
