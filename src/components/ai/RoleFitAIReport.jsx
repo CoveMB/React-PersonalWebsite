@@ -63,7 +63,8 @@ export default function RoleFitAIReport({
   const byId = new Map(rows.map(row => [row.requirementId, row]));
   const rejectedItems = assessment?.rejectedItems ?? [];
   const rejectionReasons = assessment?.rejectionReasons ?? [];
-  const hasRejectedResponse = Boolean(assessment?.rawModelOutput) || rejectedItems.length > 0;
+  const hasRejectedResponse = rejectedItems.length > 0 ||
+    (status !== 'ready' && Boolean(assessment?.rawModelOutput));
 
   return (
     <article className="aiPart roleFitResultCard" aria-labelledby="role-fit-ai-heading">
