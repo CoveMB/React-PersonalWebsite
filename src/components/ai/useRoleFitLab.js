@@ -40,8 +40,6 @@ export const getJobDescriptionErrorMessage = (input) => {
   return code === 'too_long' ? copy.errors.tooLong
     : code === 'empty' ? copy.errors.missingJobDescription : '';
 };
-const assistantText = (content) => typeof content === 'string' ? content.trim()
-  : Array.isArray(content) ? content.map((part) => typeof part === 'string' ? part : part?.text ?? '').join('').trim() : '';
 const progressMessage = (report) => {
   const percentage = Number.isFinite(report?.progress) ? ` (${Math.round(report.progress * 100)}%)` : '';
   return `${report?.text || copy.statusMessages.loading}${percentage}`;
