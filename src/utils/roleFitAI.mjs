@@ -99,6 +99,7 @@ export function buildRoleFitAIRequest({ jobText, evidenceCatalog = getRoleFitEvi
   }));
   return {
     analyzedRequirementCount: safe.length,
+    allowedIds: safe.map((item) => item.id),
     totalRequirementCount: Object.values(categorized).reduce((n, items) => n + items.length, 0),
     messages: [{
       role: 'system',
@@ -129,7 +130,7 @@ export function buildRoleFitAIRequest({ jobText, evidenceCatalog = getRoleFitEvi
   };
 }
 
-export function interpretRoleFitAIResponse(raw, { assessment, outputLimitReached = false } = {}) {
+export function interpretRoleFitAIResponse(raw, { assessment, allowedIds, outputLimitReached = false } = {}) {
   if (typeof raw !== 'string' || !raw.trim()) return { kind: 'empty', sections: null, outputLimitReached };
   if (raw.length > 8000 || !assessment) return { kind: 'invalid', sections: null, outputLimitReached };
   const cleaned = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '');
@@ -141,6 +142,7 @@ export function interpretRoleFitAIResponse(raw, { assessment, outputLimitReached
   }
   const categories = new Set(['direct', 'transferable', 'notEstablished']);
   const byId = new Map((assessment.details ?? []).map((row) => [row.requirementId, row]));
+  const providedIds = allowedIds ? new Set(allowedIds) : null;
   const sections = { direct: [], transferable: [], notEstablished: [] };
   const seenIds = new Set();
   const seenNotes = new Set();
@@ -153,7 +155,7 @@ export function interpretRoleFitAIResponse(raw, { assessment, outputLimitReached
       const row = byId.get(id);
       // No invented requirements, cross-category promotions, unsupported
       // positive sources, duplicated wording, or quantitative résumé claims.
-      const valid = typeof id === 'string' && row && roleCategory(row) === category &&
+      const valid = typeof id === 'string' && row && (!providedIds || providedIds.has(id)) && roleCategory(row) === category &&
         !seenIds.has(id) && note.length >= 18 && note.length <= 245 &&
         !seenNotes.has(normalizedNote) &&
         !/\b(?:\d+\s*(?:years?|yrs?|%|million|billion)\b|certified|expert-level)\b/i.test(note) &&
@@ -193,6 +195,7 @@ export async function runRoleFitAnalyses({
     const raw = typeof generated === 'string' ? generated : generated?.text ?? '';
     const result = interpretRoleFitAIResponse(raw, {
       assessment: mechanicalAssessment,
+      allowedIds: generated?.allowedIds,
       outputLimitReached: generated?.finishReason === 'length',
     });
     onAI?.(result);
