@@ -3,6 +3,7 @@ import { roleFitLabMessageContent as copy } from '../../content/roleFitLabConten
 import { maximumJobDescriptionLength, getRolePostingValidationCode, selectRoleFitModelCandidates } from '../../utils/roleFit';
 import { buildRoleFitAIRequest, roleFitAIGenerationOptions, runRoleFitAnalyses, classifyRoleFitAIError } from '../../utils/roleFitAI.mjs';
 import { createRoleFitRevisionGuard } from '../../utils/roleFitEnhancement.mjs';
+import { streamRoleFitAI, awaitRoleFitModelReady } from '../../utils/roleFitStreaming.mjs';
 
 const initialState = {
   jobDescription: '', result: null, aiAssessment: null, aiStatus: 'idle',
@@ -63,6 +64,7 @@ export const useRoleFitLab = () => {
   const enginePromiseReference = useRef(null);
   const workerReference = useRef(null);
   const activeRunReference = useRef(null);
+  const activeAbortReference = useRef(null);
 
   useEffect(() => {
     // React StrictMode cleans up and re-runs this effect in development.
@@ -71,12 +73,16 @@ export const useRoleFitLab = () => {
     return () => {
       gateReference.current.dispose();
       activeRunReference.current = null;
+      activeAbortReference.current?.abort();
+      activeAbortReference.current = null;
       stopModel({ workerReference, engineReference, enginePromiseReference });
     };
   }, []);
 
   const invalidatePendingAI = () => {
     gateReference.current.bump();
+    activeAbortReference.current?.abort();
+    activeAbortReference.current = null;
     if (activeRunReference.current !== null) {
       stopModel({ workerReference, engineReference, enginePromiseReference });
       activeRunReference.current = null;
@@ -116,13 +122,18 @@ export const useRoleFitLab = () => {
         const worker = new Worker(new URL('./roleFit.worker.js', import.meta.url), { type: 'module' });
         workerReference.current = worker;
         try {
-          const engine = await CreateWebWorkerMLCEngine(worker, modelId, {
-            initProgressCallback: (report) => {
+          const engine = await awaitRoleFitModelReady({
+            signal: activeAbortReference.current?.signal,
+            start: initProgressCallback => CreateWebWorkerMLCEngine(worker, modelId, {
+              initProgressCallback, logLevel: 'ERROR',
+            }),
+            onProgress: report => {
               if (gate.isCurrent(revision) && workerReference.current === worker) {
-                dispatch({ type: 'progress', message: progressMessage(report) });
+                dispatch({ type: 'progress', message: report?.progress >= 1
+                  ? 'Finalizing local model initialization…'
+                  : progressMessage(report) });
               }
             },
-            logLevel: 'ERROR',
           });
           if (!gate.isCurrent(revision) || workerReference.current !== worker) {
             try { void engine.unload?.()?.catch?.(() => undefined); } catch { /* best effort */ }
@@ -160,6 +171,8 @@ export const useRoleFitLab = () => {
     const revision = gate.current();
     const hasModel = supportsLocalAI();
     activeRunReference.current = hasModel ? revision : null;
+    const controller = hasModel ? new AbortController() : null;
+    activeAbortReference.current = controller;
     let selectedModelId = '';
     void runRoleFitAnalyses({
       jobDescription: roleFitState.jobDescription, gate, revision,
@@ -170,26 +183,43 @@ export const useRoleFitLab = () => {
           const { engine, modelId } = await loadEngine(revision);
           selectedModelId = modelId;
           if (!gate.isCurrent(revision)) return '';
-          const request = buildRoleFitAIRequest(context);
           stage = 'generation';
-          const response = await engine.chat.completions.create({
-            messages: request.messages,
-            ...roleFitAIGenerationOptions,
+          const request = buildRoleFitAIRequest(context);
+          const response = await streamRoleFitAI({
+            createCompletion: options => engine.chat.completions.create(options),
+            request: { messages: request.messages, ...roleFitAIGenerationOptions },
+            signal: controller.signal,
+            onProgress: message => {
+              if (gate.isCurrent(revision)) dispatch({ type: 'progress', message });
+            },
           });
           return {
-            text: assistantText(response?.choices?.[0]?.message?.content),
-            finishReason: response?.choices?.[0]?.finish_reason,
+            text: response.text,
+            finishReason: response.finishReason,
             allowedIds: request.allowedIds,
           };
         } catch (cause) {
-          throw { stage, cause }; // Only the sanitized classification reaches UI.
+          // A pending WebLLM Worker request can stay unresolved after a
+          // timeout. Terminate it so a fresh attempt cannot reuse that engine.
+          if (gate.isCurrent(revision) && stage === 'generation') {
+            stopModel({ workerReference, engineReference, enginePromiseReference });
+          }
+          throw { stage, cause }; // Only sanitized codes reach the failure label.
         }
       } : undefined,
       onAI: (result) => dispatch({ type: 'aiReady', result, modelId: selectedModelId }),
-      onError: (error) => dispatch({ type: 'aiFailed', modelId: selectedModelId,
-        failure: classifyRoleFitAIError(error?.cause ?? error, error?.stage) }),
+      onError: error => {
+        const cause = error?.cause ?? error;
+        const partial = typeof cause?.partialText === 'string' ? cause.partialText.slice(0, 8000) : '';
+        const classification = classifyRoleFitAIError(cause, error?.stage);
+        dispatch({ type: 'aiFailed', modelId: selectedModelId,
+          failure: { ...classification, ...(partial ? { partialOutput: partial } : {}) } });
+      },
     }).finally(() => {
-      if (activeRunReference.current === revision) activeRunReference.current = null;
+      if (activeRunReference.current === revision) {
+        activeRunReference.current = null;
+        if (activeAbortReference.current === controller) activeAbortReference.current = null;
+      }
     });
   };
 
