@@ -692,3 +692,56 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+// Recruiter-facing interpretation: reading-focused, not a nested dashboard.
+.roleFitAIResultCard .roleFitAISelection {
+  padding: 0.2rem 0 0.8rem;
+  border: 0;
+  border-bottom: 1px solid rgb(var(--theme-deep-rgb) / 0.12);
+  border-radius: 0;
+  background: transparent;
+}
+.roleFitAIResultCard .roleFitAISelection:last-child {
+  border-bottom: 0;
+}
+.roleFitAIResultCard .roleFitAISelectionList {
+  gap: 0.65rem;
+}
+.roleFitAISummary {
+  margin: 0.4rem 0 0;
+  color: var(--theme-body);
+  font-size: 0.94rem;
+  line-height: 1.62;
+  overflow-wrap: anywhere;
+}
+.roleFitAISourceLinks {
+  margin: 0.4rem 0 0;
+  color: rgb(var(--theme-body-rgb) / 0.78);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.roleFitAISourceLinks a {
+  color: var(--theme-deep);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.roleFitAISourceLinks a:focus-visible {
+  outline: 2px solid var(--theme-accent);
+  outline-offset: 3px;
+}
+.roleFitAIRequirement {
+  display: block;
+  line-height: 1.45;
+}
+.roleFitAIDetails summary {
+  cursor: pointer;
+}
+.roleFitAIDetails pre {
+  max-height: 18rem;
+  overflow: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .roleFitAIResultCard * { scroll-behavior: auto; }
+}

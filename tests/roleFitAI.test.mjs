@@ -52,7 +52,7 @@ test('Analyze starts the model even if a mechanical assessment already exists', 
   fulfill('A modest local model response.');
   assert.equal((await running).status, 'ready');
   assert.deepEqual(events.map(([name]) => name), ['mechanical', 'model-started', 'ai-ready']);
-  assert.equal(events[2][1].kind, 'draft');
+  assert.equal(events[2][1].kind, 'fallback');
   assert.equal(events[2][1].original, 'A modest local model response.');
 });
 
@@ -60,8 +60,8 @@ test('model request supplies evidence and quote ids without private contact info
   const context = await createContext();
   const request = buildRoleFitAIRequest({ jobText: job, ...context });
   const prompt = JSON.stringify(request);
-  assert.match(prompt, /directlyDemonstrated|directly_demonstrated/);
-  assert.match(prompt, /transferableExperience|transferable_experience/);
+  assert.match(prompt, /\\\"direct\\\"|\"direct\"/);
+  assert.match(prompt, /transferable/);
   assert.match(prompt, /notEstablished|not_established/);
   assert.match(prompt, /React/);
   assert.match(prompt, /rest-apis|react/);
@@ -81,14 +81,14 @@ test('AI can independently select direct, transferable and not-established requi
     transferableExperience: [{ requirementId: azure.requirementId, evidenceIds: ['aws'], note: 'Cloud providers differ.' }],
     notEstablished: [{ requirementId: java.requirementId, note: 'Professional Java has not been established.' }],
   }), context);
-  assert.equal(result.kind, 'structured');
+  assert.equal(result.kind, 'model_ranked');
   assert.equal(result.sections.direct.length, 1);
-  assert.equal(result.sections.transferable.length, 1);
-  assert.equal(result.sections.notEstablished.length, 1);
-  assert.equal(result.sections.direct[0].row.requirementId, react.requirementId);
-  assert.ok(result.sections.direct[0].evidence.some((e) => e.id === 'react'));
-  assert.equal(result.sections.transferable[0].row.requirementId, azure.requirementId);
-  assert.equal(result.sections.notEstablished[0].row.requirementId, java.requirementId);
+  assert.ok(result.sections.transferable.length >= 1);
+  assert.ok(result.sections.notEstablished.length >= 1);
+  assert.ok(result.sections.direct[0].requirementIds.includes(react.requirementId));
+  assert.ok(result.sections.direct[0].sources.some((e) => e.id === 'react'));
+  assert.ok(result.sections.transferable.some((x) => x.requirementIds.includes(azure.requirementId)));
+  assert.ok(result.sections.notEstablished[0].requirementIds.includes(java.requirementId));
 });
 
 test('model cannot promote Java or forge evidence despite producing plausible JSON', async () => {
@@ -99,22 +99,23 @@ test('model cannot promote Java or forge evidence despite producing plausible JS
     transferableExperience: [],
     notEstablished: [],
   }), context);
-  assert.notEqual(output.kind, 'structured');
+  assert.equal(output.kind, 'fallback');
   assert.match(output.original, /10 years of Java/);
-  assert.equal(output.sections?.direct?.length ?? 0, 0);
+  assert.ok(!output.sections.direct.some(x => /Java(?!Script)/i.test(x.title)));
+  assert.ok(output.sections.notEstablished.some(x => /Java/i.test(x.title)));
 });
 
-test('non-schema model text remains visible as an explicitly unverified draft', async () => {
+test('non-schema text falls back to source-grounded bullets rather than recruiter-facing unverified prose', async () => {
   const context = await createContext();
   const response = 'Directly demonstrated: React\nTransferable experience: AWS for Azure\nNot established: Java.';
   const result = interpretRoleFitAIResponse(response, context);
-  assert.equal(result.kind, 'draft');
+  assert.equal(result.kind, 'fallback');
   assert.equal(result.original, response);
-  assert.equal(result.sections.direct.length, 0);
-  assert.match(result.draftSections.direct, /React/);
-  assert.match(result.draftSections.transferable, /AWS for Azure/);
-  assert.match(result.draftSections.notEstablished, /Java/);
-  assert.match(result.warning, /unverified|not validated|source.check/i);
+  assert.ok(result.sections.direct.some(x => /React/i.test(x.title)));
+  assert.ok(result.sections.transferable.some(x => /Azure/i.test(x.title)));
+  assert.ok(result.sections.notEstablished.some(x => /Java/i.test(x.title)));
+  assert.doesNotMatch(JSON.stringify(result.sections), /AWS for Azure|invented claim/i);
+  assert.match(result.warning, /small model|verified/i);
 });
 
 test('late model results and errors cannot overwrite the most recent posting', async () => {

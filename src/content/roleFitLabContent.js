@@ -14,7 +14,7 @@ export const roleFitLabSectionContent = {
 
 export const roleFitLabMessageContent = {
   browserSupport: {
-    ready: 'Analyze starts the local AI model and an independent mechanical assessment. First AI use downloads model files, potentially a substantial amount; your role text stays on this device.',
+    ready: 'Analyze starts both assessments. The local model ranks verified requirement matches; its first use may download substantial files. Pasted role text stays on this device.',
     unavailable: 'The mechanical assessment works without a GPU. This browser cannot run the local AI model (WebGPU/Worker required); your role text stays on this device.',
   },
   buttonLabels: { analyze: 'Analyze role' },

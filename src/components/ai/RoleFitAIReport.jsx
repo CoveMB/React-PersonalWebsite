@@ -1,100 +1,101 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { buildRoleFitRecruiterSummary } from '../../utils/roleFitRecruiterSummary.mjs';
 
-const sections = [
-  {
-    key: 'direct',
-    title: 'Directly demonstrated',
-    description: 'The public résumé or portfolio documents the required capability.',
-  },
-  {
-    key: 'transferable',
-    title: 'Transferable experience',
-    description: 'Related expertise is documented, but the required technology differs.',
-  },
-  {
-    key: 'notEstablished',
-    title: 'Not established',
-    description: 'The available evidence does not substantiate the requirement.',
-  },
+const categories = [
+  { key: 'direct', title: 'Directly demonstrated',
+    description: 'The public résumé or portfolio documents these capabilities.' },
+  { key: 'transferable', title: 'Transferable experience',
+    description: 'Related expertise exists, but the role requires a different technology.' },
+  { key: 'notEstablished', title: 'Not established',
+    description: 'The available public sources do not establish these requirements.' },
 ];
 
-function AISelection({ selection }) {
+function RecruiterItem({ selection }) {
   return (
     <li className="roleFitAISelection">
-      <strong className="roleFitAIRequirement">{selection.row.requirement.quote}</strong>
-      {selection.note ? <p className="roleFitAIModelNote">Model interpretation (unverified): {selection.note}</p> : null}
-      {selection.evidence?.length ? (
-        <ul className="roleFitAISources" aria-label="Public evidence sources">
-          {selection.evidence.slice(0, 3).map((source) => (
-            <li key={source.id}>
-              <span>{source.label}</span>
-              {source.sourceUrl ? <a href={source.sourceUrl} target="_blank" rel="noopener noreferrer">View source</a> : null}
-            </li>
+      <strong className="roleFitAIRequirement">{selection.title}</strong>
+      <p className="roleFitAISummary">{selection.summary}</p>
+      {selection.sources.length ? (
+        <p className="roleFitAISourceLinks">
+          <span>Published sources: </span>
+          {selection.sources.map((source, index) => (
+            <span key={source.id}>
+              {index ? ' · ' : ''}
+              <a href={source.sourceUrl}>
+                {source.sourceId}{source.sourceType === 'project' ? ' (project)' : ' (résumé)'}
+              </a>
+            </span>
           ))}
-        </ul>
+        </p>
       ) : null}
     </li>
   );
 }
 
-export default function RoleFitAIReport({ assessment, status, modelId, progress, analysisId }) {
+export default function RoleFitAIReport({ assessment, mechanicalAssessment, status, modelId, progress, analysisId }) {
   const headingRef = useRef(null);
   useEffect(() => { headingRef.current?.focus(); }, [analysisId]);
-  const isReady = status === 'ready' || status === 'empty';
-  const structured = assessment?.kind === 'structured';
+  const fallbackSections = useMemo(
+    () => buildRoleFitRecruiterSummary(mechanicalAssessment).sections,
+    [mechanicalAssessment],
+  );
+  const sections = assessment?.sections ?? fallbackSections;
+  const hasAny = categories.some(({ key }) => sections[key]?.length);
+  const isFallback = !assessment || assessment.kind === 'fallback';
+
   return (
     <article className="aiPart roleFitResultCard roleFitAIResultCard" aria-labelledby="role-fit-ai-heading">
-      <p className="roleFitResultEyebrow">On-device model · preliminary interpretation</p>
+      <p className="roleFitResultEyebrow">On-device AI · source-grounded role summary</p>
       <h3 id="role-fit-ai-heading" className="roleFitReportTitle" ref={headingRef} tabIndex={-1}>AI assessment</h3>
-      <p className="roleFitAIWarning">A small local model may overlook requirements, misclassify skills, or invent explanations. AI interpretations are not independently verified and may use only part of a long posting. Compare the complete mechanical assessment below before relying on them.</p>
+      <p className="roleFitReportRoleTitle">{mechanicalAssessment.roleTitle}</p>
+      <p className="roleFitAIWarning">A small local model can misinterpret requirements. The statements below are constrained to published, self-described résumé and project evidence; this does not independently verify employment or proficiency. Compare the mechanical assessment below.</p>
       {modelId ? <p className="roleFitAIModelLabel">Model: {modelId}</p> : null}
       {status === 'running' ? (
-        <p className="roleFitAIProgress" role="status" aria-live="polite">{progress || 'Analyzing with the local AI model…'}</p>
+        <p className="roleFitAIProgress" role="status" aria-live="polite">
+          {progress || 'Analyzing with the local model…'} A source-grounded preview is available below while the model ranks the evidence.
+        </p>
       ) : null}
       {status === 'unavailable' ? (
-        <p className="roleFitAIProgress" role="status">The local AI model requires WebGPU and Worker support in this browser. The independent mechanical assessment is available below.</p>
+        <p className="roleFitAIProgress" role="status">
+          The on-device AI model is unavailable in this browser (WebGPU/Worker required). The following evidence-grounded fallback still summarizes the role.
+        </p>
       ) : null}
       {status === 'failed' ? (
-        <p className="roleFitAIProgress" role="status">The local AI assessment could not complete on this device. The mechanical assessment below is unaffected.</p>
+        <p className="roleFitAIProgress" role="status">
+          The small local model could not finish. The following evidence-grounded fallback is available; the mechanical assessment is unaffected.
+        </p>
       ) : null}
-      {isReady ? (
-        <>
-          <div className="roleFitAICategories">
-            {sections.map(({ key, title, description }) => (
-              <section key={key} className="roleFitAICategory" aria-label={title}>
-                <h4>{title}</h4>
-                <p className="roleFitAICategoryDescription">{description}</p>
-                {structured && assessment.sections[key].length ? (
-                  <ul className="roleFitAISelectionList">
-                    {assessment.sections[key].map((selection) => <AISelection key={selection.row.requirementId} selection={selection} />)}
-                  </ul>
-                ) : assessment?.kind === 'draft' && assessment.draftSections?.[key] ? (
-                  <p className="roleFitAIUnverifiedText"><strong>Unverified AI wording:</strong> {assessment.draftSections[key]}</p>
-                ) : (
-                  <p className="roleFitAIEmpty">No source-checked item was selected for this category by the model.</p>
-                )}
-              </section>
-            ))}
-          </div>
-          {assessment?.kind === 'draft' ? (
-            <section className="roleFitAIDraft" aria-label="Unverified model response">
-              <h4>Unverified model response</h4>
-              <p>The small model’s wording could not be source-validated. It is displayed for transparency and may be inaccurate.</p>
-              {Object.values(assessment.draftSections ?? {}).some(Boolean) ? (
-                <details className="roleFitAIDetails"><summary>View complete original AI wording</summary><pre>{assessment.original}</pre></details>
-              ) : <pre>{assessment.original}</pre>}
+      {status === 'ready' && isFallback ? (
+        <p className="roleFitAIProgress" role="status">{assessment.warning}</p>
+      ) : null}
+      {status === 'ready' && !isFallback ? (
+        <p className="roleFitAIModelLabel">Model-ranked priorities; all claims and categories remain source-checked.</p>
+      ) : null}
+
+      {hasAny ? (
+        <div className="roleFitAICategories">
+          {categories.map(({ key, title, description }) => (
+            <section key={key} className="roleFitAICategory" aria-label={title}>
+              <h4>{title}</h4>
+              <p className="roleFitAICategoryDescription">{description}</p>
+              {sections[key]?.length ? (
+                <ul className="roleFitAISelectionList">
+                  {sections[key].map((selection) => <RecruiterItem key={selection.id} selection={selection} />)}
+                </ul>
+              ) : <p className="roleFitAIEmpty">No evidence-backed examples identified for this category.</p>}
             </section>
-          ) : assessment?.kind === 'empty' ? (
-            <p className="roleFitAIProgress">The model returned no text. The independent mechanical assessment remains available below.</p>
-          ) : null}
-          {assessment?.warning && assessment.rejected ? <p className="roleFitAIWarningDetail">{assessment.rejected} unsupported or duplicate model selections were excluded from the source-checked categories.</p> : null}
-          {structured ? (
-            <details className="roleFitInventory roleFitAIDetails">
-              <summary>View the original model response (unverified)</summary>
-              <pre>{assessment.original}</pre>
-            </details>
-          ) : null}
-        </>
+          ))}
+        </div>
+      ) : (
+        <p className="roleFitAIProgress">There are not enough identifiable technical requirements in this posting to produce a meaningful evidence-based comparison. Additional role details would help.</p>
+      )}
+
+      {assessment?.original ? (
+        <details className="roleFitInventory roleFitAIDetails">
+          <summary>Model diagnostics (unverified original text)</summary>
+          <p>This is raw model output, not recruiter-facing evidence or verified candidate experience.</p>
+          <pre>{assessment.original}</pre>
+        </details>
       ) : null}
     </article>
   );
