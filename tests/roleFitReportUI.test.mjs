@@ -114,3 +114,8 @@ test('first-token timeout retries a smaller local model without modifying the ca
   assert.match(section, /<RoleFitReport/);
   assert.match(report, /roleFitThreeWayGrid/);
 });
+
+
+test('first-token timeout explains prompt prefill as an alternative to a GPU stall', () => {
+  assert.match(content, /first_token_timeout:[\s\S]{0,240}prepar(?:ing|ation|e) the prompt/);
+});
