@@ -144,3 +144,73 @@ test('model composition code does not import or invoke the deterministic recruit
   const source=readFileSync(new URL('../src/utils/roleFitAI.mjs',import.meta.url),'utf8');
   assert.doesNotMatch(source,/buildRoleFitRecruiterSummary|verifiedCategoryChoices|safeBaseline\.sections/);
 });
+
+test('prompt treats role requirements as untrusted and requires cited candidate evidence for every positive claim', () => {
+  const {messages} = buildRoleFitAIRequest({jobText: javaRole, evidenceCatalog});
+  const system = messages[0].content;
+  assert.match(system, /employer.{0,60}(?:NOT|never|not).{0,60}(?:candidate|experience)|job posting.{0,100}NOT candidate/i);
+  assert.match(system, /(?:verify|check|support).{0,100}(?:positive|affirmative).{0,100}(?:candidate|evidence)|positive claim.{0,100}source/i);
+  assert.match(system, /JavaScript.{0,35}(?:not|!=|≠).{0,35}Java/i);
+  assert.match(system, /Node\.js.{0,60}(?:not|!=|≠).{0,45}Java/i);
+  assert.match(system, /React.{0,55}(?:not|!=|≠|does not).{0,70}Angular/i);
+  assert.match(system, /years|duration/i);
+  assert.match(system, /large.scale|extensive|strong|expert/i);
+  assert.match(system, /final.{0,30}(?:check|review)|before responding|before finalizing/i);
+  assert.match(system, /\[source-id\]|\[evidence-id\]|\[id\]/i);
+  assert.match(system, /### Directly demonstrated/);
+  assert.match(system, /### Transferable experience/);
+  assert.match(system, /### Not established/);
+});
+
+test('confirmed lack of professional Java experience is prominent and distinct from undocumented frameworks', () => {
+  const {messages} = buildRoleFitAIRequest({jobText: javaRole, evidenceCatalog});
+  const system=messages[0].content;
+  const user=messages[1].content;
+  assert.match(system, /confirmed.*(?:no professional Java|NO PROFESSIONAL JAVA)/i);
+  assert.match(system, /Spring.{0,80}(?:not documented|not established|no evidence)/i);
+  assert.match(user, /CONFIRMED CANDIDATE LIMITATION/i);
+  assert.match(user, /no professional Java work/i);
+  assert.ok(user.indexOf('CONFIRMED CANDIDATE LIMITATION') < user.indexOf('EMPLOYER JOB POSTING'));
+  assert.match(user, /\[owner-no-professional-java\]/);
+  assert.match(user, /CANDIDATE SOURCE EXCERPTS/i);
+  assert.match(user, /\[rest-apis\]/);
+});
+
+test('unrelated JavaScript jobs do not receive Java absence as an employer-role gap', () => {
+  const jobText='Role: JavaScript Frontend Engineer\nExperience with React and REST APIs required.';
+  const {messages} = buildRoleFitAIRequest({jobText, evidenceCatalog});
+  const all=messages.map(({content})=>content).join('\n');
+  assert.doesNotMatch(all, /CONFIRMED CANDIDATE LIMITATION/);
+  assert.doesNotMatch(all, /(?:candidate|owner) (?:explicitly )?confirm(?:ed|s).*no professional Java/i);
+  assert.match(all, /JavaScript/);
+});
+
+test('model source excerpts are concise, source-labelled and do not use mechanical categories', () => {
+  const {messages}=buildRoleFitAIRequest({jobText:javaRole, evidenceCatalog});
+  const user=messages[1].content;
+  const sourceSection=user.split('CANDIDATE SOURCE EXCERPTS')[1];
+  const lines=sourceSection.split('\n').filter(line=>/^\[[a-z0-9-]+\]:/.test(line));
+  assert.equal(lines.length, evidenceCatalog.filter(item=>['resume','project'].includes(item.sourceType)).length);
+  assert.ok(lines.every(line=>line.length<=230), lines.filter(line=>line.length>230).join('\n'));
+  assert.doesNotMatch(user, /directlyDemonstrated|transferableExperience|notEstablished|verifiedCategoryChoices/);
+  assert.ok(JSON.stringify(buildRoleFitAIRequest({jobText:'React experience required.\n'.repeat(500), evidenceCatalog})).length <= 11000);
+});
+
+test('explicitly excluded Java must not be described as a missing requirement by the model prompt', () => {
+  const {messages}=buildRoleFitAIRequest({jobText:'Role: React Engineer\nNo Java required; React is essential.',evidenceCatalog});
+  assert.match(messages[0].content, /explicitly (?:excluded|not required)|not required.{0,45}(?:gap|missing)/i);
+});
+
+test('a Java requirement omitted from the bounded posting excerpt does not inject an irrelevant limitation', () => {
+  const jobText = `${'Role: React engineer; React and TypeScript required.\n'.repeat(110)}Java required.`;
+  const request=buildRoleFitAIRequest({jobText, evidenceCatalog});
+  assert.equal(request.postingTruncated,true);
+  assert.doesNotMatch(request.messages[1].content, /CONFIRMED CANDIDATE LIMITATION/);
+});
+
+test('the system never asserts owner-confirmed Java absence when the evidence record is missing', () => {
+  const catalogWithoutConfirmation=evidenceCatalog.filter(({sourceType})=>sourceType!=='owner_confirmation');
+  const request=buildRoleFitAIRequest({jobText:javaRole, evidenceCatalog:catalogWithoutConfirmation});
+  assert.doesNotMatch(request.messages[0].content, /candidate confirmed NO PROFESSIONAL JAVA EXPERIENCE/i);
+  assert.doesNotMatch(request.messages[1].content, /CONFIRMED CANDIDATE LIMITATION/);
+});
