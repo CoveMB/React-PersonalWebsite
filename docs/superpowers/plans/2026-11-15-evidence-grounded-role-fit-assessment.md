@@ -21,7 +21,7 @@
 - The immediate baseline analysis works without WebGPU or a Worker; model enhancement is explicit opt-in and can never degrade/remove that result.
 - Render a compact first screen, then progressive disclosure; keep the existing portfolio's light/dark, typography, spacing and mobile design conventions rather than adding a dashboard.
 - Distinguish direct, transferable, not documented and needs confirmation; no automated fit percentage/probability, ungrounded year totals or automated apply/don't-apply recommendation.
-- Job input maximum: 12,000 characters (hard error above limit; no silent truncate). Preserve human-readable line breaks. Enter = newline; Ctrl/Cmd+Enter = analyze.
+- Job input maximum: 12,000 characters (hard error above limit; no silent truncate); at most 60 structured requirement groups, with excess clauses surfaced in an explicit partial-coverage notice. Preserve human-readable line breaks. Enter = newline; Ctrl/Cmd+Enter = analyze.
 - Use the existing Yarn lockfile. Keep the existing WebLLM package pinned for initial feasibility checks; update dependency versions only if compatibility evidence justifies it.
 - Each task follows red → green → review → small commit. Do not claim the feature is ready without fresh test/build/browser results and human review of the example outputs.
 
@@ -81,9 +81,9 @@
 - `parseRoleRequirements(text: string): RoleRequirement[]` accepts normalized text; IDs and `span.start/end` are stable within that text; `quote === text.slice(start,end)`.
 - `RoleRequirement` follows the Spec fields, with `optionRule: "anyOf"|"allOf"|"single"|"ambiguous"`; inferred `importance` must remain `unspecified` when no reliable textual/role-title signal exists.
 
-- [ ] **Step 1 — RED:** Add table tests for Senior Java title/core inference, Java vs JavaScript, slash ambiguity, `React or Vue` disjunction, `Java and Spring` conjunction, trailing good-to-have scoped to its clause, exclusion/negation, skill-specific vs generic tenure, onsite as logistics, soft skills, repeated mentions, unfamiliar terms, Unicode/CRLF spans, and a posting with pasted HTML/prompt-like text. Add a test for the 12,000-character input limit in the UI validation contract.
+- [ ] **Step 1 — RED:** Add table tests for Senior Java title/core inference, Java vs JavaScript, slash ambiguity, `React or Vue` and comma-list `Angular, React, or Vue` disjunctions, `Java and Spring` conjunction, trailing good-to-have scoped to its clause, exclusion/negation, skill-specific vs generic tenure, onsite as logistics, soft skills, repeated mentions, unfamiliar terms, Unicode/CRLF spans, pasted HTML/prompt-like text, and more than 60 requirements. Overflow must remain visible as unparsed clauses. Add a test for the 12,000-character input limit in the UI validation contract.
 - [ ] **Step 2 — verify RED:** `node --test tests/roleFitRequirements.test.mjs`; expect missing exports to fail.
-- [ ] **Step 3 — implement:** Segment by headings, lines, sentence/semicolon boundaries and known list separators; preserve quotations/offsets. Apply a small, explicit taxonomy for known capabilities and leave unknown clauses as `category: "other", needsReview: true`. Support limited `anyOf/allOf` only when unambiguous; no generic semantic guessing or false precision.
+- [ ] **Step 3 — implement:** Segment by headings, lines, sentence/semicolon boundaries and known list separators; preserve quotations/offsets. Apply a small, explicit taxonomy for known capabilities and leave unknown clauses as `category: "other", needsReview: true`. Support limited `anyOf/allOf` only when unambiguous; no generic semantic guessing or false precision. Keep at most 60 requirement groups and retain surplus source clauses as unparsed text with an explicit incomplete-coverage flag.
 - [ ] **Step 4 — GREEN + check:** `node --test tests/roleFitRequirements.test.mjs` passes; inspect the extracted inventory for the user-supplied Wissen posting; no orphaned core requirements or logistical requirements misclassified as experience.
 - [ ] **Step 5 — commit:** `git add src/utils/roleFitRequirements.mjs tests/roleFitRequirements.test.mjs tests/fixtures/roleFitJobs.mjs && git commit -m "feat(ai-lab): extract source-anchored role requirements"`
 
@@ -96,7 +96,7 @@
 - `RequirementMatch` contains `requirementId`, `status`, `evidenceIds`, `rationaleCode`, `unresolvedOptions`. Source IDs refer only to catalog items.
 - Direct requires documented evidence and a validated capability match. Transferable uses curated mappings and explanatory differences (example: Node.js microservices vs Java microservices), not an unrestricted similarity score.
 
-- [ ] **Step 1 — RED:** Test that React satisfies `React or Vue` but not `React and Vue`; Node.js does not directly satisfy Java; required Java + Spring remains a core gap; frontend/React, REST, AWS, CI/CD are directly evidenced; Kubernetes/Azure/Python are not documented; planned portal and learning Rust are ineligible for professional claims; communication/logistics/years are not guessed.
+- [ ] **Step 1 — RED:** Test that React satisfies `React or Vue` but not `React and Vue`; Node.js does not directly satisfy Java; required Java + Spring remains a core gap; React, REST, AWS and CI/CD are directly evidenced, while HTML5/CSS3 cannot be directly inferred from a React project; Kubernetes/Azure/Python are not documented; planned portal and learning Rust are ineligible for professional claims; communication/logistics/years are not guessed.
 - [ ] **Step 2 — verify RED:** `node --test tests/roleFitMatching.test.mjs`; expect failure.
 - [ ] **Step 3 — implement:** Use only catalog keys, explicit eligibility and relation rules. A missing source becomes `not_documented`, not `does_not_have`; logistics become `needs_confirmation`. Deduplicate repeated clauses without dropping the original audit trail, and keep original option alternatives and remaining gaps visible.
 - [ ] **Step 4 — GREEN + source audit:** `node --test tests/roleFitMatching.test.mjs` passes; trace every displayed direct/transferable item to a legitimate source ID.
@@ -117,34 +117,36 @@
 - [ ] **Step 4 — GREEN + output review:** `node --test tests/roleFitAssessment.test.mjs` passes; compare actual Wissen rendering data with the Spec's completion criteria and manually flag formulaic or misleading wording.
 - [ ] **Step 5 — commit:** `git add src/utils/roleFitAssessment.mjs tests/roleFitAssessment.test.mjs tests/roleFitEvidence.test.mjs && git commit -m "feat(ai-lab): produce materiality-aware, explainable assessments"`
 
-### Task 5: Present a restrained, accessible role-fit report
+### Task 5: Ship the baseline analysis and accessible report together
 
-**Files:** Create `src/components/ai/RoleFitReport.jsx`; modify `src/components/ai/AI.jsx`, `src/content/roleFitLabContent.js`, `src/content/texts/roleFitTexts.js`, `public/static/css/_ai.scss`.
-
-**Interfaces:**
-- `<RoleFitReport assessment={RoleFitAssessment} />` is presentational; it never reparses job text or calls the model.
-- Source labels/links come from checked evidence source IDs. Expandable details use native `<details><summary>` unless existing site conventions already provide a better accessible control.
-
-- [ ] **Step 1 — RED:** Add a browser smoke expectation (implemented in Task 8) for: conclusion before evidence, up to four strongest examples, core gaps before optional gaps, source labels/links, recruiter question, collapsed full details, visible incomplete-coverage note, and no raw model text. Keep a visual acceptance checklist for 320px/390px, desktop, light/dark and keyboard/screen-reader.
-- [ ] **Step 2 — verify RED:** Use a temporary rendered fixture or component assertion so missing `RoleFitReport` fails; do not claim browser coverage until Task 8's runner exists.
-- [ ] **Step 3 — implement:** Replace `<pre>` output with semantic sections, concise neutral summary, small evidence/gap groups and a native disclosure for the full table/list. Preserve the existing portfolio theme/spacing; support focus and short status announcements without reading the entire report aloud. Change the textarea help to Enter = newline, Ctrl/Cmd+Enter = analyze. Do not add badges, scores, charts or a nested dashboard for each requirement.
-- [ ] **Step 4 — GREEN + visual review:** Run available render/component assertion and `yarn lint`. Manually inspect mobile/dark/reduced-motion and verify source links are safe. Full browser verification happens in Task 8.
-- [ ] **Step 5 — commit:** `git add src/components/ai/RoleFitReport.jsx src/components/ai/AI.jsx src/content/roleFitLabContent.js src/content/texts/roleFitTexts.js public/static/css/_ai.scss && git commit -m "feat(ai-lab): show a concise explainable assessment"`
-
-### Task 6: Make the baseline immediate and the lifecycle race-safe
-
-**Files:** Modify `src/components/ai/useRoleFitLab.js`, `src/components/ai/AI.jsx`; add pure lifecycle/state tests in `tests/roleFitAssessment.test.mjs` or `tests/roleFitEnhancement.test.mjs`.
+**Files:** Create `src/components/ai/RoleFitReport.jsx`, `tests/e2e/roleFit.spec.mjs`, `playwright.config.mjs`; modify `src/components/ai/AI.jsx`, `src/components/ai/useRoleFitLab.js`, `src/content/roleFitLabContent.js`, `src/content/texts/roleFitTexts.js`, `public/static/css/_ai.scss`, `package.json`, `yarn.lock`.
 
 **Interfaces:**
-- On Analyze, `normalizeRolePosting → parseRoleRequirements → matchRoleRequirements → buildRoleFitAssessment` completes without WebLLM.
-- Keep `roleFitState.result` as a structured assessment object, not a string. `roleFitState` has separate baseline/enhancement status; `isBusy` must not block baseline on WebGPU availability.
-- An incrementing request revision/reference ties results to the current input. Reset/edit invalidates pending enhancement; it cannot overwrite newer analysis.
+- `<RoleFitReport assessment={RoleFitAssessment} />` is presentational; it neither parses nor scores.
+- Analyze synchronously calls `normalizeRolePosting → parseRoleRequirements → matchRoleRequirements → buildRoleFitAssessment`. `roleFitState.result` becomes a structured object; no WebLLM, WebGPU, Worker or network required.
+- `getJobDescriptionErrorMessage(input): string` enforces the 12,000-character limit without truncating. Input edits invalidate the old report.
+- Source links use eligible catalog evidence; native `<details><summary>` reveals the complete requirement/evidence mapping.
 
-- [ ] **Step 1 — RED:** Add deterministic reducer/revision tests (extract a pure controller helper only if needed) for no WebGPU/Worker, empty/over-limit input, rapid Analyze, Reset during load, input editing during load, thrown model error, invalid model response, unmount, and an older completion arriving after a newer report.
-- [ ] **Step 2 — verify RED:** `node --test tests/roleFitAssessment.test.mjs tests/roleFitEnhancement.test.mjs`; expect the new lifecycle tests to fail.
-- [ ] **Step 3 — implement:** Generate and show baseline immediately; do not require `supportsLocalRoleFit` for Analyze. Retain baseline while optional enhancement loads and after failure. Guard stale completions with a revision token and clean up the worker on unmount. Do not persist or expose input outside component state. Make Reset usable even while enhancing; keep the Analyze action nonblocking.
-- [ ] **Step 4 — GREEN + manual check:** Relevant Node tests pass; use browser to test editing and Reset while a slow model is preparing. Verify no obsolete completion changes the visible report or status.
-- [ ] **Step 5 — commit:** `git add src/components/ai/useRoleFitLab.js src/components/ai/AI.jsx tests/roleFitAssessment.test.mjs tests/roleFitEnhancement.test.mjs && git commit -m "feat(ai-lab): preserve instant baseline and ignore stale local inference"`
+- [ ] **Step 1 — RED + browser harness:** Add `@playwright/test` as a development-only dependency with Yarn, create its web-server config for the local Next site, install Chromium locally, then write failing UI tests for the Wissen scenario: show a structured Java core-gap report with true REST/React sources, no GPU prerequisite, usable accordion, and standard Enter/newline plus Ctrl/Cmd+Enter Analyze.
+- [ ] **Step 2 — verify RED:** `yarn playwright test tests/e2e/roleFit.spec.mjs`; expect FAIL because the current UI only prints `<pre>` and Analyze still requires WebGPU.
+- [ ] **Step 3 — implement:** Integrate the deterministic pipeline into the hook **in the same task** that replaces the old `<pre>` with `RoleFitReport`. Show title, succinct neutral conclusion, at most four traced achievements, critical gaps, optional concrete recruiter question, source links and accessible expandable details. Keep existing design tokens, mobile layout, focus and concise ARIA status. Restore Enter for multiline text; Ctrl/Cmd+Enter analyzes. Clear or explicitly mark an old report stale on any edit/Reset.
+- [ ] **Step 4 — GREEN + check:** Run `node --test tests/*.test.mjs`, `yarn playwright test tests/e2e/roleFit.spec.mjs`, `yarn lint`. Visually review 320px/390px and desktop, dark/light, keyboard navigation, reduced motion and source attribution. Confirm baseline still runs with GPU and Worker disabled.
+- [ ] **Step 5 — commit:** `git add src/components/ai/RoleFitReport.jsx src/components/ai/AI.jsx src/components/ai/useRoleFitLab.js src/content/roleFitLabContent.js src/content/texts/roleFitTexts.js public/static/css/_ai.scss tests/e2e/roleFit.spec.mjs playwright.config.mjs package.json yarn.lock && git commit -m "feat(ai-lab): deliver immediate accessible role-fit report"`
+
+### Task 6: Make enhancement lifecycle safe before introducing model output
+
+**Files:** Modify `src/components/ai/useRoleFitLab.js`; add `tests/roleFitEnhancement.test.mjs` and extend `tests/e2e/roleFit.spec.mjs`.
+
+**Interfaces:**
+- `inputRevision` (or a ref-backed equivalent) increments on edit, Reset, new Analyze and unmount. A promise from an older revision must never mutate the current report.
+- A bounded async `enhanceRoleFitWith(requestRevision, producer)` controller accepts an injected producer and uses the same revision and safe-result checks later used by the actual WebLLM provider in Task 7.
+- The visible baseline persists while enhancement is running or has failed; the final opt-in UI will only be exposed when Task 7 connects a real provider.
+
+- [ ] **Step 1 — RED:** Write pure state/revision tests and fake-producer browser tests: edit after analysis invalidates old output; Reset clears it; slow response from old posting is discarded after a newer Analyze; failed/empty producer keeps baseline; unmount prevents updates.
+- [ ] **Step 2 — verify RED:** `node --test tests/roleFitEnhancement.test.mjs && yarn playwright test tests/e2e/roleFit.spec.mjs`; expected FAIL on the new delayed-response cases.
+- [ ] **Step 3 — implement:** Keep the existing single-client reducer/hook conventions; add one revision guard and a small injectable async boundary, not a new state-management framework. Ignore late completions and clean up the worker when it exists. Do not add a visible but inoperative "enhance" control or resettable global cache.
+- [ ] **Step 4 — GREEN:** Run the same Node/browser tests plus `yarn lint`; inspect rapid edit/reset/retry flows. Every success/error state must refer to the current posting.
+- [ ] **Step 5 — commit:** `git add src/components/ai/useRoleFitLab.js tests/roleFitEnhancement.test.mjs tests/e2e/roleFit.spec.mjs && git commit -m "fix(ai-lab): ignore stale asynchronous role analyses"`
 
 ### Task 7: Add validated, opt-in semantic enhancement and benchmark candidate models
 
