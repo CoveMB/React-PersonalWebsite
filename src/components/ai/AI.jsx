@@ -1,14 +1,14 @@
-import { roleFitLabSectionContent } from "../../content/roleFitLabContent";
-import { emailLink } from "../../utils/profile";
-import RoleFitReport from "./RoleFitReport";
-import { useRoleFitLab } from "./useRoleFitLab";
+import { roleFitLabSectionContent } from '../../content/roleFitLabContent';
+import { emailLink } from '../../utils/profile';
+import RoleFitAIReport from './RoleFitAIReport';
+import RoleFitReport from './RoleFitReport';
+import { useRoleFitLab } from './useRoleFitLab';
 
 export default function RoleFitSection() {
   const {
-    browserSupportMessage, engineStatusMessage, handleGenerateClick,
-    handleJobDescriptionKeyDown, isBusy, maximumJobDescriptionLength,
+    browserSupportMessage, handleGenerateClick,
+    handleJobDescriptionKeyDown, maximumJobDescriptionLength,
     resetRoleFit, roleFitState, submitButtonLabel, updateJobDescription,
-    enhanceRole, canEnhance,
   } = useRoleFitLab();
   const tooLong = roleFitState.jobDescription.length > maximumJobDescriptionLength;
   return (
@@ -26,7 +26,7 @@ export default function RoleFitSection() {
         <div className="roleFitInputCard">
           <div className="roleFitFieldHeader">
             <label className="roleFitFieldLabel" htmlFor="jobDescription">{roleFitLabSectionContent.inputLabel}</label>
-            <span className={`roleFitCounter${tooLong ? " roleFitCounterOverLimit" : ""}`}>
+            <span className={`roleFitCounter${tooLong ? ' roleFitCounterOverLimit' : ''}`}>
               {roleFitState.jobDescription.length}/{maximumJobDescriptionLength}
             </span>
           </div>
@@ -39,24 +39,25 @@ export default function RoleFitSection() {
             placeholder={roleFitLabSectionContent.placeholder} spellCheck={false}
             value={roleFitState.jobDescription}
           />
-          {engineStatusMessage ? <p className="roleFitFooterMeta" role="status" aria-live="polite">{engineStatusMessage}</p> : null}
           {roleFitState.errorMessage ? <p className="roleFitError" role="alert">{roleFitState.errorMessage}</p> : null}
           <div className="roleFitActions">
             <button className="aiButton roleFitSecondaryButton" onClick={resetRoleFit} type="button">Reset</button>
             <button className="aiButton roleFitPrimaryButton" onClick={handleGenerateClick} type="button">{submitButtonLabel}</button>
           </div>
-          {roleFitState.result ? (
-            <div className="roleFitEnhanceRow">
-              <div><strong>{roleFitLabSectionContent.enhancementTitle}</strong><p>{roleFitLabSectionContent.enhancementNote}</p></div>
-              <button className="aiButton roleFitSecondaryButton" type="button"
-                onClick={enhanceRole} disabled={!canEnhance || isBusy} aria-busy={isBusy}>
-                {isBusy ? "Enhancing locally…" : "Enhance locally"}
-              </button>
-            </div>
-          ) : null}
         </div>
       </div>
-      {roleFitState.result ? <RoleFitReport assessment={roleFitState.result} /> : null}
+      {roleFitState.result ? (
+        <>
+          <RoleFitAIReport
+            assessment={roleFitState.aiAssessment}
+            status={roleFitState.aiStatus}
+            modelId={roleFitState.modelId}
+            progress={roleFitState.statusMessage}
+            analysisId={roleFitState.analysisId}
+          />
+          <RoleFitReport assessment={roleFitState.result} />
+        </>
+      ) : null}
       <div className="aiPart roleFitFooter">
         <p className="roleFitFooterText">{roleFitLabSectionContent.contactPrompt} <a className="roleFitContactLink" href={emailLink}>{roleFitLabSectionContent.contactLinkLabel}</a>.</p>
       </div>

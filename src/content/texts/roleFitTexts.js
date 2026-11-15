@@ -1,2 +1,2 @@
 export const ROLE_FIT_LAB_LEAD =
-  "Explore how a role's requirements compare with documented work: strongest direct examples, transferable skills, and consequential gaps. An immediate, transparent assessment runs in your browser without an AI model; optional local refinement cannot invent career claims.";
+  'Explore how a job role compares with documented work. Analyze launches a small, experimental on-device AI assessment and an independent, evidence-grounded mechanical assessment. The AI result comes first; compare both before interpreting experience or gaps.';

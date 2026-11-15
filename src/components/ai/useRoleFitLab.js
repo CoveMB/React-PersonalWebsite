@@ -1,124 +1,119 @@
-import { useEffect, useReducer, useRef, useState } from "react";
-import { roleFitLabMessageContent as copy } from "../../content/roleFitLabContent";
-import { maximumJobDescriptionLength, buildRoleFitEnhancementRequest,
-  validateRoleFitEnhancement, applyRoleFitEnhancement, selectRoleFitModelId,
-  getRolePostingValidationCode } from "../../utils/roleFit";
-import { normalizeRolePosting, parseRoleRequirements } from "../../utils/roleFitRequirements.mjs";
-import { getRoleFitEvidenceCatalog } from "../../utils/roleFitEvidence.mjs";
-import { matchRoleRequirements } from "../../utils/roleFitMatching.mjs";
-import { buildRoleFitAssessment } from "../../utils/roleFitAssessment.mjs";
-import { createRoleFitRevisionGuard, enhanceRoleFitWith } from "../../utils/roleFitEnhancement.mjs";
+import { useEffect, useReducer, useRef, useState } from 'react';
+import { roleFitLabMessageContent as copy } from '../../content/roleFitLabContent';
+import { maximumJobDescriptionLength, getRolePostingValidationCode, selectRoleFitModelId } from '../../utils/roleFit';
+import { buildRoleFitAIRequest, runRoleFitAnalyses } from '../../utils/roleFitAI.mjs';
+import { createRoleFitRevisionGuard } from '../../utils/roleFitEnhancement.mjs';
 
 const initialState = {
-  jobDescription: "", result: null, errorMessage: "", statusMessage: "",
-  modelId: "", isEnhancing: false,
+  jobDescription: '', result: null, aiAssessment: null, aiStatus: 'idle',
+  errorMessage: '', aiError: '', statusMessage: '', modelId: '', analysisId: 0,
 };
+
 const reducer = (state, action) => {
   switch (action.type) {
-    case "edit": return { ...state, jobDescription: action.value, result: null,
-      errorMessage: "", statusMessage: "", isEnhancing: false };
-    case "reset": return { ...initialState, modelId: state.modelId };
-    case "invalid": return { ...state, errorMessage: action.value };
-    case "analyzed": return { ...state, result: action.result, errorMessage: "",
-      statusMessage: copy.statusMessages.success, isEnhancing: false };
-    case "enhancing": return { ...state, isEnhancing: true, errorMessage: "",
-      statusMessage: copy.statusMessages.loading };
-    case "progress": return { ...state, statusMessage: action.message };
-    case "enhanced": return { ...state, result: action.result, isEnhancing: false,
-      modelId: action.modelId, statusMessage: copy.statusMessages.enhanced };
-    case "enhancementStopped": return { ...state, isEnhancing: false,
-      errorMessage: action.error || "", statusMessage: action.message };
+    case 'edit': return { ...state, jobDescription: action.value, result: null,
+      aiAssessment: null, aiStatus: 'idle', errorMessage: '', aiError: '', statusMessage: '' };
+    case 'reset': return { ...initialState, analysisId: state.analysisId };
+    case 'invalid': return { ...state, errorMessage: action.value };
+    case 'analyzed': return { ...state, result: action.result, aiAssessment: null,
+      aiStatus: action.hasModel ? 'running' : 'unavailable', modelId: '', errorMessage: '', aiError: '',
+      statusMessage: action.hasModel ? copy.statusMessages.loading : '',
+      analysisId: state.analysisId + 1 };
+    case 'progress': return { ...state, statusMessage: action.message };
+    case 'aiReady': return { ...state, aiAssessment: action.result, aiStatus: action.result.kind === 'empty' ? 'empty' : 'ready',
+      statusMessage: '', aiError: '', modelId: action.modelId };
+    case 'aiFailed': return { ...state, aiStatus: 'failed', aiError: copy.errors.modelFailed, statusMessage: '' };
     default: return state;
   }
 };
 
-const canRunLocalModel = () => typeof window !== "undefined" &&
-  typeof window.Worker !== "undefined" &&
-  typeof navigator !== "undefined" && Boolean(navigator.gpu);
+const supportsLocalAI = () => typeof window !== 'undefined' &&
+  typeof window.Worker !== 'undefined' && typeof navigator !== 'undefined' && Boolean(navigator.gpu);
 
 export const getJobDescriptionErrorMessage = (input) => {
   const code = getRolePostingValidationCode(input);
-  return code === "too_long" ? copy.errors.tooLong
-    : code === "empty" ? copy.errors.missingJobDescription : "";
+  return code === 'too_long' ? copy.errors.tooLong
+    : code === 'empty' ? copy.errors.missingJobDescription : '';
 };
-const assistantText = (content) => typeof content === "string" ? content.trim()
-  : Array.isArray(content) ? content.map((part) => typeof part === "string" ? part : part?.text ?? "").join("").trim() : "";
+const assistantText = (content) => typeof content === 'string' ? content.trim()
+  : Array.isArray(content) ? content.map((part) => typeof part === 'string' ? part : part?.text ?? '').join('').trim() : '';
 const progressMessage = (report) => {
-  const percentage = Number.isFinite(report?.progress) ? ` (${Math.round(report.progress * 100)}%)` : "";
+  const percentage = Number.isFinite(report?.progress) ? ` (${Math.round(report.progress * 100)}%)` : '';
   return `${report?.text || copy.statusMessages.loading}${percentage}`;
+};
+
+const stopModel = ({ workerReference, engineReference, enginePromiseReference }) => {
+  workerReference.current?.terminate();
+  workerReference.current = null;
+  const loaded = engineReference.current;
+  engineReference.current = null;
+  enginePromiseReference.current = null;
+  try { void loaded?.instance?.unload?.()?.catch?.(() => undefined); } catch { /* best effort */ }
 };
 
 export const useRoleFitLab = () => {
   const [roleFitState, dispatch] = useReducer(reducer, initialState);
-  const [canEnhance, setCanEnhance] = useState(false);
+  const [canRunAI, setCanRunAI] = useState(false);
   const gateReference = useRef(createRoleFitRevisionGuard());
   const engineReference = useRef(null);
   const enginePromiseReference = useRef(null);
   const workerReference = useRef(null);
-  const enhancingRevisionReference = useRef(null);
+  const activeRunReference = useRef(null);
 
   useEffect(() => {
-    // StrictMode invokes cleanup/setup twice in development. The second setup
-    // must receive a fresh, active revision gate.
+    // React StrictMode cleans up and re-runs this effect in development.
     gateReference.current = createRoleFitRevisionGuard();
-    setCanEnhance(canRunLocalModel());
+    setCanRunAI(supportsLocalAI());
     return () => {
       gateReference.current.dispose();
-      enhancingRevisionReference.current = null;
-      enginePromiseReference.current = null;
-      try { void engineReference.current?.instance?.unload?.(); } catch { /* best effort */ }
-      engineReference.current = null;
-      workerReference.current?.terminate();
-      workerReference.current = null;
+      activeRunReference.current = null;
+      stopModel({ workerReference, engineReference, enginePromiseReference });
     };
   }, []);
 
-  const updateJobDescription = (event) => {
+  const invalidatePendingAI = () => {
     gateReference.current.bump();
-    dispatch({ type: "edit", value: event.target.value });
+    if (activeRunReference.current !== null) {
+      stopModel({ workerReference, engineReference, enginePromiseReference });
+      activeRunReference.current = null;
+    }
+  };
+  const updateJobDescription = (event) => {
+    invalidatePendingAI();
+    dispatch({ type: 'edit', value: event.target.value });
   };
   const resetRoleFit = () => {
-    gateReference.current.bump();
-    dispatch({ type: "reset" });
-  };
-  const analyzeRole = () => {
-    const jobDescription = roleFitState.jobDescription;
-    const error = getJobDescriptionErrorMessage(jobDescription);
-    if (error) { dispatch({ type: "invalid", value: error }); return; }
-    gateReference.current.bump();
-    const jobText = normalizeRolePosting(jobDescription);
-    const requirements = parseRoleRequirements(jobText);
-    const evidenceCatalog = getRoleFitEvidenceCatalog();
-    const matches = matchRoleRequirements(requirements, evidenceCatalog);
-    const result = buildRoleFitAssessment({ jobText, requirements, matches, evidenceCatalog });
-    dispatch({ type: "analyzed", result });
+    invalidatePendingAI();
+    dispatch({ type: 'reset' });
   };
 
   const loadEngine = async (revision) => {
     const gate = gateReference.current;
-    if (engineReference.current) return { engine: engineReference.current.instance, modelId: engineReference.current.modelId };
-    if (enginePromiseReference.current) return enginePromiseReference.current;
+    if (engineReference.current) return {
+      engine: engineReference.current.instance,
+      modelId: engineReference.current.modelId,
+    };
+    if (enginePromiseReference.current?.revision === revision) return enginePromiseReference.current.promise;
     const promise = (async () => {
-      // Dynamic import: the baseline contains no WebGPU or Worker dependency.
-      const { CreateWebWorkerMLCEngine, prebuiltAppConfig } = await import("@mlc-ai/web-llm");
+      // This module and its worker are loaded only after an Analyze click.
+      const { CreateWebWorkerMLCEngine, prebuiltAppConfig } = await import('@mlc-ai/web-llm');
+      if (!gate.isCurrent(revision)) throw new Error('Superseded local-model request');
       const modelId = selectRoleFitModelId(prebuiltAppConfig.model_list);
       if (!modelId) throw new Error(copy.errors.missingModel);
-      const worker = new Worker(new URL("./roleFit.worker.js", import.meta.url), { type: "module" });
+      const worker = new Worker(new URL('./roleFit.worker.js', import.meta.url), { type: 'module' });
       workerReference.current = worker;
       try {
         const engine = await CreateWebWorkerMLCEngine(worker, modelId, {
           initProgressCallback: (report) => {
-            if (gate.isCurrent(revision)) dispatch({ type: "progress", message: progressMessage(report) });
+            if (gate.isCurrent(revision)) dispatch({ type: 'progress', message: progressMessage(report) });
           },
-          logLevel: "ERROR",
+          logLevel: 'ERROR',
         });
-        if (!gate.isCurrent(revision)) {
-          void engine.unload?.();
+        if (!gate.isCurrent(revision) || workerReference.current !== worker) {
+          try { void engine.unload?.()?.catch?.(() => undefined); } catch { /* best effort */ }
           worker.terminate();
-          if (workerReference.current === worker) workerReference.current = null;
-          throw new Error("Superseded local-model request");
+          throw new Error('Superseded local-model request');
         }
-        // Keep the identifier alongside the engine; no global cache.
         engineReference.current = { instance: engine, modelId };
         return { engine, modelId };
       } catch (error) {
@@ -127,48 +122,48 @@ export const useRoleFitLab = () => {
         throw error;
       }
     })();
-    enginePromiseReference.current = promise;
-    try { return await promise; } finally { if (enginePromiseReference.current === promise) enginePromiseReference.current = null; }
+    enginePromiseReference.current = { revision, promise };
+    try { return await promise; }
+    finally {
+      if (enginePromiseReference.current?.promise === promise) enginePromiseReference.current = null;
+    }
   };
 
-  const enhanceRole = async () => {
-    if (!roleFitState.result || !canEnhance || roleFitState.isEnhancing) return;
+  const analyzeRole = () => {
+    const error = getJobDescriptionErrorMessage(roleFitState.jobDescription);
+    if (error) { dispatch({ type: 'invalid', value: error }); return; }
+    // A new click always launches a new AI request, even if a previous
+    // mechanical assessment or an in-flight AI result already exists.
+    invalidatePendingAI();
     const gate = gateReference.current;
     const revision = gate.current();
-    if (enhancingRevisionReference.current === revision) return;
-    enhancingRevisionReference.current = revision;
-    const jobText = normalizeRolePosting(roleFitState.jobDescription);
-    const requirements = parseRoleRequirements(jobText);
-    const evidenceCatalog = getRoleFitEvidenceCatalog();
-    const context = { jobText, requirements, evidenceCatalog };
-    let chosenModelId = "";
-    dispatch({ type: "enhancing" });
-    const outcome = await enhanceRoleFitWith({
-      baseline: roleFitState.result, gate, revision,
-      producer: async () => {
-        const loaded = await loadEngine(revision);
-        chosenModelId = loaded.modelId;
-        if (!gate.isCurrent(revision)) return "";
-        const response = await loaded.engine.chat.completions.create({
-          messages: buildRoleFitEnhancementRequest(context).messages,
-          max_tokens: 420,
-          temperature: 0.1,
+    const hasModel = supportsLocalAI();
+    activeRunReference.current = hasModel ? revision : null;
+    let selectedModelId = '';
+    void runRoleFitAnalyses({
+      jobDescription: roleFitState.jobDescription, gate, revision,
+      onMechanical: (result) => dispatch({ type: 'analyzed', result, hasModel }),
+      producer: hasModel ? async (context) => {
+        const { engine, modelId } = await loadEngine(revision);
+        selectedModelId = modelId;
+        if (!gate.isCurrent(revision)) return '';
+        const request = buildRoleFitAIRequest(context);
+        const response = await engine.chat.completions.create({
+          messages: request.messages,
+          max_tokens: 550,
+          temperature: 0.15,
         });
         return assistantText(response?.choices?.[0]?.message?.content);
-      },
-      validate: (raw) => validateRoleFitEnhancement(raw, context),
-      apply: (baseline, suggestions) => applyRoleFitEnhancement(baseline, suggestions, context),
+      } : undefined,
+      onAI: (result) => dispatch({ type: 'aiReady', result, modelId: selectedModelId }),
+      onError: () => dispatch({ type: 'aiFailed' }),
+    }).finally(() => {
+      if (activeRunReference.current === revision) activeRunReference.current = null;
     });
-    if (enhancingRevisionReference.current === revision) enhancingRevisionReference.current = null;
-    if (!gate.isCurrent(revision)) return;
-    if (outcome.status === "applied") dispatch({ type: "enhanced", result: outcome.assessment, modelId: chosenModelId });
-    else dispatch({ type: "enhancementStopped",
-      error: outcome.status === "failed" ? copy.errors.enhancementFailed : "",
-      message: outcome.status === "failed" ? copy.statusMessages.baselinePreserved : copy.statusMessages.noNewEvidence });
   };
 
   const handleJobDescriptionKeyDown = (event) => {
-    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
       event.preventDefault();
       analyzeRole();
     }
@@ -180,11 +175,8 @@ export const useRoleFitLab = () => {
     resetRoleFit,
     handleGenerateClick: analyzeRole,
     handleJobDescriptionKeyDown,
-    enhanceRole,
-    canEnhance,
-    isBusy: roleFitState.isEnhancing,
+    canRunAI,
     submitButtonLabel: copy.buttonLabels.analyze,
-    browserSupportMessage: canEnhance ? copy.browserSupport.ready : copy.browserSupport.unavailable,
-    engineStatusMessage: roleFitState.statusMessage,
+    browserSupportMessage: canRunAI ? copy.browserSupport.ready : copy.browserSupport.unavailable,
   };
 };
