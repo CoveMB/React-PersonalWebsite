@@ -48,8 +48,14 @@ function rolePriority(row) {
 // has a curated, source-backed transfer match. OR/ambiguous groups are excluded.
 function relatedTransferFacets(row, evidenceCatalog) {
   const requirement = row.requirement;
-  if (row.status !== 'not_documented' || requirement.excluded ||
-      requirement.optionRule !== 'allOf' ||
+  const mixedConjunction = requirement.optionRule === 'allOf';
+  // "frameworks like Spring, Hibernate, Spring Boot" is an illustrative list,
+  // not a provable AND/OR requirement. Show related experience as context
+  // while keeping the original group unestablished for the recruiter.
+  const frameworkExamples = requirement.optionRule === 'ambiguous' &&
+    /\b(?:frameworks?|libraries)\s+(?:like|such as)\b/i.test(requirement.quote);
+  if (!['not_documented', 'needs_confirmation'].includes(row.status) || requirement.excluded ||
+      !(mixedConjunction || frameworkExamples) ||
       !['technical', 'practice'].includes(requirement.category) ||
       requirement.options.length < 2 || requirement.options.length > 5) return [];
   const evidenceById = new Map(evidenceCatalog.map((item) => [item.id, item]));
