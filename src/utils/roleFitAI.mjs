@@ -112,7 +112,7 @@ export function buildRoleFitAIRequest({ jobText, evidenceCatalog = getRoleFitEvi
         'Write your OWN short, useful interpretation for a few of the most relevant IDs in each category.',
         'For "direct", describe only what the supplied candidate excerpt actually demonstrates; do not infer years, scale, credentials, or outcomes.',
         'For "transferable", clearly name the documented related experience AND what required technology or capability differs.',
-        'For "notEstablished", explain what the sources cannot substantiate, without claiming that the candidate lacks the skill.',
+        'For "notEstablished", explicitly state that the evidence does not establish or document the requirement (e.g. "not established" or "not documented"), without claiming the candidate has or lacks the skill.',
         'JavaScript, Node.js and Koa are not Java, Spring or J2EE. React is not Angular or Vue.',
         'Do not treat technology in the job posting as candidate experience. Do not invent employers, training, certifications, metrics, timelines or proficiency.',
         'Select up to THREE distinct requirement IDs per category. Use each ID at most once.',
@@ -160,11 +160,16 @@ export function interpretRoleFitAIResponse(raw, { assessment, allowedIds, output
       ]);
       const mentionsUnsupportedTechnology = findCapabilities(note)
         .some(({ key }) => !permittedKeys.has(key));
+      // A not-established statement must communicate an evidence limitation.
+      // Otherwise a model can emit "the candidate has Java experience" under
+      // the gap heading and confuse a recruiter even with the right category.
+      const explicitEvidenceLimit = /\b(?:not\s+(?:established|documented|substantiated|verified|demonstrated|confirmed|shown|evidenced)|(?:do|does)\s+not\s+(?:establish|document|substantiate|verify|demonstrate|confirm|show)|no\s+(?:evidence|documentation|record|source)|(?:cannot|can\s+not|can't)\s+(?:confirm|establish|verify|substantiate)|insufficient\s+(?:evidence|documentation)|needs\s+confirmation)\b/i.test(note);
       // No invented requirements, cross-category promotions, unsupported
       // positive sources, duplicated wording, or quantitative résumé claims.
       const valid = typeof id === 'string' && row && (!providedIds || providedIds.has(id)) && roleCategory(row) === category &&
         !seenIds.has(id) && note.length >= 18 && note.length <= 245 &&
         !seenNotes.has(normalizedNote) && !mentionsUnsupportedTechnology &&
+        (category !== 'notEstablished' || explicitEvidenceLimit) &&
         !/\b(?:\d+\s*(?:years?|yrs?|%|million|billion)\b|certified|expert-level)\b/i.test(note) &&
         !/https?:\/\/|@[\w.-]+|\[[^\]]+\]/i.test(note) &&
         (category === 'notEstablished' || row.evidence.some(isPositiveEvidenceEligible));
