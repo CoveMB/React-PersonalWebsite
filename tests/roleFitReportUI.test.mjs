@@ -64,3 +64,9 @@ test('AI failure explanation distinguishes invalid JSON from generation and down
   assert.match(content, /download_failed/);
   assert.doesNotMatch(report, /The local AI could not produce a usable, source-bound interpretation/);
 });
+
+test('partial transfer wording distinguishes ambiguous illustrative lists from mandatory AND groups', () => {
+  assert.match(report, /relatedGroupKind/);
+  assert.match(report, /illustrative framework list/);
+  assert.match(report, /full combined requirement remains/);
+});
