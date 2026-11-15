@@ -33,6 +33,7 @@ export const roleFitAiFailureMessages = Object.freeze({
   invalid_json: "The local model returned text that was not valid JSON.",
   invalid_schema: "The local model returned JSON with the wrong structure.",
   no_valid_notes: "The model returned structured output, but no notes passed the source-evidence checks.",
+  no_notes_generated: "The local model returned a valid but empty assessment; no additional AI commentary was generated.",
   generation_limit: "The local model reached its generation limit before producing a usable structured response.",
   empty_response: "The local model returned an empty response.",
   response_too_long: "The model returned an oversized response that could not be validated.",
