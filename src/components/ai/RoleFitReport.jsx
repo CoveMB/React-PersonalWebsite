@@ -150,7 +150,7 @@ export default function RoleFitReport({ assessment, aiAssessment, aiStatus, aiFa
           On-device AI is unavailable in this browser. Showing the source-based comparison instead, not a generated AI result.
         </p>
       ) : null}
-      {['failed', 'invalid', 'empty'].includes(aiStatus) ? (
+      {aiStatus === 'failed' || aiStatus === 'invalid' || aiStatus === 'empty' ? (
         <p className="roleFitAIProgress" role="status">
           {roleFitAiFailureMessages[aiFailure?.code] ?? 'The local AI result could not be validated.'}
           {' '}The three-section source-based comparison remains available without AI-generated notes.
