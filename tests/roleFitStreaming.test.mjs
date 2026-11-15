@@ -166,3 +166,16 @@ test('aborting model finalization rejects promptly without waiting for timeout',
   controller.abort();
   await assert.rejects(pending, error => error.code === 'generation_aborted');
 });
+
+test('abort before the queued completion task runs must not start WebGPU inference', async () => {
+  const controller = new AbortController();
+  let started = false;
+  const pending = streamRoleFitAI({
+    createCompletion: () => { started = true; return never(); },
+    request, signal: controller.signal, limits: smallLimits,
+  });
+  controller.abort();
+  await assert.rejects(pending, error => error.code === 'generation_aborted');
+  await Promise.resolve();
+  assert.equal(started, false);
+});
