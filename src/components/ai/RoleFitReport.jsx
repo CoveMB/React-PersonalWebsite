@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { transferReasonText } from "../../utils/roleFitTaxonomy.mjs";
 
 const statusCopy = {
@@ -47,12 +46,11 @@ function RequirementSummary({ row, includeSources = false }) {
 }
 
 export default function RoleFitReport({ assessment }) {
-  const headingRef = useRef(null);
-  useEffect(() => { headingRef.current?.focus(); }, [assessment]);
   return (
     <article className="aiPart roleFitResultCard" aria-labelledby="role-fit-heading">
-      <p className="roleFitResultEyebrow">Evidence-led role assessment · {assessment.mode === "enhanced" ? "Locally refined" : "Immediate baseline"}</p>
-      <h3 id="role-fit-heading" className="roleFitReportTitle" ref={headingRef} tabIndex={-1}>{assessment.roleTitle}</h3>
+      <p className="roleFitResultEyebrow">Rule-based comparison · independent of AI</p>
+      <h3 id="role-fit-heading" className="roleFitReportTitle">Mechanical assessment</h3>
+      <p className="roleFitReportRoleTitle">{assessment.roleTitle}</p>
       <h4 className="roleFitConclusionHeading">{assessment.conclusion.heading}</h4>
       <p className="roleFitConclusionText">{assessment.conclusion.summary}</p>
       {assessment.coverageNote ? <p className="roleFitCoverageWarning" role="status">{assessment.coverageNote}</p> : null}
