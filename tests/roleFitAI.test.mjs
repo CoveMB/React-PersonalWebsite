@@ -405,3 +405,34 @@ test('streamed generation and post-load handshake timeouts have safe, distinct d
   assert.deepEqual(classifyRoleFitAIError(wrapper, 'generation'), { stage: 'generation', code: 'memory_limit' });
   assert.equal(classifyRoleFitAIError({ code: 'unexpected_foo' }, 'generation').code, 'generation_failed');
 });
+
+test('AI prompt is prefill-bounded for local model while preserving all three categories', () => {
+  const input = [
+    'Role: Senior Java Software Engineer',
+    'Required skills:',
+    'Java and Spring Boot',
+    'REST APIs and microservices',
+    'React',
+    'Angular',
+    'Azure',
+    'Python',
+    'AWS Lambda',
+    'Cypress',
+    'SQL',
+    'Docker',
+    'Kafka',
+    'Kubernetes',
+    'CI/CD',
+  ].join('\n');
+  const assessment = assess(input);
+  const request = buildRoleFitAIRequest({ jobText: input, assessment, evidenceCatalog: catalog });
+  const included = JSON.parse(request.messages[1].content).untrustedRoleRequirements;
+  const counts = included.reduce((acc, row) => ({ ...acc, [row.category]: (acc[row.category] ?? 0) + 1 }), {});
+  assert.ok(included.length <= 9, 'only a few candidate requirements are needed for two notes per category');
+  assert.ok(counts.direct > 0 && counts.notEstablished > 0, 'preserve strengths and key gaps');
+  assert.ok(Object.values(counts).every(count => count <= 3));
+  assert.ok(included.every(row => row.evidence.length <= 2));
+  assert.ok(included.every(row => row.evidence.every(source => source.excerpt.length <= 115)));
+  assert.ok(request.messages[1].content.length < 4800, 'shorter prompt to reduce GPU prefill');
+  assert.ok(request.totalRequirementCount >= request.analyzedRequirementCount);
+});
