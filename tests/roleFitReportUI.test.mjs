@@ -1,37 +1,56 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {readFileSync} from 'node:fs';
-const ai = readFileSync(new URL('../src/components/ai/RoleFitAIReport.jsx', import.meta.url),'utf8');
-const section = readFileSync(new URL('../src/components/ai/AI.jsx', import.meta.url),'utf8');
-const hook = readFileSync(new URL('../src/components/ai/useRoleFitLab.js', import.meta.url),'utf8');
+import { readFileSync } from 'node:fs';
 
-test('AI is a distinct first card; mechanical report remains below',()=>{
-  assert.ok(section.indexOf('<RoleFitAIReport') < section.indexOf('<RoleFitReport'));
-  assert.match(section,/<RoleFitReport assessment=\{roleFitState\.result\}/);
-  assert.doesNotMatch(section,/mechanicalAssessment=\{roleFitState\.result\}/);
+const section = readFileSync(new URL('../src/components/ai/AI.jsx', import.meta.url), 'utf8');
+const report = readFileSync(new URL('../src/components/ai/RoleFitReport.jsx', import.meta.url), 'utf8');
+const hook = readFileSync(new URL('../src/components/ai/useRoleFitLab.js', import.meta.url), 'utf8');
+const content = readFileSync(new URL('../src/content/roleFitLabContent.js', import.meta.url), 'utf8');
+
+test('only one assessment card is rendered after an analysis', () => {
+  assert.match(section, /<RoleFitReport\b/);
+  assert.doesNotMatch(section, /RoleFitAIReport|<RoleFitAIReport\b/);
+  assert.equal((section.match(/<RoleFitReport\b/g) ?? []).length, 1);
+  assert.match(section, /aiAssessment=\{roleFitState\.aiAssessment\}/);
+  assert.match(section, /aiStatus=\{roleFitState\.aiStatus\}/);
 });
-test('AI card cannot render deterministic fallback content before actual model completion',()=>{
-  assert.doesNotMatch(ai,/buildRoleFitRecruiterSummary|fallbackSections|assessment\?\.sections|safeBaseline|RecruiterItem/);
-  assert.match(ai,/status === ['"]running['"]/);
-  assert.match(ai,/status === ['"]unavailable['"]/);
-  assert.match(ai,/status === ['"]failed['"]/);
-  assert.match(ai,/status === ['"]ready['"]/);
-  assert.match(ai,/assessment\?\.text/);
-  assert.match(ai,/unverified|not verified|unreviewed/i);
+
+test('the report has exactly the three named primary classification groups', () => {
+  assert.match(report, /title: 'Directly demonstrated'/);
+  assert.match(report, /title: 'Transferable experience'/);
+  assert.match(report, /title: 'Not established'/);
+  assert.match(report, /const groups = \[/);
+  assert.match(report, /groups\.map\(/);
+  assert.doesNotMatch(report, /Mechanical assessment|independent mechanical|Relevant documented work|Consequential requirements to verify/);
 });
-test('AI generation prompt uses source quotes and enough tokens to produce all sections',()=>{
-  assert.match(hook,/roleFitAIGenerationOptions/);
-  assert.doesNotMatch(hook,/buildRoleFitRecruiterSummary/);
-  assert.match(hook,/buildRoleFitAIRequest/);
+
+test('a model note is labeled as unverified, and the candidate can inspect source excerpts', () => {
+  assert.match(report, /Local AI interpretation · unverified wording/);
+  assert.match(report, /sourceQuote\.replace/);
+  assert.match(report, /Open source/);
+  assert.match(report, /not necessarily professional tenure/);
+  assert.doesNotMatch(report, /dangerouslySetInnerHTML/);
 });
-test('model-authored bullets are announced as a semantic list, not decorative paragraphs', () => {
-  assert.match(ai, /<ul\b[^>]*className="roleFitAIModelBulletList"/);
-  assert.match(ai, /<li\b[^>]*className="roleFitAIModelBullet"/);
+
+test('unavailable and malformed model responses never masquerade as generated conclusions', () => {
+  assert.match(report, /aiStatus === 'unavailable'/);
+  assert.match(report, /aiStatus === 'failed'/);
+  assert.match(report, /aiStatus === 'empty'/);
+  assert.match(report, /Showing the source-based comparison instead, not a generated AI result/);
+  assert.match(hook, /action\.result\.kind === 'accepted'/);
 });
-test('model repetition and incomplete output warnings remain clearly labeled as formatting, not assessment', () => {
-  assert.match(ai, /assessment\?\.presentationAdjusted/);
-  assert.match(ai, /assessment\?\.missingSections/);
-  assert.match(ai, /assessment\?\.outputLimitReached/);
-  assert.match(ai, /No claims were inserted or reclassified/);
-  assert.match(hook, /finish_reason/);
+
+test('progressive disclosure, input revision control and keyboard shortcuts remain', () => {
+  assert.match(report, /initialVisiblePerGroup = 3/);
+  assert.match(report, /<details className="roleFitInventory roleFitAdditionalItems">/);
+  assert.match(report, /role-fit-heading/);
+  assert.match(report, /tabIndex=\{-1\}/);
+  assert.match(hook, /gateReference\.current\.bump\(\)/);
+  assert.match(hook, /event\.ctrlKey \|\| event\.metaKey/);
+});
+
+test('privacy copy no longer promises two competing reports or a first-five-thousand-character model-only view', () => {
+  assert.doesNotMatch(content, /both assessments|first 5,000 characters|mechanical report covers/i);
+  assert.match(content, /not uploaded/);
+  assert.match(content, /clearly labeled evidence-only comparison/i);
 });
