@@ -115,3 +115,42 @@ export async function streamRoleFitAI({
     throw new RoleFitStreamError('generation_failed', partialText, error);
   }
 }
+
+// WebLLM may emit "Finish loading on WebGPU" (progress: 1) while the
+// asynchronous worker initialization promise is still unresolved. Bound
+// that final handshake; do not impose a short timeout on actual downloads.
+export function awaitRoleFitModelReady({
+  start, onProgress = () => {}, readyTimeoutMs = 25000, signal,
+}) {
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    let timer = null;
+    const finish = (fn, value) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      signal?.removeEventListener?.('abort', onAbort);
+      fn(value);
+    };
+    const onAbort = () =>
+      finish(reject, new RoleFitStreamError('generation_aborted'));
+    if (signal?.aborted) {
+      onAbort();
+      return;
+    }
+    signal?.addEventListener?.('abort', onAbort, { once: true });
+    if (signal?.aborted) {
+      onAbort();
+      return;
+    }
+    Promise.resolve().then(() => start(report => {
+      if (settled) return;
+      onProgress(report);
+      if (report?.progress >= 1 && timer === null) {
+        timer = setTimeout(() =>
+          finish(reject, new RoleFitStreamError('model_ready_timeout')),
+        Math.max(1, readyTimeoutMs));
+      }
+    })).then(engine => finish(resolve, engine), error => finish(reject, error));
+  });
+}
