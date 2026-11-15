@@ -45,7 +45,7 @@
 | `package.json`, `yarn.lock` | Test scripts and any justified development-only test dependency |
 | `docs/role-fit-evaluation.md` (new) | Human evaluation rubric, local model/browser benchmark observations, privacy and shipping decisions |
 
-**Existing callers to keep compatible:** `AI.jsx` is mounted from `src/components/App.jsx`; `useRoleFitLab.js` imports `buildRoleFitMessages`, `selectRoleFitModelId`, and `formatGroundedRoleFit`. Audit and update all in-repo references before deleting exports. Retain `roleFit.worker.js` and the already-working engine lifecycle unless a measured problem requires a change.
+**Existing callers to keep compatible:** `AI.jsx` is mounted from `src/components/App.jsx`; `useRoleFitLab.js` imports `buildRoleFitMessages`, `selectRoleFitModelId`, and `formatGroundedRoleFit`. Audit and update every in-repo consumer before deleting exports. Retain `roleFit.worker.js` and existing engine lifecycle, except to lazily import it and safely terminate it for fallback and stale-request protection.
 
 ## Review Focus — highest-risk examples
 
@@ -165,17 +165,17 @@
 
 ### Task 8: Evaluate quality, browser behavior, accessibility and preservation before PR
 
-**Files:** Modify `tests/fixtures/roleFitJobs.mjs`, `tests/*.test.mjs`, `package.json`, `yarn.lock`, `docs/role-fit-evaluation.md`; create `tests/e2e/roleFit.spec.mjs`, `playwright.config.mjs` if necessary; update UI/copy/CSS only for verified findings.
+**Files:** Modify `tests/fixtures/roleFitJobs.mjs`, the relevant `tests/*.test.mjs` files, `tests/e2e/roleFit.spec.mjs`, and `docs/role-fit-evaluation.md`; update implementation files only for reproduced failures. Playwright config and its development-only dependency were created in Task 5.
 
 **Interfaces:**
-- `evaluateRoleFitFixtures(): {cases, unexpectedCriticalFailures}` (or a Node test equivalent) runs a curated set of **at least 20** anonymized examples covering real-world skills, gaps and ambiguous wording, not just the original Java posting.
-- Browser tests use a statically served or local Next build with normal app mounting. A mockable enhancer boundary should simulate delays/failure without downloading a GPU model in CI.
+- The existing Node tests run at least **20** anonymized, hand-labeled fixtures through the shipped parser/matcher/assessment; do not create a separate evaluator abstraction merely to count fixtures.
+- Browser tests reuse Task 5's local Next/static-build harness. A mockable enhancer boundary simulates delay/failure without downloading a GPU model in CI.
 
 - [ ] **Step 1 — RED:** Write human-labeled fixtures for Java/Spring, full-stack TypeScript, blockchain, consulting/product, analytics, generic soft skills, seniority, no-match cases, negation, disjunction, optional requirements, slash ambiguity, unfamiliar stacks, repeated/messy posting, long input, malicious prompt text and model failures. Add explicit expectations for critical gaps, verdict kind, source IDs, warnings and omitted claims.
-- [ ] **Step 2 — verify RED / minimum browser harness:** Run `node --test tests/*.test.mjs`; expect any newly introduced fixtures to expose unsupported cases before correcting logic. Add `@playwright/test` only as a dev dependency where it provides real interaction coverage rather than replacing existing Node unit tests; update Yarn lockfile and document how to install Chromium locally.
-- [ ] **Step 3 — add real user-flow coverage:** Cover keyboard shortcut and default Enter behavior; baseline without GPU; a collapsed/expanded details list; reset and editing while enhancement is pending; invalid model response fallback; navigation/unmount; overflow at 320px; no textarea content included in URLs/requests; focus/ARIA status; basic screen-reader/manual checks, light/dark and reduced motion. Keep screenshots as local review artifacts, not unreviewed binaries committed to the repo.
+- [ ] **Step 2 — verify RED:** Run `node --test tests/*.test.mjs`; expect new fixtures to reveal unhandled cases before the shared parser/matcher is repaired. Reuse the Task 5 Playwright harness rather than adding another browser-testing system.
+- [ ] **Step 3 — extend real user-flow coverage:** Use the existing browser suite to cover malformed copied text, baseline without GPU/Worker, accessible disclosure, keyboard shortcut, Reset/edit during pending enhancement, invalid/late model response, component cleanup, 320px layout, short focus/ARIA status and the absence of role text in network requests/URLs. Manually check screen readers, another browser, light/dark and reduced motion. Keep unreviewed screenshots/traces out of the repo.
 - [ ] **Step 4 — verify and fix real findings:** Run `node --test tests/*.test.mjs`, `yarn lint`, `yarn build`, and `yarn playwright test` if Playwright was added; serve `out` and smoke the exported site in current Chromium and another browser. Check console/network for posting leakage (including analytics), model-download behavior and worker teardown. Run separate architecture/evidence, parsing/model, UX/a11y, privacy/security, and performance reviews; fix concrete issues and rerun affected checks.
-- [ ] **Step 5 — document final judgment + commit:** Record example before/after outputs, a quality rubric (accurate core gap, clear transfer, useful source, honest uncertainty, readable report), candidate model decision, browser compatibility, known limitations and actual test outcomes in `docs/role-fit-evaluation.md`. Recheck diff against `master` and do a Ponytail correctness → safety → realistic load → tests → speed → lean review. Commit only passing implementation and documentation: `git add tests package.json yarn.lock docs/role-fit-evaluation.md && git commit -m "test(ai-lab): evaluate grounded role-fit quality and browser behavior"`. Do not merge or deploy without owner approval.
+- [ ] **Step 5 — document final judgment + commit:** Record before/after outputs, the qualitative human rubric (critical gap, transfer difference, concrete source, honest uncertainty, readability), model choice, browser compatibility, limitations and actual test outputs in `docs/role-fit-evaluation.md`. Recheck diff against `master`; perform a new Ponytail correctness → safety → realistic load → tests → speed → lean review on the *implemented* change. `git add tests docs/role-fit-evaluation.md && git commit -m "test(ai-lab): evaluate grounded role-fit quality and browser behavior"`. Do not merge or deploy without owner approval.
 
 ## Acceptance gates and implementation handoff
 
@@ -186,6 +186,32 @@
 - **Accessibility and product quality:** concise top section, semantically accessible details, mobile/theme/keyboard checks, no fake numeric score and no administrative/dashboard feel.
 - **Evidence before ship:** record test command output, browser/device/model specifics and unresolved limitations. Prepare a PR only after human approval and actual implementation.
 
-## Review record (planning-stage, to be finalized after focused and Ponytail passes)
+## Reviewed plan — distinct focus passes and Ponytail-style review
 
-This is an implementation plan, **not implementation**. Focused reviews assess the plan against source, spec, product behavior, failure cases and realistic client-side constraints. A Ponytail instruction-based pass is a manual substitute if no native Ponytail runner is connected. All actionable findings must be incorporated into this document before its final review.
+**Scope of review:** plan, design spec, relevant connected code and current tests. These are distinct manual analytical review passes, **not external independent agent executions**. The native Ponytail runner was unavailable; published `ponytail` and `ponytail-review` instructions were followed as a manual final pass.
+
+| Pass | Concrete issue identified | Correction applied |
+| --- | --- | --- |
+| Architecture / integration | Building the report in the old Task 5, then changing the hook in old Task 6, could leave `<pre>` rendering a structured object; browser tests were also scheduled too late. | Replaced Task 5 with a **single end-to-end baseline vertical slice**, adding the browser harness and hook integration together. |
+| Semantic requirements | The last `or` in `Angular, React, or Vue` can be missed; a React project does not prove the candidate explicitly used HTML5/CSS3. | Added comma-list/disjunction and HTML/CSS evidence regression checks to Tasks 2 and 3. |
+| Evidence and truthfulness | The absence of a résumé keyword could be wrongly phrased as an absence of experience; planned or learning work could be presented as professional achievements. | Separate `not_documented` from owner-confirmed Java non-experience; source-verified professional/learning/planned catalogs in Tasks 1–3. |
+| Product and accessibility | Existing Enter-to-submit makes multiline input awkward, and a result may still describe an earlier posting after a user edits it. | Standard Enter/newline, Ctrl/Cmd+Enter analysis, stale-report invalidation, semantic report/disclosure and keyboard/focus smoke in Task 5. |
+| Privacy and failure behavior | An eager WebLLM import could break a non-WebGPU baseline; invalid JSON and late worker results could replace valid reports. | Require lazy guarded import, redacted source-only prompts, schema validation, revision checks, retained baseline and real network-leak tests in Tasks 5–8. |
+| Model and evaluation | "Larger" does not imply better; JSON-mode support in current docs does not prove compatibility with pinned WebLLM 0.2.81. | Task 7 requires real version/browser checks and on-device comparison; no model upgrade without improved labeled results and acceptable cost. |
+| Realistic load | A long posting with many clauses could silently overflow model/requirement limits. | Explicit 12,000-character limit, at most 60 structured requirement groups, and visible partial-coverage warning/overflow fixtures in Tasks 2 and 8. |
+| Verification sequencing | Task 8 duplicated new Playwright setup that should already exist; "RED" for UI was not executable in the previous task order. | Browser runner is installed once in Task 5; later tasks extend the same suite with targeted red/green checks. |
+
+### Ponytail instruction-based pass: correct → safe → expected load → tested → fast → lean
+
+**What this plan changes:** The role-fit feature becomes a concise, evidence-backed requirement analysis. It keeps optional browser-side AI as a helper, while a small deterministic system remains the authority on professional claims.
+
+- **Correct:** Followed `AI.jsx → useRoleFitLab.js → roleFit.js / roleFitEvidence.mjs`, the public résumé, project narratives, CSS and test scripts. The plan now updates connected callers in one testable slice; alternative requirements and gaps have explicit tests.
+- **Safe:** Preserve local-only processing, React text rendering (no untrusted HTML), exact source verification, no unsupported professional claims, no overwriting from stale requests, and no quiet data leaks.
+- **Expected load:** One public statically exported site, independent user browsers, up to 12,000 characters per posting and 60 parsed groups. No queues, database, backend or third-party inference service warranted.
+- **Tested:** Source-integrity assertions, focused parser/matcher/verdict tests, hand-labeled adversarial corpus, browser lifecycle tests and full static-build/visual/accessibility review are planned. No implementation test runs are being claimed now.
+- **Fast:** Immediate local baseline, lazy and consented model download, bounded prompt and on-device measurements before picking a heavier model.
+- **Lean:** Reuse the existing worker, source content, Sass tokens, Node test runner and one Playwright development-only harness. No vector database, embedding framework, scoring service, speculative dashboards, persistence or meaningless percentages. Separate files only for independently testable parser/matcher/assessment/catalog duties.
+
+**Final planning verdict:** Ready for owner review. No unresolved Must/Should finding after the above corrections.  
+**Not checked:** Actual model support, browser screenshots, assistive-technology navigation, Next build and runtime performance; the implementation tasks explicitly require those checks.  
+**This review did not implement product code.**
