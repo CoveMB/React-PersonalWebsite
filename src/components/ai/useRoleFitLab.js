@@ -1,29 +1,31 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { roleFitLabMessageContent as copy } from '../../content/roleFitLabContent';
 import { maximumJobDescriptionLength, getRolePostingValidationCode, selectRoleFitModelId } from '../../utils/roleFit';
-import { buildRoleFitAIRequest, roleFitAIGenerationOptions, runRoleFitAnalyses } from '../../utils/roleFitAI.mjs';
+import { buildRoleFitAIRequest, roleFitAIGenerationOptions, runRoleFitAnalyses, classifyRoleFitAIError } from '../../utils/roleFitAI.mjs';
 import { createRoleFitRevisionGuard } from '../../utils/roleFitEnhancement.mjs';
 
 const initialState = {
   jobDescription: '', result: null, aiAssessment: null, aiStatus: 'idle',
-  errorMessage: '', aiError: '', statusMessage: '', modelId: '', analysisId: 0,
+  errorMessage: '', aiFailure: null, statusMessage: '', modelId: '', analysisId: 0,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'edit': return { ...state, jobDescription: action.value, result: null,
-      aiAssessment: null, aiStatus: 'idle', errorMessage: '', aiError: '', statusMessage: '' };
+      aiAssessment: null, aiStatus: 'idle', errorMessage: '', aiFailure: null, statusMessage: '' };
     case 'reset': return { ...initialState, analysisId: state.analysisId };
     case 'invalid': return { ...state, errorMessage: action.value };
     case 'analyzed': return { ...state, result: action.result, aiAssessment: null,
-      aiStatus: action.hasModel ? 'running' : 'unavailable', modelId: '', errorMessage: '', aiError: '',
+      aiStatus: action.hasModel ? 'running' : 'unavailable', modelId: '', errorMessage: '', aiFailure: null,
       statusMessage: action.hasModel ? copy.statusMessages.loading : '',
       analysisId: state.analysisId + 1 };
     case 'progress': return { ...state, statusMessage: action.message };
     case 'aiReady': return { ...state, aiAssessment: action.result,
-      aiStatus: action.result.kind === 'accepted' ? 'ready' : action.result.kind === 'empty' ? 'empty' : 'failed',
-      statusMessage: '', aiError: '', modelId: action.modelId };
-    case 'aiFailed': return { ...state, aiStatus: 'failed', aiError: copy.errors.modelFailed, statusMessage: '' };
+      aiStatus: action.result.kind === 'accepted' ? 'ready' : action.result.kind === 'empty' ? 'empty' : 'invalid',
+      statusMessage: '', aiFailure: action.result.failureCode ? { code: action.result.failureCode } : null,
+      modelId: action.modelId };
+    case 'aiFailed': return { ...state, aiStatus: 'failed',
+      aiFailure: action.failure ?? { stage: 'generation', code: 'generation_failed' }, statusMessage: '' };
     default: return state;
   }
 };
@@ -145,22 +147,29 @@ export const useRoleFitLab = () => {
       jobDescription: roleFitState.jobDescription, gate, revision,
       onMechanical: (result) => dispatch({ type: 'analyzed', result, hasModel }),
       producer: hasModel ? async (context) => {
-        const { engine, modelId } = await loadEngine(revision);
-        selectedModelId = modelId;
-        if (!gate.isCurrent(revision)) return '';
-        const request = buildRoleFitAIRequest(context);
-        const response = await engine.chat.completions.create({
-          messages: request.messages,
-          ...roleFitAIGenerationOptions,
-        });
-        return {
-          text: assistantText(response?.choices?.[0]?.message?.content),
-          finishReason: response?.choices?.[0]?.finish_reason,
-          allowedIds: request.allowedIds,
-        };
+        let stage = 'load';
+        try {
+          const { engine, modelId } = await loadEngine(revision);
+          selectedModelId = modelId;
+          if (!gate.isCurrent(revision)) return '';
+          const request = buildRoleFitAIRequest(context);
+          stage = 'generation';
+          const response = await engine.chat.completions.create({
+            messages: request.messages,
+            ...roleFitAIGenerationOptions,
+          });
+          return {
+            text: assistantText(response?.choices?.[0]?.message?.content),
+            finishReason: response?.choices?.[0]?.finish_reason,
+            allowedIds: request.allowedIds,
+          };
+        } catch (cause) {
+          throw { stage, cause }; // Only the sanitized classification reaches UI.
+        }
       } : undefined,
       onAI: (result) => dispatch({ type: 'aiReady', result, modelId: selectedModelId }),
-      onError: () => dispatch({ type: 'aiFailed' }),
+      onError: (error) => dispatch({ type: 'aiFailed',
+        failure: classifyRoleFitAIError(error?.cause ?? error, error?.stage) }),
     }).finally(() => {
       if (activeRunReference.current === revision) activeRunReference.current = null;
     });

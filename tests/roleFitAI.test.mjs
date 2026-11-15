@@ -6,6 +6,7 @@ import {
   buildThreeSectionRoleFit,
   interpretRoleFitAIResponse,
   roleFitAIGenerationOptions,
+  classifyRoleFitAIError,
   runRoleFitAnalyses,
 } from '../src/utils/roleFitAI.mjs';
 import { getRoleFitEvidenceCatalog } from '../src/utils/roleFitEvidence.mjs';
@@ -260,4 +261,67 @@ test('small-model generation is bounded and lower-variance than the prior prose 
   assert.match(hook, /roleFitAIGenerationOptions/);
   assert.match(hook, /allowedIds: request.allowedIds/);
   assert.doesNotMatch(hook, /localStorage|sessionStorage|fetch\s*\(/);
+});
+
+test('WebLLM requests JSON object output rather than relying solely on prompt instructions', () => {
+  assert.deepEqual(roleFitAIGenerationOptions.response_format, { type: 'json_object' });
+});
+
+test('malformed model output and zero usable claims have different safe failure codes', () => {
+  const assessment = assess(job);
+  assert.equal(interpretRoleFitAIResponse('not valid JSON', { assessment }).failureCode, 'invalid_json');
+  assert.equal(interpretRoleFitAIResponse('{"direct":[]}', { assessment }).failureCode, 'invalid_schema');
+  assert.equal(interpretRoleFitAIResponse('{"direct":[],"transferable":[],"notEstablished":[]}', { assessment }).failureCode, 'no_notes_generated');
+  assert.equal(interpretRoleFitAIResponse('', { assessment }).failureCode, 'empty_response');
+  assert.equal(interpretRoleFitAIResponse('{"direct":[{"id":"req-999","note":"Model fabricated a made-up candidate claim here."}],"transferable":[],"notEstablished":[]}', { assessment }).failureCode, 'no_valid_notes');
+  assert.equal(interpretRoleFitAIResponse('{"direct":', { assessment, outputLimitReached: true }).failureCode, 'generation_limit');
+});
+
+test('runtime failure classification distinguishes loading and generation, without revealing raw errors', async () => {
+  const load = classifyRoleFitAIError({ message: 'Network failed https://example.com/private?job=Java' }, 'load');
+  const memory = classifyRoleFitAIError(new Error('GPU out of memory for private job posting'), 'generation');
+  assert.deepEqual(load, { stage: 'load', code: 'download_failed' });
+  assert.deepEqual(memory, { stage: 'generation', code: 'memory_limit' });
+  assert.doesNotMatch(JSON.stringify([load, memory]), /private|job=|example\.com/);
+});
+
+test('Wissen-style compound Java/Spring gap preserves the missing Java stack while showing related backend experience as transferable', () => {
+  const assessment = assess('Role: Senior Java Software Engineer\nRequired skills:\nJava and Spring Boot\nREST APIs and microservices');
+  const { sections } = buildThreeSectionRoleFit(assessment);
+  const gap = sections.notEstablished.find(row => /Java and Spring Boot/.test(row.requirement.quote));
+  assert.ok(gap, 'the overall Java/Spring requirement is not established');
+  assert.ok(sections.transferable.some(row =>
+    row.relatedToRequirementId === gap.requirementId &&
+    row.evidence.some(source => source.capabilities.some(key => ['nodejs', 'koa', 'express'].includes(key)))
+  ), 'related backend implementation belongs in Transferable experience, without asserting Java work');
+  assert.ok(!sections.direct.some(row => /\bJava\b/.test(row.requirement.quote)));
+});
+
+test('alternative or ambiguous lists do not create duplicate related-experience items', () => {
+  const both = assess('React or Vue\nJava/J2EE\nJava and Spring Boot');
+  const { sections } = buildThreeSectionRoleFit(both);
+  assert.ok(sections.direct.some(row => /React or Vue/.test(row.requirement.quote)));
+  assert.ok(!sections.transferable.some(row => /React or Vue|Java\/J2EE/.test(row.relatedToQuote ?? '')));
+  const ids = Object.values(sections).flat().map(row => row.requirementId);
+  assert.equal(new Set(ids).size, ids.length);
+});
+
+test('Wissen framework example list shows relevant Node.js backend transfer while retaining unverified Java-family requirements', () => {
+  const posting = [
+    'Role: Senior Java Software Engineer',
+    'Required skills:',
+    'Experience with Java/J2EE, DB technologies.',
+    'Experience with Java frameworks like Spring, Hibernate, Spring boot.',
+    'Experience in building and consuming RESTful APIs and Microservices.',
+  ].join('\n');
+  const { sections } = buildThreeSectionRoleFit(assess(posting));
+  assert.ok(sections.notEstablished.some(row => /Java\/J2EE/.test(row.requirement.quote)));
+  assert.ok(sections.notEstablished.some(row => /frameworks like Spring/.test(row.requirement.quote)));
+  assert.equal(sections.transferable.filter(row =>
+    /frameworks like Spring/.test(row.relatedToQuote ?? '')).length, 1,
+    'overlapping Spring and Spring Boot transfer sources should not be repeated');
+  assert.ok(sections.transferable.some(row =>
+    /frameworks like Spring/.test(row.relatedToQuote ?? '') &&
+    row.evidence.some(source => source.capabilities.some(key => ['koa', 'express', 'nodejs'].includes(key)))
+  ), 'backend framework equivalence is not assumed; concrete related work is still visible');
 });

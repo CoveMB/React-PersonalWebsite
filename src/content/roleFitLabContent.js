@@ -28,3 +28,20 @@ export const roleFitLabMessageContent = {
     loading: 'Preparing the local AI model…',
   },
 };
+
+export const roleFitAiFailureMessages = Object.freeze({
+  invalid_json: "The local model returned text that was not valid JSON.",
+  invalid_schema: "The local model returned JSON with the wrong structure.",
+  no_valid_notes: "The model returned structured output, but no notes passed the source-evidence checks.",
+  no_notes_generated: "The local model returned a valid but empty assessment; no additional AI commentary was generated.",
+  generation_limit: "The local model reached its generation limit before producing a usable structured response.",
+  empty_response: "The local model returned an empty response.",
+  response_too_long: "The model returned an oversized response that could not be validated.",
+  validation_unavailable: "The model response could not be checked against the current evidence.",
+  structured_output_unsupported: "The local model or runtime rejected JSON-constrained generation.",
+  download_failed: "Model files could not be downloaded. Check the connection or browser model-cache settings.",
+  load_failed: "The local AI model could not initialize on this device.",
+  generation_failed: "The local AI model encountered an error during text generation.",
+  memory_limit: "The device ran out of available memory while running the local AI model.",
+  gpu_error: "WebGPU became unavailable or reported a device error during local AI processing."
+});

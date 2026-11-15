@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { buildThreeSectionRoleFit } from '../../utils/roleFitAI.mjs';
 import { transferReasonText } from '../../utils/roleFitTaxonomy.mjs';
+import { roleFitAiFailureMessages } from '../../content/roleFitLabContent';
 
 const groups = [
   {
@@ -62,7 +63,16 @@ function RequirementItem({ row, category }) {
       : null;
   return (
     <li className="roleFitRequirementItem">
-      <strong className="roleFitRequirementText">{row.requirement.quote}</strong>
+      <strong className="roleFitRequirementText">
+        {row.relatedToRequirementId ? `Related experience for ${row.requirement.quote}` : row.requirement.quote}
+      </strong>
+      {row.relatedToRequirementId ? (
+        <p className="roleFitRationale">
+          Related to “{row.relatedToQuote}”. {row.relatedGroupKind === 'example'
+            ? 'This is an illustrative framework list; related work does not establish experience with the named frameworks.'
+            : 'The full combined requirement remains not established; related work does not satisfy its entire required stack.'}
+        </p>
+      ) : null}
       {category !== 'notEstablished' && row.evidence.length ? (
         <p className="roleFitShortEvidence">
           <span>{category === 'direct' ? 'Documented work' : 'Related work'}:</span> {row.evidence[0].label}
@@ -115,7 +125,7 @@ function RequirementGroup({ group, rows }) {
   );
 }
 
-export default function RoleFitReport({ assessment, aiAssessment, aiStatus, modelId, progress, analysisId }) {
+export default function RoleFitReport({ assessment, aiAssessment, aiStatus, aiFailure, modelId, progress, analysisId }) {
   const headingRef = useRef(null);
   useEffect(() => { headingRef.current?.focus(); }, [analysisId]);
   const aiReady = aiStatus === 'ready' && aiAssessment?.kind === 'accepted';
@@ -141,10 +151,19 @@ export default function RoleFitReport({ assessment, aiAssessment, aiStatus, mode
           On-device AI is unavailable in this browser. Showing the source-based comparison instead, not a generated AI result.
         </p>
       ) : null}
-      {aiStatus === 'failed' || aiStatus === 'empty' ? (
-        <p className="roleFitAIProgress" role="status">
-          The local AI could not produce a usable, source-bound interpretation. The evidence-based comparison is shown instead.
-        </p>
+      {aiStatus === 'failed' || aiStatus === 'invalid' || aiStatus === 'empty' ? (
+        <>
+          <p className="roleFitAIProgress" role="status">
+            {roleFitAiFailureMessages[aiFailure?.code] ?? 'The local AI result could not be validated.'}
+            {' '}The three-section source-based comparison remains available without AI-generated notes.
+          </p>
+          <details className="roleFitInventory roleFitAiDiagnostic">
+            <summary>Technical diagnostic (safe to share)</summary>
+            <p>Failure code: <code>{aiFailure?.code ?? 'unknown'}</code>.
+              {' '}Stage: <code>{aiFailure?.stage ?? 'validation'}</code>.
+              {' '}The job description and raw model output are not included.</p>
+          </details>
+        </>
       ) : null}
       {aiReady ? (
         <p className="roleFitValidationNotice">
