@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { roleFitLabMessageContent as copy } from '../../content/roleFitLabContent';
-import { maximumJobDescriptionLength, getRolePostingValidationCode, selectRoleFitModelId } from '../../utils/roleFit';
+import { maximumJobDescriptionLength, getRolePostingValidationCode, selectRoleFitModelCandidates } from '../../utils/roleFit';
 import { buildRoleFitAIRequest, roleFitAIGenerationOptions, runRoleFitAnalyses, classifyRoleFitAIError } from '../../utils/roleFitAI.mjs';
 import { createRoleFitRevisionGuard } from '../../utils/roleFitEnhancement.mjs';
 
@@ -25,7 +25,8 @@ const reducer = (state, action) => {
       statusMessage: '', aiFailure: action.result.failureCode ? { code: action.result.failureCode } : null,
       modelId: action.modelId };
     case 'aiFailed': return { ...state, aiStatus: 'failed',
-      aiFailure: action.failure ?? { stage: 'generation', code: 'generation_failed' }, statusMessage: '' };
+      aiFailure: action.failure ?? { stage: 'generation', code: 'generation_failed' },
+      modelId: action.modelId ?? state.modelId, statusMessage: '' };
     default: return state;
   }
 };
@@ -98,32 +99,49 @@ export const useRoleFitLab = () => {
     };
     if (enginePromiseReference.current?.revision === revision) return enginePromiseReference.current.promise;
     const promise = (async () => {
-      // This module and its worker are loaded only after an Analyze click.
+      // Download/load only after explicit Analyze; do not infer GPU memory
+      // from system memory. A failed model load can try a smaller catalog entry.
       const { CreateWebWorkerMLCEngine, prebuiltAppConfig } = await import('@mlc-ai/web-llm');
       if (!gate.isCurrent(revision)) throw new Error('Superseded local-model request');
-      const modelId = selectRoleFitModelId(prebuiltAppConfig.model_list);
-      if (!modelId) throw new Error(copy.errors.missingModel);
-      const worker = new Worker(new URL('./roleFit.worker.js', import.meta.url), { type: 'module' });
-      workerReference.current = worker;
-      try {
-        const engine = await CreateWebWorkerMLCEngine(worker, modelId, {
-          initProgressCallback: (report) => {
-            if (gate.isCurrent(revision)) dispatch({ type: 'progress', message: progressMessage(report) });
-          },
-          logLevel: 'ERROR',
-        });
-        if (!gate.isCurrent(revision) || workerReference.current !== worker) {
-          try { void engine.unload?.()?.catch?.(() => undefined); } catch { /* best effort */ }
+      const adapter = await navigator.gpu.requestAdapter();
+      if (!adapter) throw new Error('WebGPU adapter unavailable');
+      const candidates = selectRoleFitModelCandidates(prebuiltAppConfig.model_list, {
+        supportsF16: adapter.features.has('shader-f16'),
+      });
+      if (!candidates.length) throw new Error(copy.errors.missingModel);
+      let previousError = null;
+      for (const modelId of candidates) {
+        if (!gate.isCurrent(revision)) throw new Error('Superseded local-model request');
+        dispatch({ type: 'progress', message: 'Preparing local model: ' + modelId });
+        const worker = new Worker(new URL('./roleFit.worker.js', import.meta.url), { type: 'module' });
+        workerReference.current = worker;
+        try {
+          const engine = await CreateWebWorkerMLCEngine(worker, modelId, {
+            initProgressCallback: (report) => {
+              if (gate.isCurrent(revision) && workerReference.current === worker) {
+                dispatch({ type: 'progress', message: progressMessage(report) });
+              }
+            },
+            logLevel: 'ERROR',
+          });
+          if (!gate.isCurrent(revision) || workerReference.current !== worker) {
+            try { void engine.unload?.()?.catch?.(() => undefined); } catch { /* best effort */ }
+            worker.terminate();
+            throw new Error('Superseded local-model request');
+          }
+          engineReference.current = { instance: engine, modelId };
+          return { engine, modelId };
+        } catch (error) {
           worker.terminate();
-          throw new Error('Superseded local-model request');
+          if (workerReference.current === worker) workerReference.current = null;
+          previousError = error;
+          // Repeated download attempts after a network failure add cost but
+          // do not improve accuracy. A smaller model may help with GPU/OOM.
+          if (!gate.isCurrent(revision) ||
+              classifyRoleFitAIError(error, 'load').code === 'download_failed') throw error;
         }
-        engineReference.current = { instance: engine, modelId };
-        return { engine, modelId };
-      } catch (error) {
-        worker.terminate();
-        if (workerReference.current === worker) workerReference.current = null;
-        throw error;
       }
+      throw previousError ?? new Error(copy.errors.missingModel);
     })();
     enginePromiseReference.current = { revision, promise };
     try { return await promise; }
@@ -168,7 +186,7 @@ export const useRoleFitLab = () => {
         }
       } : undefined,
       onAI: (result) => dispatch({ type: 'aiReady', result, modelId: selectedModelId }),
-      onError: (error) => dispatch({ type: 'aiFailed',
+      onError: (error) => dispatch({ type: 'aiFailed', modelId: selectedModelId,
         failure: classifyRoleFitAIError(error?.cause ?? error, error?.stage) }),
     }).finally(() => {
       if (activeRunReference.current === revision) activeRunReference.current = null;

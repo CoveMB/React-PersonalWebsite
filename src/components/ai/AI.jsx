@@ -1,5 +1,6 @@
 import { roleFitLabSectionContent } from '../../content/roleFitLabContent';
 import { emailLink } from '../../utils/profile';
+import RoleFitAIReport from './RoleFitAIReport';
 import RoleFitReport from './RoleFitReport';
 import { useRoleFitLab } from './useRoleFitLab';
 
@@ -46,15 +47,18 @@ export default function RoleFitSection() {
         </div>
       </div>
       {roleFitState.result ? (
-        <RoleFitReport
-          assessment={roleFitState.result}
-          aiAssessment={roleFitState.aiAssessment}
-          aiStatus={roleFitState.aiStatus}
-          aiFailure={roleFitState.aiFailure}
-          modelId={roleFitState.modelId}
-          progress={roleFitState.statusMessage}
-          analysisId={roleFitState.analysisId}
-        />
+        <>
+          <RoleFitAIReport
+            assessment={roleFitState.aiAssessment}
+            mechanicalAssessment={roleFitState.result}
+            status={roleFitState.aiStatus}
+            aiFailure={roleFitState.aiFailure}
+            modelId={roleFitState.modelId}
+            progress={roleFitState.statusMessage}
+            analysisId={roleFitState.analysisId}
+          />
+          <RoleFitReport assessment={roleFitState.result} />
+        </>
       ) : null}
       <div className="aiPart roleFitFooter">
         <p className="roleFitFooterText">{roleFitLabSectionContent.contactPrompt} <a className="roleFitContactLink" href={emailLink}>{roleFitLabSectionContent.contactLinkLabel}</a>.</p>

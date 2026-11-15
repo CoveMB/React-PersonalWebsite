@@ -7,21 +7,28 @@ export { maximumJobDescriptionLength } from "./roleFitRequirements.mjs";
 export const getRolePostingValidationCode = (input) =>
   input.length > 12000 ? "too_long" : !input.trim() ? "empty" : null;
 
-// Keep the 0.5B model preference until the pinned runtime and actual hardware
-// have been benchmarked. There is no unverified larger-model upgrade.
-const preferredModelIdentifiers = [
-  "Qwen2.5-0.5B-Instruct-q0f16-MLC",
-  "Qwen2-0.5B-Instruct-q0f16-MLC",
+// A 3B instruct model is better suited to nuanced recruiter comparisons than
+// the previous 0.5B default. The exact IDs and VRAM estimates come from the
+// pinned WebLLM 0.2.81 catalog; never select unregistered or arbitrary models.
+// The on-device loader tries smaller candidates if the preferred model fails.
+const roleFitF16Preference = Object.freeze([
+  "Qwen2.5-3B-Instruct-q4f16_1-MLC",
+  "Qwen2.5-1.5B-Instruct-q4f16_1-MLC",
   "Qwen2.5-0.5B-Instruct-q4f16_1-MLC",
-  "Qwen2-0.5B-Instruct-q4f16_1-MLC",
-  "Llama-3.2-1B-Instruct-q4f16_1-MLC",
+  "Qwen2.5-0.5B-Instruct-q0f16-MLC",
+]);
+const roleFitF32Preference = Object.freeze([
+  "Qwen2.5-3B-Instruct-q4f32_1-MLC",
+  "Qwen2.5-1.5B-Instruct-q4f32_1-MLC",
   "Qwen2.5-0.5B-Instruct-q4f32_1-MLC",
-  "Llama-3.2-1B-Instruct-q4f32_1-MLC",
-];
-export const selectRoleFitModelId = (modelList = []) =>
-  preferredModelIdentifiers.find((id) => modelList.some((item) => item.model_id === id)) ??
-  [...modelList].filter(({model_id}) => /instruct/i.test(model_id))
-    .sort((a,b) => (a.vram_required_MB ?? Infinity) - (b.vram_required_MB ?? Infinity))[0]?.model_id ?? null;
+]);
+export const selectRoleFitModelCandidates = (modelList = [], { supportsF16 = true } = {}) => {
+  const available = new Set(modelList.map((model) => model.model_id));
+  return (supportsF16 ? roleFitF16Preference : roleFitF32Preference)
+    .filter((id) => available.has(id));
+};
+export const selectRoleFitModelId = (modelList = [], opts) =>
+  selectRoleFitModelCandidates(modelList, opts)[0] ?? null;
 
 export const buildRoleFitEnhancementRequest = ({ jobText, requirements, evidenceCatalog }) => {
   const posting = normalizeRolePosting(jobText).slice(0, 7500);

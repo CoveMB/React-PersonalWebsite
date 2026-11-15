@@ -1,8 +1,12 @@
-# AI Lab: single three-category role assessment
+# AI Lab: evidence-grounded role assessment (implementation history)
 
 **Date:** 2026-11-15  
-**Status:** Proposed refactor; browser/model QA required before release.  
+**Status:** Updated AI/evidence card separation implemented on a feature branch; live WebLLM/browser QA required.  
 **Supersedes:** The split model-authored AI card plus independent mechanical report in earlier November 15 AI Lab plans.
+
+
+> **Current behavior (15 November 2026):** The earlier single-card design described below is historical. The current implementation restores **two separate cards**: an on-device, explicitly unverified AI assessment and the existing deterministic three-category evidence report. The outer AI Lab markup, existing CSS, theme, spacing and other page sections are unchanged.
+
 
 ## Intent
 
@@ -56,3 +60,13 @@ No numerical suitability score or automated hiring recommendation.
 - Suppress repeated transferable facets that would cite the same example for overlapping frameworks. The illustrative-list UI wording states that no direct experience with the named frameworks has been established.
 - The Wissen Java/J2EE + Spring/Hibernate/Spring Boot example is an explicit regression case. It retains the unestablished Java/framework gaps and displays documented Node.js/Koa-related backend experience separately.
 - The small local model remains experimental; the full production WebLLM model-download and in-browser generation path has **not** been exercised by the connector-based tests. Actual runtime and Safari/Firefox/device validation remain release checks.
+
+## Latest update — separate AI output, rejection review, and higher-capacity default
+
+- The first card contains only model-generated, independently classified **accepted notes** in the three requested sections. When the local model fails or has no valid notes, it displays an explicit status, not a fabricated model answer. The second card keeps the deterministic requirements and source-expansion layout.
+- Model output is retained **in memory** for the active analysis only, up to 8,000 characters. If some or all notes are rejected, the AI card presents the **exact bounded original response** and a readable breakdown of rejection reason codes. Failed loading or generation cannot show text that the model never returned.
+- A raw rejected response may repeat parts of the pasted job posting and may contain invented claims. It is labeled **unverified**, displayed locally as escaped React text rather than HTML, and is **not** saved, uploaded, placed in the URL, copied automatically, or treated as candidate evidence. Editing/resetting/reanalyzing discards stale output.
+- No stylesheet files were changed for the separate card; both cards reuse the current `roleFitResultCard`, `roleFitThreeWayGrid`, and disclosure classes. Only AI process/markup, moving model-written notes out of the deterministic report, and tests changed.
+- The pinned `@mlc-ai/web-llm@0.2.81` catalog already ships `Qwen2.5-3B-Instruct-q4f16_1-MLC` (approximately 2,505 MB VRAM), `Qwen2.5-1.5B-Instruct-q4f16_1-MLC` (~1,630 MB), and `Qwen2.5-0.5B-Instruct-q4f16_1-MLC` (~945 MB). The new loader tries 3B first, then smaller models on initialization failure, and selects q4f32 alternatives if `shader-f16` is not exposed. These figures are catalog estimates, not measurements on recruiter devices.
+- Later WebLLM 0.2.88 includes newer Qwen3.5 2B and 4B records (~2,245 MB and ~3,868 MB catalog VRAM respectively). They may be useful accuracy candidates, but upgrading the runtime and replacing the model without controlled benchmark/device/browser tests is deliberately out of scope for this request. Sources: https://github.com/mlc-ai/web-llm/releases ; https://github.com/mlc-ai/web-llm/blob/v0.2.81/src/config.ts ; https://github.com/mlc-ai/web-llm/blob/v0.2.88/src/config.ts
+- Regression checks cover invalid JSON, schema errors, unknown or mismatched IDs, unsupported technologies, duplicate claims, truncated raw text, stale runs, browser fallback, the separate cards, and model-selection order. The available execution environment lacks npm/network access for full Next build and real WebGPU inference, so these remain **verification requirements** before considering the feature fully tested.
