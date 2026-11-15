@@ -202,70 +202,103 @@ export function buildRoleFitAIRequest({ jobText, evidenceCatalog = getRoleFitEvi
   };
 }
 
-export function interpretRoleFitAIResponse(raw, { assessment, allowedIds, evidenceCatalog = getRoleFitEvidenceCatalog(), outputLimitReached = false } = {}) {
-  if (typeof raw !== 'string' || !raw.trim())
-    return { kind: 'empty', failureCode: outputLimitReached ? 'generation_limit' : 'empty_response', sections: null, outputLimitReached };
-  if (raw.length > 8000)
-    return { kind: 'invalid', failureCode: 'response_too_long', sections: null, outputLimitReached };
-  if (!assessment)
-    return { kind: 'invalid', failureCode: 'validation_unavailable', sections: null, outputLimitReached };
-  const cleaned = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '');
+export function interpretRoleFitAIResponse(raw, {
+  assessment, allowedIds, evidenceCatalog = getRoleFitEvidenceCatalog(), outputLimitReached = false,
+} = {}) {
+  // Keep model wording in browser memory only, even when wholly rejected.
+  // This bounded original is never sent to analytics, storage or a service.
+  const rawModelOutput = typeof raw === 'string' ? raw.slice(0, 8000) : '';
+  const rawModelOutputTruncated = typeof raw === 'string' && raw.length > 8000;
+  const fail = (kind, failureCode) => ({
+    kind, failureCode, sections: null, selectedCount: 0, rejectedCount: 0,
+    rejectedItems: [], rejectionReasons: [failureCode], rawModelOutput,
+    rawModelOutputTruncated, outputLimitReached,
+  });
+  if (typeof raw !== 'string' || !raw.trim()) {
+    return fail('empty', outputLimitReached ? 'generation_limit' : 'empty_response');
+  }
+  if (rawModelOutputTruncated) return fail('invalid', 'response_too_long');
+  if (!assessment) return fail('invalid', 'validation_unavailable');
+
+  const cleaned = raw.trim().replace(/^\x60{3}(?:json)?\s*/i, '').replace(/\s*\x60{3}\s*$/i, '');
   let parsed;
   try { parsed = JSON.parse(cleaned); }
-  catch {
-    return { kind: 'invalid', failureCode: outputLimitReached ? 'generation_limit' : 'invalid_json',
-      sections: null, outputLimitReached };
-  }
+  catch { return fail('invalid', outputLimitReached ? 'generation_limit' : 'invalid_json'); }
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed) ||
-      !['direct', 'transferable', 'notEstablished'].every((key) => Array.isArray(parsed[key]))) {
-    return { kind: 'invalid', failureCode: 'invalid_schema', sections: null, outputLimitReached };
+      !['direct', 'transferable', 'notEstablished'].every(key => Array.isArray(parsed[key]))) {
+    return fail('invalid', 'invalid_schema');
   }
-  const categories = new Set(['direct', 'transferable', 'notEstablished']);
+
   const includedRows = Object.values(buildThreeSectionRoleFit(assessment, null, evidenceCatalog).sections).flat();
   const byId = new Map([...(assessment.details ?? []), ...includedRows]
-    .map((row) => [row.requirementId, row]));
+    .map(row => [row.requirementId, row]));
   const providedIds = allowedIds ? new Set(allowedIds) : null;
   const sections = { direct: [], transferable: [], notEstablished: [] };
   const seenIds = new Set();
   const seenNotes = new Set();
-  let rejectedCount = 0;
-  for (const category of categories) {
-    for (const entry of parsed[category].slice(0, 6)) {
-      const id = entry?.id;
-      const note = typeof entry?.note === 'string' ? entry.note.replace(/\s+/g, ' ').trim() : '';
+  const rejectedItems = [];
+  for (const category of ['direct', 'transferable', 'notEstablished']) {
+    const rows = parsed[category];
+    for (let index = 0; index < rows.length; index++) {
+      const item = rows[index];
+      const id = typeof item?.id === 'string' ? item.id : '';
+      const note = typeof item?.note === 'string' ? item.note.replace(/\s+/g, ' ').trim() : '';
       const normalizedNote = note.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
       const row = byId.get(id);
-      const permittedKeys = new Set([
-        ...(row?.requirement?.options ?? []).map((option) => option.key),
-        ...(row?.evidence ?? []).flatMap((source) => source.capabilities),
-      ]);
-      const mentionsUnsupportedTechnology = findCapabilities(note)
-        .some(({ key }) => !permittedKeys.has(key));
-      // A not-established statement must communicate an evidence limitation.
-      // Otherwise a model can emit "the candidate has Java experience" under
-      // the gap heading and confuse a recruiter even with the right category.
+      const reasons = [];
+
+      if (!item || Array.isArray(item) || typeof item !== 'object') reasons.push('invalid_item');
+      if (!row) reasons.push('unknown_requirement');
+      else if (roleCategory(row) !== category) reasons.push('category_mismatch');
+      if (providedIds && !providedIds.has(id)) reasons.push('requirement_not_provided');
+      if (seenIds.has(id)) reasons.push('duplicate_requirement');
+      if (!note || note.length < 18 || note.length > 245) reasons.push('invalid_note_length');
+      if (normalizedNote && seenNotes.has(normalizedNote)) reasons.push('duplicate_note');
+      if (index >= 6 || sections[category].length >= 3) reasons.push('category_limit_exceeded');
+
+      if (row && note) {
+        const permittedKeys = new Set([
+          ...(row.requirement?.options ?? []).map(option => option.key),
+          ...(row.evidence ?? []).flatMap(source => source.capabilities),
+        ]);
+        if (findCapabilities(note).some(({ key }) => !permittedKeys.has(key))) {
+          reasons.push('unsupported_technology');
+        }
+        if (category !== 'notEstablished' && !row.evidence?.some(isPositiveEvidenceEligible)) {
+          reasons.push('missing_supporting_evidence');
+        }
+      }
       const explicitEvidenceLimit = /\b(?:not\s+(?:established|documented|substantiated|verified|demonstrated|confirmed|shown|evidenced)|(?:do|does)\s+not\s+(?:establish|document|substantiate|verify|demonstrate|confirm|show)|no\s+(?:evidence|documentation|record|source)|(?:cannot|can\s+not|can't)\s+(?:confirm|establish|verify|substantiate)|insufficient\s+(?:evidence|documentation)|needs\s+confirmation)\b/i.test(note);
-      // No invented requirements, cross-category promotions, unsupported
-      // positive sources, duplicated wording, or quantitative résumé claims.
-      const valid = typeof id === 'string' && row && (!providedIds || providedIds.has(id)) && roleCategory(row) === category &&
-        !seenIds.has(id) && note.length >= 18 && note.length <= 245 &&
-        !seenNotes.has(normalizedNote) && !mentionsUnsupportedTechnology &&
-        (category !== 'notEstablished' || explicitEvidenceLimit) &&
-        !/\b(?:\d+\s*(?:years?|yrs?|%|million|billion)\b|certified|expert-level)\b/i.test(note) &&
-        !/https?:\/\/|@[\w.-]+|\[[^\]]+\]/i.test(note) &&
-        (category === 'notEstablished' || row.evidence.some(isPositiveEvidenceEligible));
-      if (!valid) { rejectedCount++; continue; }
+      if (category === 'notEstablished' && !explicitEvidenceLimit) {
+        reasons.push('missing_evidence_limitation');
+      }
+      if (/\b(?:\d+\s*(?:years?|yrs?|%|million|billion)\b|certified|expert-level)\b/i.test(note)) {
+        reasons.push('unsupported_quantitative_or_credential_claim');
+      }
+      if (/https?:\/\/|@[\w.-]+|\[[^\]]+\]/i.test(note)) reasons.push('untrusted_citation_or_link');
+
+      if (reasons.length) {
+        rejectedItems.push({
+          category, id: id.slice(0, 64) || '(missing)', note: note.slice(0, 245),
+          reasons: [...new Set(reasons)],
+        });
+        continue;
+      }
       seenIds.add(id);
       seenNotes.add(normalizedNote);
       sections[category].push({ id, note });
-      if (sections[category].length >= 3) break;
     }
   }
-  const count = Object.values(sections).reduce((n, items) => n + items.length, 0);
+  const selectedCount = Object.values(sections).reduce((sum, entries) => sum + entries.length, 0);
+  const rejectionReasons = [...new Set(rejectedItems.flatMap(item => item.reasons))];
+  const failureCode = selectedCount ? undefined : outputLimitReached ? 'generation_limit' :
+    rejectedItems.length ? 'no_valid_notes' : 'no_notes_generated';
   return {
-    kind: count ? 'accepted' : 'invalid',
-    ...(!count ? { failureCode: outputLimitReached ? 'generation_limit' : rejectedCount ? 'no_valid_notes' : 'no_notes_generated' } : {}),
-    sections, selectedCount: count, rejectedCount, outputLimitReached,
+    kind: selectedCount ? 'accepted' : 'invalid',
+    ...(failureCode ? { failureCode } : {}),
+    sections, selectedCount, rejectedCount: rejectedItems.length,
+    rejectedItems, rejectionReasons,
+    rawModelOutput, rawModelOutputTruncated, outputLimitReached,
   };
 }
 
