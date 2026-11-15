@@ -325,3 +325,71 @@ test('Wissen framework example list shows relevant Node.js backend transfer whil
     row.evidence.some(source => source.capabilities.some(key => ['koa', 'express', 'nodejs'].includes(key)))
   ), 'backend framework equivalence is not assumed; concrete related work is still visible');
 });
+
+test('rejected non-JSON answer remains inspectable with a specific cause', () => {
+  const raw = '### Directly demonstrated\n- Claimed professional Java without supporting evidence';
+  const result = interpretRoleFitAIResponse(raw, { assessment: assess(job) });
+  assert.equal(result.kind, 'invalid');
+  assert.equal(result.failureCode, 'invalid_json');
+  assert.equal(result.rawModelOutput, raw);
+  assert.equal(result.rawModelOutputTruncated, false);
+  assert.ok(result.rejectionReasons.includes('invalid_json'));
+});
+
+test('partial rejection preserves full original output and each rejected item reason', () => {
+  const assessment = assess(job);
+  const direct = find(assessment, /^REST APIs/);
+  const gap = find(assessment, /^Java and Spring Boot/);
+  const raw = JSON.stringify({
+    direct: [
+      modelItem(direct, 'Published REST API and microservice experience is documented in the public résumé.'),
+      modelItem(gap, 'The candidate is a certified Java professional with twenty years of experience.'),
+      { id: 'invented-id', note: 'The candidate has proven Kotlin backend development experience.' },
+    ],
+    transferable: [],
+    notEstablished: [],
+  });
+  const result = interpretRoleFitAIResponse(raw, { assessment, allowedIds: [direct.requirementId, gap.requirementId] });
+  assert.equal(result.kind, 'accepted');
+  assert.equal(result.selectedCount, 1);
+  assert.equal(result.rawModelOutput, raw);
+  assert.equal(result.rejectedItems.length, 2);
+  assert.ok(result.rejectedItems.find(x => x.id === gap.requirementId).reasons.includes('category_mismatch'));
+  assert.ok(result.rejectedItems.find(x => x.id === 'invented-id').reasons.includes('unknown_requirement'));
+  assert.ok(result.rejectedItems.every(x => x.note.length <= 245));
+});
+
+test('a note using an unsupported technology or missing evidence is rejected with a human-readable reason code', () => {
+  const assessment = assess(job);
+  const direct = find(assessment, /^REST APIs/);
+  const raw = JSON.stringify({
+    direct: [modelItem(direct, 'Built professional Java Spring Boot services with REST APIs, beyond the evidence.')],
+    transferable: [],
+    notEstablished: [],
+  });
+  const result = interpretRoleFitAIResponse(raw, { assessment });
+  assert.equal(result.kind, 'invalid');
+  assert.ok(result.rejectedItems[0].reasons.includes('unsupported_technology'));
+  assert.equal(result.rawModelOutput, raw);
+});
+
+test('invalid JSON schema and bounded large replies are inspectable but cannot become accepted claims', () => {
+  const assessment = assess(job);
+  const wrong = '{"direct":[],"transferable":[]}';
+  const missing = interpretRoleFitAIResponse(wrong, { assessment });
+  assert.equal(missing.failureCode, 'invalid_schema');
+  assert.equal(missing.rawModelOutput, wrong);
+  const huge = 'a'.repeat(9000);
+  const bounded = interpretRoleFitAIResponse(huge, { assessment });
+  assert.equal(bounded.failureCode, 'response_too_long');
+  assert.equal(bounded.rawModelOutput.length, 8000);
+  assert.equal(bounded.rawModelOutputTruncated, true);
+});
+
+test('empty or failed inference never fabricates a rejected model answer', () => {
+  const result = interpretRoleFitAIResponse('', { assessment: assess(job) });
+  assert.equal(result.kind, 'empty');
+  assert.equal(result.rawModelOutput, '');
+  assert.deepEqual(result.rejectedItems, []);
+});
+
