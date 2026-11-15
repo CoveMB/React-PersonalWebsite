@@ -143,7 +143,7 @@ export function awaitRoleFitModelReady({
       onAbort();
       return;
     }
-    Promise.resolve().then(() => start(report => {
+    Promise.resolve().then(() => settled ? undefined : start(report => {
       if (settled) return;
       onProgress(report);
       if (report?.progress >= 1 && timer === null) {
