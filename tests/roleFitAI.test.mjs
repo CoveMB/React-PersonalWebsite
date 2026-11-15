@@ -6,6 +6,7 @@ import {
   buildThreeSectionRoleFit,
   interpretRoleFitAIResponse,
   roleFitAIGenerationOptions,
+  classifyRoleFitAIError,
   runRoleFitAnalyses,
 } from '../src/utils/roleFitAI.mjs';
 import { getRoleFitEvidenceCatalog } from '../src/utils/roleFitEvidence.mjs';
@@ -276,7 +277,6 @@ test('malformed model output and zero usable claims have different safe failure 
 });
 
 test('runtime failure classification distinguishes loading and generation, without revealing raw errors', async () => {
-  const { classifyRoleFitAIError } = await import('../src/utils/roleFitAI.mjs');
   const load = classifyRoleFitAIError({ message: 'Network failed https://example.com/private?job=Java' }, 'load');
   const memory = classifyRoleFitAIError(new Error('GPU out of memory for private job posting'), 'generation');
   assert.deepEqual(load, { stage: 'load', code: 'download_failed' });
