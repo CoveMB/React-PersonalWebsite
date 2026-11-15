@@ -42,6 +42,13 @@ export const roleFitAiFailureMessages = Object.freeze({
   download_failed: "Model files could not be downloaded. Check the connection or browser model-cache settings.",
   load_failed: "The local AI model could not initialize on this device.",
   generation_failed: "The local AI model encountered an error during text generation.",
+  model_ready_timeout: "The model reported 100% loaded but did not finish initializing. The attempt was stopped.",
+  stream_startup_timeout: "The model did not start returning its response. The attempt was stopped.",
+  first_token_timeout: "The model started generation but did not produce its first token before the safety limit.",
+  generation_stalled: "The model began responding, but generation stopped progressing before it finished.",
+  generation_timeout: "The local model exceeded its maximum generation duration. The attempt was stopped.",
+  invalid_stream: "The model returned an unsupported streaming response.",
+
   memory_limit: "The device ran out of available memory while running the local AI model.",
   gpu_error: "WebGPU became unavailable or reported a device error during local AI processing."
 });

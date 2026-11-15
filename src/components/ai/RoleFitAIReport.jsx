@@ -114,6 +114,17 @@ export default function RoleFitAIReport({
           ))}
         </div>
       ) : null}
+      {status === 'failed' && aiFailure?.partialOutput ? (
+        <details className="roleFitInventory roleFitAiDiagnostic" open>
+          <summary>Incomplete model output (unverified)</summary>
+          <p className="roleFitEvidenceDisclaimer">
+            Generation ended before a complete answer was available. This is raw partial text,
+            not a validated assessment or evidence of professional experience.
+            It may repeat the pasted job description; review before sharing.
+          </p>
+          <pre className="roleFitOutput">{aiFailure.partialOutput}</pre>
+        </details>
+      ) : null}
       {hasRejectedResponse ? (
         <details className="roleFitInventory roleFitAiDiagnostic" open={!isReady}>
           <summary>Rejected model output and reasons{rejectedItems.length ? ' (' + rejectedItems.length + ' items)' : ''}</summary>

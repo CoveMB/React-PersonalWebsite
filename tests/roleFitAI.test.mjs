@@ -393,3 +393,15 @@ test('empty or failed inference never fabricates a rejected model answer', () =>
   assert.deepEqual(result.rejectedItems, []);
 });
 
+
+test('streamed generation and post-load handshake timeouts have safe, distinct diagnostic codes', () => {
+  for (const code of ['stream_startup_timeout', 'first_token_timeout', 'generation_stalled',
+    'generation_timeout', 'model_ready_timeout', 'invalid_stream']) {
+    const stage = code === 'model_ready_timeout' ? 'load' : 'generation';
+    const classified = classifyRoleFitAIError({ code }, stage);
+    assert.deepEqual(classified, { code, stage }, code);
+  }
+  const wrapper = { code: 'generation_failed', cause: new Error('GPU out of memory while generating') };
+  assert.deepEqual(classifyRoleFitAIError(wrapper, 'generation'), { stage: 'generation', code: 'memory_limit' });
+  assert.equal(classifyRoleFitAIError({ code: 'unexpected_foo' }, 'generation').code, 'generation_failed');
+});

@@ -81,3 +81,25 @@ test('accepted AI answers with no rejections do not show a misleading rejected-o
   assert.match(src, /status !== 'ready'/);
   assert.doesNotMatch(src, /const hasRejectedResponse = Boolean\(assessment\?\.rawModelOutput\) \|\|/);
 });
+
+test('loading 100 percent no longer masquerades as completion; generation has independent progress', () => {
+  assert.match(hook, /awaitRoleFitModelReady/);
+  assert.match(hook, /Finalizing local model initialization/);
+  assert.match(hook, /streamRoleFitAI/);
+  assert.match(hook, /signal: controller\.signal/);
+  assert.match(hook, /activeAbortReference\.current\?\.abort\(\)/);
+  assert.match(content, /first_token_timeout/);
+  assert.match(content, /generation_stalled/);
+  assert.match(content, /generation_timeout/);
+  assert.doesNotMatch(hook, /const response = await engine\.chat\.completions\.create\(/);
+});
+
+test('interrupted model output is displayed in the AI card but never as a verified interpretation', () => {
+  const src = aiCard();
+  assert.match(src, /aiFailure\?\.partialOutput/);
+  assert.match(src, /Incomplete model output/);
+  assert.match(src, /<pre\b[^>]*>\{aiFailure\.partialOutput\}<\/pre>/);
+  assert.doesNotMatch(src, /dangerouslySetInnerHTML/);
+  assert.doesNotMatch(report, /aiFailure|partialOutput/);
+  assert.doesNotMatch(hook, /localStorage|sessionStorage/);
+});
