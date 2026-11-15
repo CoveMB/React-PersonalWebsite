@@ -316,6 +316,9 @@ test('Wissen framework example list shows relevant Node.js backend transfer whil
   const { sections } = buildThreeSectionRoleFit(assess(posting));
   assert.ok(sections.notEstablished.some(row => /Java\/J2EE/.test(row.requirement.quote)));
   assert.ok(sections.notEstablished.some(row => /frameworks like Spring/.test(row.requirement.quote)));
+  assert.equal(sections.transferable.filter(row =>
+    /frameworks like Spring/.test(row.relatedToQuote ?? '')).length, 1,
+    'overlapping Spring and Spring Boot transfer sources should not be repeated');
   assert.ok(sections.transferable.some(row =>
     /frameworks like Spring/.test(row.relatedToQuote ?? '') &&
     row.evidence.some(source => source.capabilities.some(key => ['koa', 'express', 'nodejs'].includes(key)))
