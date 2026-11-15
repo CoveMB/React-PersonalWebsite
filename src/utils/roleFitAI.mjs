@@ -147,20 +147,21 @@ export function buildRoleFitAIRequest({ jobText, evidenceCatalog = getRoleFitEvi
   });
   const categorized = buildThreeSectionRoleFit(full, null, evidenceCatalog).sections;
   const included = ['direct', 'transferable', 'notEstablished'].flatMap((category) =>
-    categorized[category].slice(0, 6).map((row) => ({
+    categorized[category].slice(0, 3).map((row) => ({
       id: row.requirementId,
       category,
-      requirement: row.requirement.quote.replace(/\s+/g, ' ').slice(0, 190),
+      requirement: row.requirement.quote.replace(/\s+/g, ' ').slice(0, 165),
       evidence: category === 'notEstablished' ? [] :
-        row.evidence.filter(isPositiveEvidenceEligible).slice(0, 3).map((source) => ({
+        row.evidence.filter(isPositiveEvidenceEligible).slice(0, 2).map((source) => ({
           id: source.id,
-          excerpt: source.sourceQuote.replace(/\*\*/g, '').replace(/\s+/g, ' ').slice(0, 150),
+          excerpt: source.sourceQuote.replace(/\*\*/g, '').replace(/\s+/g, ' ').slice(0, 115),
         })),
     })));
-  // The small local model cannot safely process a large copied vacancy and
-  // every source at once. Sample *across all three categories*, not just the
-  // first 5,000 characters of the pasted posting.
-  while (JSON.stringify(included).length > 7400 && included.length > 3) {
+  // Keep prefill small for browser GPUs: the model only produces TWO notes
+  // per category, so sending six candidate requirements per category wastes
+  // first-token prefill time. The deterministic report still assesses every
+  // parsed requirement independently, including gaps not sampled here.
+  while (JSON.stringify(included).length > 3600 && included.length > 3) {
     const catCounts = ['direct','transferable','notEstablished'].map((category) => ({
       category, count: included.filter((item) => item.category === category).length,
     })).sort((a, b) => b.count - a.count);
