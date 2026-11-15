@@ -156,6 +156,7 @@ export const useRoleFitLab = () => {
         return {
           text: assistantText(response?.choices?.[0]?.message?.content),
           finishReason: response?.choices?.[0]?.finish_reason,
+          allowedIds: request.allowedIds,
         };
       } : undefined,
       onAI: (result) => dispatch({ type: 'aiReady', result, modelId: selectedModelId }),
