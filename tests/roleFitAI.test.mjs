@@ -93,7 +93,7 @@ test('model receives evidence-labeled requirements from the full posting, not ca
 });
 
 test('model prompt samples important requirements across the whole posting rather than the first five thousand characters', () => {
-  const lead = Array.from({ length: 35 }, (_, index) =>
+  const lead = Array.from({ length: 48 }, (_, index) =>
     'Background paragraph ' + index + ' describes engineering leadership and business goals, without concrete skills.').join('\n');
   const posting = lead + '\nRequired skills:\nJava and Spring Boot\nReact\nREST APIs';
   assert.ok(posting.length > 4000);
