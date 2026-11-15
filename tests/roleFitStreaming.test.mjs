@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { streamRoleFitAI, roleFitGenerationLimits } from '../src/utils/roleFitStreaming.mjs';
+import { streamRoleFitAI, roleFitGenerationLimits, awaitRoleFitModelReady } from '../src/utils/roleFitStreaming.mjs';
 
 const request = { messages: [{ role: 'user', content: 'Hello' }], response_format: { type: 'json_object' } };
 const smallLimits = { startupMs: 30, firstChunkMs: 30, idleMs: 25, totalMs: 120, maxOutputChars: 8000 };
@@ -122,4 +122,47 @@ test('default generation limits are finite and preserve a bounded model response
   assert.ok(roleFitGenerationLimits.idleMs > 0);
   assert.ok(roleFitGenerationLimits.totalMs <= 240000);
   assert.equal(roleFitGenerationLimits.maxOutputChars, 8000);
+});
+
+test('100 percent WebGPU load progress is replaced by finalization and fails if model never becomes ready', async () => {
+  const progress = [];
+  await assert.rejects(
+    awaitRoleFitModelReady({
+      start: onProgress => {
+        onProgress({ text: 'Finish loading on WebGPU', progress: 1 });
+        return never();
+      },
+      onProgress: report => progress.push(report),
+      readyTimeoutMs: 12,
+    }),
+    error => error.code === 'model_ready_timeout',
+  );
+  assert.ok(progress.length >= 1);
+  assert.ok(progress[0].progress === 1);
+});
+
+test('completed model setup clears the finalization watchdog', async () => {
+  const result = await awaitRoleFitModelReady({
+    start: onProgress => {
+      onProgress({ text: 'Finish loading on WebGPU', progress: 1 });
+      return Promise.resolve({ loaded: true });
+    },
+    readyTimeoutMs: 12,
+  });
+  assert.equal(result.loaded, true);
+  await sleep(16);
+});
+
+test('aborting model finalization rejects promptly without waiting for timeout', async () => {
+  const controller = new AbortController();
+  const pending = awaitRoleFitModelReady({
+    start: onProgress => {
+      onProgress({ text: 'Finish loading on WebGPU', progress: 1 });
+      return never();
+    },
+    signal: controller.signal,
+    readyTimeoutMs: 5000,
+  });
+  controller.abort();
+  await assert.rejects(pending, error => error.code === 'generation_aborted');
 });
