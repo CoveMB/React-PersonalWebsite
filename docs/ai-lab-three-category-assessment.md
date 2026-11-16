@@ -97,3 +97,17 @@ No numerical suitability score or automated hiring recommendation.
 - **Repair:** after shortlisting, build a JSON schema with an enum of exactly the permitted IDs for each category; categories with no candidates have `maxItems: 0`. Remove the misleading sample ID and explicitly instruct the model not to renumber IDs. The schema bounds each category to two notes.
 - **Unchanged:** the evidence parser, matcher, authoritative validator, and two-card UI. Invalid IDs still cause rejection; no speculative ID remapping or synthetic model prose is added.
 - **Limit:** request-shape and regression tests can run without GPU inference; the actual WebLLM/XGrammar deployment still needs browser verification.
+
+
+## 2026-11-16 — Direct Markdown résumé assessment (current design)
+
+**Current AI behavior supersedes the earlier JSON/requirement-ID model prompt and its per-note acceptance rules above.** The independent deterministic report and its published-source comparison remain intact.
+
+- The AI Lab compiles the published Markdown résumé through the existing raw source import, removes contact lines, and sends the remaining full professional résumé content together with the complete pasted job description to the local WebLLM model. The AI does **not** receive deterministic requirement classifications, evidence IDs or selected excerpts. No new remote model calls or server routes are used.
+- The model writes its own Markdown under the three headings Directly demonstrated, Transferable experience, and Not established. Output is parsed only for headings, bullets, and paragraphs. It is **not** source-checked claim by claim; the AI card identifies all model language as unverified. Missing sections remain empty rather than being filled with mechanical conclusions.
+- If the model writes prose without recognizable headings, the UI shows the raw unstructured output as unverified rather than silently rejecting useful wording or assigning an invented category. Truncated/oversized or failed generations retain bounded raw output for troubleshooting.
+- The static résumé is not uploaded; the pasted posting stays in browser memory. A conservative character budget protects the 4096-token local context without claiming to count tokens exactly. If complete input exceeds that limit, AI inference stops with an explicit message, **without silently shortening the job or résumé**; the deterministic evidence report remains available.
+- The UI retains its two existing cards, theme, and layout classes. Only interpretation and safe Markdown rendering in the AI card changed; no permissive HTML renderer was introduced. The model remains Qwen3.5 0.8B with the existing on-device fallback.
+- Focused verification covers request fidelity, omission of public contact lines, the actual Wissen posting, parser variants, missing headings, unstructured responses, stale runs, source-report independence, and inert HTML. Final browser/WebGPU testing, production build and cross-device context-window checks remain deployment requirements.
+
+**Limitation:** Simplifying model generation reduces schema-ID failures but removes automatic claim-level fact checking in the AI card. A 0.8B model may miss important requirements or invent experience. The separate mechanical report is a comparison reference, not proof of the model's correctness.
