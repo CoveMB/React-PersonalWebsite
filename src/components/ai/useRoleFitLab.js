@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { roleFitLabMessageContent as copy } from '../../content/roleFitLabContent';
 import { maximumJobDescriptionLength, getRolePostingValidationCode, selectRoleFitModelCandidates } from '../../utils/roleFit';
-import { buildRoleFitAIRequest, roleFitAIGenerationOptions, runRoleFitAnalyses, classifyRoleFitAIError } from '../../utils/roleFitAI.mjs';
+import { buildRoleFitAIRequest, roleFitAIGenerationOptions, runRoleFitAnalyses, classifyRoleFitAIError, formatRoleFitAIErrorDetails } from '../../utils/roleFitAI.mjs';
 import { createRoleFitRevisionGuard } from '../../utils/roleFitEnhancement.mjs';
 import { streamRoleFitAI, awaitRoleFitModelReady, runRoleFitWithFallback, RoleFitStreamError } from '../../utils/roleFitStreaming.mjs';
 
@@ -230,7 +230,8 @@ export const useRoleFitLab = () => {
         const partial = typeof cause?.partialText === 'string' ? cause.partialText.slice(0, 8000) : '';
         const classification = classifyRoleFitAIError(cause, error?.stage);
         dispatch({ type: 'aiFailed', modelId: selectedModelId,
-          failure: { ...classification, ...(partial ? { partialOutput: partial } : {}) } });
+          failure: { ...classification, technicalDetails: formatRoleFitAIErrorDetails(cause),
+            ...(partial ? { partialOutput: partial } : {}) } });
       },
     }).finally(() => {
       if (activeRunReference.current === revision) {
