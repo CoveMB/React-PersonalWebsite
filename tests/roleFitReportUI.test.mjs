@@ -106,14 +106,14 @@ test('interrupted model output is displayed in the AI card but never as a verifi
 
 test('failed model inference exposes the original exception in the existing local diagnostic panel', () => {
   const src = aiCard();
-  assert.match(hook, /technicalDetails: formatRoleFitAIErrorDetails\\(cause\\)/);
-  assert.match(src, /<summary>Technical diagnostic<\\/summary>/);
-  assert.match(src, /open=\\{status === 'failed'\\}/);
-  assert.match(src, /\\{aiFailure\\.technicalDetails\\}/);
+  assert.match(hook, /technicalDetails: formatRoleFitAIErrorDetails\(cause\)/);
+  assert.match(src, /<summary>Technical diagnostic<\/summary>/);
+  assert.match(src, /open=\{status === 'failed'\}/);
+  assert.match(src, /\{aiFailure\.technicalDetails\}/);
   assert.match(src, /review before sharing/i);
   assert.doesNotMatch(src, /dangerouslySetInnerHTML|innerHTML/);
   assert.doesNotMatch(report, /technicalDetails/);
-  assert.doesNotMatch(hook, /localStorage|sessionStorage|fetch\\s*\\(/);
+  assert.doesNotMatch(hook, /localStorage|sessionStorage|fetch\s*\(/);
 });
 
 test('first-token timeout retries a smaller local model without modifying the card layout', () => {
