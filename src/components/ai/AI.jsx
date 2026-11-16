@@ -50,7 +50,6 @@ export default function RoleFitSection() {
         <>
           <RoleFitAIReport
             assessment={roleFitState.aiAssessment}
-            mechanicalAssessment={roleFitState.result}
             status={roleFitState.aiStatus}
             aiFailure={roleFitState.aiFailure}
             modelId={roleFitState.modelId}
