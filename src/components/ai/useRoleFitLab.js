@@ -195,7 +195,8 @@ export const useRoleFitLab = () => {
               }
               const generated = await streamRoleFitAI({
                 createCompletion: options => engine.chat.completions.create(options),
-                request: { messages: request.messages, ...roleFitAIGenerationOptions },
+                request: { messages: request.messages, ...roleFitAIGenerationOptions,
+                  response_format: request.responseFormat },
                 signal: controller.signal,
                 onProgress: message => {
                   if (gate.isCurrent(revision)) dispatch({ type: 'progress', message });
