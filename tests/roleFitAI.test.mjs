@@ -264,8 +264,24 @@ test('small-model generation is bounded and lower-variance than the prior prose 
   assert.doesNotMatch(hook, /localStorage|sessionStorage|fetch\s*\(/);
 });
 
-test('WebLLM requests JSON object output rather than relying solely on prompt instructions', () => {
-  assert.deepEqual(roleFitAIGenerationOptions.response_format, { type: 'json_object' });
+test('WebLLM 0.2.88 receives a serialized JSON schema for its grammar compiler', () => {
+  const { type, schema } = roleFitAIGenerationOptions.response_format;
+  assert.equal(type, 'json_object');
+  assert.equal(typeof schema, 'string', 'XGrammar requires std::string; undefined crashes generation');
+  const parsed = JSON.parse(schema);
+  assert.equal(parsed.type, 'object');
+  assert.deepEqual(parsed.required, ['direct', 'transferable', 'notEstablished']);
+  assert.equal(parsed.additionalProperties, false);
+  for (const category of parsed.required) {
+    const section = parsed.properties[category];
+    assert.equal(section.type, 'array');
+    assert.equal(section.items.type, 'object');
+    assert.equal(section.items.additionalProperties, false);
+    assert.deepEqual(section.items.required, ['id', 'note']);
+    assert.equal(section.items.properties.id.type, 'string');
+    assert.equal(section.items.properties.note.type, 'string');
+  }
+  assert.ok(schema.length < 2000, 'schema should remain small enough for on-device grammar');
 });
 
 test('malformed model output and zero usable claims have different safe failure codes', () => {
