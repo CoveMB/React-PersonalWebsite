@@ -50,7 +50,7 @@ function waitForGeneration(operation, timeoutMs, timeoutCode, signal, partialTex
 }
 
 // Streamed deltas are buffered, not rendered as factual claims. The UI sees
-// progress counts only. Completed text still goes through evidence validation.
+// progress counts only. Completed text is parsed as unverified Markdown.
 export async function streamRoleFitAI({
   createCompletion, request, onProgress = () => {}, signal,
   limits = roleFitGenerationLimits, now = Date.now,
@@ -71,7 +71,7 @@ export async function streamRoleFitAI({
 
   onProgress('Generating AI interpretation… waiting for the local model.');
   try {
-    // WebLLM 0.2.81 worker engine supports stream: true with JSON output.
+    // Stream raw model-authored Markdown without JSON grammar constraints.
     const stream = await within(
       () => createCompletion({ ...request, stream: true }),
       limits.startupMs, 'stream_startup_timeout');
