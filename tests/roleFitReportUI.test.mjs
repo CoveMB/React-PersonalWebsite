@@ -118,6 +118,13 @@ test('failed inference logs underlying exception locally while the UI exposes co
   assert.doesNotMatch(hook, /localStorage|sessionStorage|fetch\s*\(/);
 });
 
+test('generation sends the request-specific category/ID schema to WebLLM', () => {
+  assert.match(hook, /response_format: request\.responseFormat/);
+  assert.match(hook, /allowedIds: request\.allowedIds/);
+  assert.match(hook, /roleFitAIGenerationOptions/);
+  assert.doesNotMatch(hook, /roleFitAIResponseSchema/);
+});
+
 test('first-token timeout retries a smaller local model without modifying the card layout', () => {
   assert.match(hook, /runRoleFitWithFallback/);
   assert.match(hook, /loadEngine\(revision, excludedIds\)/);
