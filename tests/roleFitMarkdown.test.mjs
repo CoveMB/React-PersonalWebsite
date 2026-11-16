@@ -46,6 +46,20 @@ test('Markdown generation uses no JSON grammar or requirement IDs', () => {
   assert.doesNotMatch(system, /req-\d+|json_object/);
 });
 
+
+test('prompt actively identifies missing required skills before leaving Not established empty', () => {
+  const request = buildRoleFitMarkdownRequest({
+    jobText: 'Senior Java developer. Required: Java, Spring Boot, REST APIs.',
+    resumeMarkdown: '# Technical skills\n- JavaScript, TypeScript, Node.js, React',
+  });
+  const system = request.messages[0].content;
+  assert.match(system, /Before finalizing, review the job.s required technical skills/i);
+  assert.match(system, /In Not established, name the most important required skills/i);
+  assert.match(system, /If a role requires Java or Spring and the résumé only documents JavaScript or Node/i);
+  assert.match(system, /does not document/i);
+  assert.doesNotMatch(system, /the candidate lacks (?:the |this )?skill/i);
+});
+
 test('oversized complete inputs fail explicitly rather than silently trimming source text', () => {
   assert.ok(roleFitMarkdownInputCharacterLimit > 8000);
   assert.throws(
