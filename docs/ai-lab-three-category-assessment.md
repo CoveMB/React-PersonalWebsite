@@ -70,3 +70,14 @@ No numerical suitability score or automated hiring recommendation.
 - The pinned `@mlc-ai/web-llm@0.2.81` catalog already ships `Qwen2.5-3B-Instruct-q4f16_1-MLC` (approximately 2,505 MB VRAM), `Qwen2.5-1.5B-Instruct-q4f16_1-MLC` (~1,630 MB), and `Qwen2.5-0.5B-Instruct-q4f16_1-MLC` (~945 MB). The new loader tries 3B first, then smaller models on initialization failure, and selects q4f32 alternatives if `shader-f16` is not exposed. These figures are catalog estimates, not measurements on recruiter devices.
 - Later WebLLM 0.2.88 includes newer Qwen3.5 2B and 4B records (~2,245 MB and ~3,868 MB catalog VRAM respectively). They may be useful accuracy candidates, but upgrading the runtime and replacing the model without controlled benchmark/device/browser tests is deliberately out of scope for this request. Sources: https://github.com/mlc-ai/web-llm/releases ; https://github.com/mlc-ai/web-llm/blob/v0.2.81/src/config.ts ; https://github.com/mlc-ai/web-llm/blob/v0.2.88/src/config.ts
 - Regression checks cover invalid JSON, schema errors, unknown or mismatched IDs, unsupported technologies, duplicate claims, truncated raw text, stale runs, browser fallback, the separate cards, and model-selection order. The available execution environment lacks npm/network access for full Next build and real WebGPU inference, so these remain **verification requirements** before considering the feature fully tested.
+
+## 2026-11-15 runtime and model selection update
+
+**Current implementation supersedes the older WebLLM 0.2.81/Qwen2.5 3B configuration discussed above.**
+
+- Pinned **`@mlc-ai/web-llm@0.2.88`** with an updated Yarn v1 lockfile covering all new runtime dependencies and verified npm integrity hashes.
+- Primary on-device model: **`Qwen3.5-0.8B-q4f16_1-MLC`** (WebLLM catalog estimate: ~1.63 GB VRAM). If the GPU adapter lacks `shader-f16`, select **`Qwen3.5-0.8B-q4f32_1-MLC`** (~1.89 GB catalog VRAM).
+- Retain **Qwen2.5 0.5B q4f16/q4f32** as a strictly secondary compatibility fallback for load failures or the existing bounded first-token retry. Models larger than Qwen3.5 0.8B are no longer preferred.
+- Preserve the current request schema, bounded streaming, error diagnostics, privacy behavior, deterministic assessment, and two-card UI without changing CSS or page layout.
+- **Verification boundary:** Catalog membership, lock consistency, and selection logic can be tested automatically, but real browser generation latency, structured JSON acceptance, and factual quality require hands-on comparison with representative job descriptions. A smaller newer model is not guaranteed to be more accurate than the prior 3B model.
+- Sources: [WebLLM 0.2.88 release](https://github.com/mlc-ai/web-llm/releases/tag/v0.2.88), [pinned model catalog](https://github.com/mlc-ai/web-llm/blob/v0.2.88/src/config.ts).
