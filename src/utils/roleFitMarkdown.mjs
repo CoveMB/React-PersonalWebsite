@@ -40,8 +40,10 @@ export function buildRoleFitMarkdownRequest({ jobText, resumeMarkdown }) {
       'Distinguish directly documented skills, related but different experience, and requirements not established by this résumé.',
       'JavaScript is not Java; Node.js is not Spring; React does not establish Angular expertise.',
       'Not documented does not mean the skill is absent. Invent no years, credentials, employers, or outcomes.',
-      'Write Markdown using these exact headings: ## Directly demonstrated, ## Transferable experience, ## Not established.',
-      'Give up to three concise, specific bullet points in each section. Leave sections empty if no claim is justified.',
+      'Write Markdown using these three exact level-two headings on separate lines:',
+      '## Directly demonstrated\n## Transferable experience\n## Not established',
+      'Use up to three concise, specific bullet points below each heading. Prioritize consequential required skills and gaps.',
+      'Leave a section empty when no claim is justified. Do not invent filler.',
       'No numerical scores, hiring recommendations, extra headings, links, or personal contact information.',
     ].join(' '),
   }, {
