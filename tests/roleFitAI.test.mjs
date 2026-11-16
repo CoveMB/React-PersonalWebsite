@@ -414,10 +414,10 @@ test('AI failure diagnostics preserve the original nested runtime message and st
   const wrapper = { name: 'RoleFitStreamError', code: 'generation_failed',
     message: 'generation_failed', cause: underlying };
   const details = formatRoleFitAIErrorDetails(wrapper);
-  assert.match(details, /Underlying exception: GPUValidationError \\[gpu_validation\\]/);
+  assert.match(details, /Underlying exception: GPUValidationError \[gpu_validation\]/);
   assert.match(details, /WebLLM GPU validation failed during JSON generation/);
   assert.match(details, /Stack:/);
-  assert.match(details, /Wrapped by: RoleFitStreamError \\[generation_failed\\]/);
+  assert.match(details, /Wrapped by: RoleFitStreamError \[generation_failed\]/);
   assert.ok(details.indexOf('GPUValidationError') < details.indexOf('RoleFitStreamError'));
   assert.ok(details.length <= 8000);
 });
