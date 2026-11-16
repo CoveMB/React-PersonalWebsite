@@ -81,3 +81,11 @@ No numerical suitability score or automated hiring recommendation.
 - Preserve the current request schema, bounded streaming, error diagnostics, privacy behavior, deterministic assessment, and two-card UI without changing CSS or page layout.
 - **Verification boundary:** Catalog membership, lock consistency, and selection logic can be tested automatically, but real browser generation latency, structured JSON acceptance, and factual quality require hands-on comparison with representative job descriptions. A smaller newer model is not guaranteed to be more accurate than the prior 3B model.
 - Sources: [WebLLM 0.2.88 release](https://github.com/mlc-ai/web-llm/releases/tag/v0.2.88), [pinned model catalog](https://github.com/mlc-ai/web-llm/blob/v0.2.88/src/config.ts).
+
+## 2026-11-16 — JSON grammar initialization failure and local diagnostics
+
+- **Confirmed from browser exception and WebLLM 0.2.88 source:** the `json_object` branch calls XGrammar `compileJSONSchema(responseFormat.schema!, ...)`. Previously the request omitted `schema`, so XGrammar received `undefined` and raised `GrammarMatcherInitError: Cannot pass non-string to std::string`.
+- Send a static, serialized JSON Schema string requiring the existing `direct`, `transferable` and `notEstablished` arrays of `{ id, note }` objects. Continue validating requirement IDs, categories, supporting evidence and notes independently. Do not loosen validation or change the two-card design.
+- Detailed nested WebLLM errors and a bounded stack now appear only in the **local browser console** on an AI failure, never in the UI state. The existing UI technical disclosure shows non-sensitive error codes and directs technical users to the console. Console details may still contain employer input or browser paths; users should review them before sharing, and the application must not forward them to telemetry.
+- Added regression coverage for serialized-schema presence/shape and UI/console separation. Browser WebGPU inference with the exact failing posting is still needed to verify end-to-end success; a code-level proof does not constitute a live runtime test.
+- Source: `mlc-ai/web-llm` tag `v0.2.88`, `src/llm_chat.ts` (grammar initialization), `src/openai_api_protocols/chat_completion.ts` (`ResponseFormat.schema?: string`), and `examples/json-schema/src/json_schema.ts`.
