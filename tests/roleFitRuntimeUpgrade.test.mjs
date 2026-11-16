@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 const packageJson = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 const lock = readFileSync(new URL('../yarn.lock', import.meta.url), 'utf8');
 const ai = readFileSync(new URL('../src/utils/roleFitAI.mjs', import.meta.url), 'utf8');
+const markdown = readFileSync(new URL('../src/utils/roleFitMarkdown.mjs', import.meta.url), 'utf8');
 
 test('pin WebLLM 0.2.88 and keep the yarn v1 runtime lock in sync', () => {
   assert.equal(packageJson.dependencies['@mlc-ai/web-llm'], '0.2.88');
@@ -27,7 +28,10 @@ test('lock the published 0.2.88 WebLLM dependency graph for frozen installs', ()
   assert.match(lock, /tslib@\^2\.8\.1/);
 });
 
-test('the model still produces source-checked JSON notes rather than unchecked prose', () => {
-  assert.match(ai, /response_format:\s*\{\s*type:\s*'json_object',\s*schema:\s*JSON\.stringify\(roleFitAIResponseSchema\)\s*\}/);
-  assert.match(ai, /interpretRoleFitAIResponse/);
+test('the AI assessment uses direct Markdown generation, not constrained JSON or ID mapping', () => {
+  assert.match(ai, /interpretRoleFitMarkdownResponse/);
+  assert.doesNotMatch(ai, /roleFitAIResponseSchema|interpretRoleFitAIResponse/);
+  assert.match(markdown, /roleFitMarkdownGenerationOptions/);
+  assert.doesNotMatch(markdown, /response_format:\s*\{/);
+  assert.match(markdown, /prepareRoleFitResumeMarkdown/);
 });
