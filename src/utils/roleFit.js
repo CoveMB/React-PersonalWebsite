@@ -7,19 +7,16 @@ export { maximumJobDescriptionLength } from "./roleFitRequirements.mjs";
 export const getRolePostingValidationCode = (input) =>
   input.length > 12000 ? "too_long" : !input.trim() ? "empty" : null;
 
-// A 3B instruct model is better suited to nuanced recruiter comparisons than
-// the previous 0.5B default. The exact IDs and VRAM estimates come from the
-// pinned WebLLM 0.2.81 catalog; never select unregistered or arbitrary models.
-// The on-device loader tries smaller candidates if the preferred model fails.
+// Pin exact model IDs from WebLLM 0.2.88's catalog. Qwen3.5 0.8B
+// is the default for browser inference, not the older 3B model.
+// A smaller Qwen2.5 0.5B is a compatibility fallback only when the
+// requested model cannot initialize or hits a first-token timeout.
 const roleFitF16Preference = Object.freeze([
-  "Qwen2.5-3B-Instruct-q4f16_1-MLC",
-  "Qwen2.5-1.5B-Instruct-q4f16_1-MLC",
+  "Qwen3.5-0.8B-q4f16_1-MLC",
   "Qwen2.5-0.5B-Instruct-q4f16_1-MLC",
-  "Qwen2.5-0.5B-Instruct-q0f16-MLC",
 ]);
 const roleFitF32Preference = Object.freeze([
-  "Qwen2.5-3B-Instruct-q4f32_1-MLC",
-  "Qwen2.5-1.5B-Instruct-q4f32_1-MLC",
+  "Qwen3.5-0.8B-q4f32_1-MLC",
   "Qwen2.5-0.5B-Instruct-q4f32_1-MLC",
 ]);
 export const selectRoleFitModelCandidates = (modelList = [], { supportsF16 = true } = {}) => {
