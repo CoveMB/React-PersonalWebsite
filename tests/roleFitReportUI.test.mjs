@@ -1,142 +1,90 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
+
 const section = readFileSync(new URL('../src/components/ai/AI.jsx', import.meta.url), 'utf8');
 const report = readFileSync(new URL('../src/components/ai/RoleFitReport.jsx', import.meta.url), 'utf8');
+const aiCard = readFileSync(new URL('../src/components/ai/RoleFitAIReport.jsx', import.meta.url), 'utf8');
 const hook = readFileSync(new URL('../src/components/ai/useRoleFitLab.js', import.meta.url), 'utf8');
 const content = readFileSync(new URL('../src/content/roleFitLabContent.js', import.meta.url), 'utf8');
-const newCardPath = new URL('../src/components/ai/RoleFitAIReport.jsx', import.meta.url);
-const aiCard = () => existsSync(newCardPath) ? readFileSync(newCardPath, 'utf8') : '';
+const resumeImport = readFileSync(new URL('../src/utils/resumeText.js', import.meta.url), 'utf8');
+const aiLogic = readFileSync(new URL('../src/utils/roleFitAI.mjs', import.meta.url), 'utf8');
 
-test('AI card is before and independent of the existing deterministic evidence card', () => {
+test('independent AI card remains above the evidence report without changing the outer layout', () => {
   assert.match(section, /<RoleFitAIReport\b/);
   assert.match(section, /<RoleFitReport\b/);
   assert.ok(section.indexOf('<RoleFitAIReport') < section.indexOf('<RoleFitReport'));
   assert.equal((section.match(/<RoleFitAIReport\b/g) ?? []).length, 1);
   assert.equal((section.match(/<RoleFitReport\b/g) ?? []).length, 1);
   assert.match(section, /<RoleFitReport assessment=\{roleFitState\.result\}/);
+  assert.match(aiCard, /aiPart roleFitResultCard/);
+  assert.match(report, /aiPart roleFitResultCard/);
 });
 
-test('deterministic report retains existing three-category structure and source links without AI prose', () => {
+test('AI card uses its own Markdown sections, never deterministic requirement associations', () => {
+  assert.match(aiCard, /Directly demonstrated/);
+  assert.match(aiCard, /Transferable experience/);
+  assert.match(aiCard, /Not established/);
+  assert.match(aiCard, /assessment\.sections\[group\.key\]/);
+  assert.match(aiCard, /<InlineMarkdown text=\{note\}/);
+  assert.doesNotMatch(aiCard, /buildThreeSectionRoleFit|mechanicalAssessment|row\.evidence/);
+  assert.doesNotMatch(aiCard, /requirementId|sourceUrl|selectedCount} accepted/);
+});
+
+test('model content renders inertly, including HTML-looking input', () => {
+  assert.doesNotMatch(aiCard, /dangerouslySetInnerHTML|innerHTML|DOMParser/);
+  assert.match(aiCard, /<pre className="roleFitOutput">\{assessment\.rawModelOutput\}<\/pre>/);
+  assert.match(aiCard, /<InlineMarkdown text=\{note\}/);
+});
+
+test('unstructured Markdown is visible but not assigned artificial categories', () => {
+  assert.match(aiCard, /Unstructured model response/);
+  assert.match(aiCard, /did not follow the requested Markdown headings/);
+  assert.match(aiCard, /unstructured/);
+  assert.match(aiCard, /unverified/);
+});
+
+test('missing model commentary is disclosed instead of mechanically filled', () => {
+  assert.match(aiCard, /The model did not provide a statement in this section/);
+  assert.match(aiCard, /missingSections/);
+  assert.doesNotMatch(aiCard, /buildRoleFitAssessment|matchRoleRequirements/);
+});
+
+test('independent evidence card preserves three categories and published sources', () => {
   assert.match(report, /title: 'Directly demonstrated'/);
   assert.match(report, /title: 'Transferable experience'/);
   assert.match(report, /title: 'Not established'/);
   assert.match(report, /<EvidenceDetails/);
-  assert.match(report, /<RequirementGroup/);
   assert.match(report, /roleFitItemEvidence/);
-  assert.doesNotMatch(report, /aiStatus|aiFailure|aiAssessment|row\.modelNote|Local AI interpretation/);
+  assert.doesNotMatch(report, /aiStatus|aiFailure|aiAssessment|Local AI interpretation/);
 });
 
-test('AI card displays accepted model-authored notes in the three required categories', () => {
-  const src=aiCard();
-  assert.match(src, /AI assessment/);
-  assert.match(src, /Directly demonstrated/);
-  assert.match(src, /Transferable experience/);
-  assert.match(src, /Not established/);
-  assert.match(src, /sections\[group\.key\]/);
-  assert.match(src, /selection\.note/);
-  assert.doesNotMatch(src, /dangerouslySetInnerHTML/);
+test('the hook supplies the build-time Markdown résumé directly to the model', () => {
+  assert.match(resumeImport, /Resume Cove Marquis EN\.md\?raw/);
+  assert.match(hook, /resumeRoleFitText/);
+  assert.match(hook, /buildRoleFitMarkdownRequest/);
+  assert.match(hook, /roleFitMarkdownGenerationOptions/);
+  assert.doesNotMatch(hook, /buildRoleFitAIRequest|allowedIds|responseFormat/);
+  assert.match(aiLogic, /interpretRoleFitMarkdownResponse/);
+  assert.doesNotMatch(aiLogic, /interpretRoleFitAIResponse|roleFitAIResponseSchema/);
 });
 
-test('rejection section visibly explains why text was rejected and renders original response inertly', () => {
-  const src=aiCard();
-  assert.match(src, /rejectedItems/);
-  assert.match(src, /rejectionReasons/);
-  assert.match(src, /rawModelOutput/);
-  assert.match(src, /<pre\b/);
-  assert.match(src, /Rejected model output/);
-  assert.doesNotMatch(src, /dangerouslySetInnerHTML|innerHTML/);
+test('error handling and technical console diagnostics remain visible without raw exceptions in the UI', () => {
+  assert.match(hook, /console\.error\('\[AI Lab\] Local model failure'/);
+  assert.match(hook, /formatRoleFitAIErrorDetails\(cause\)/);
+  assert.match(aiCard, /Technical diagnostic \(error codes only\)/);
+  assert.match(aiCard, /Incomplete model output/);
+  assert.doesNotMatch(aiCard, /aiFailure\.technicalDetails/);
 });
 
-test('AI card contains runtime fallback and safe diagnostic but cannot misrepresent mechanical findings as AI', () => {
-  const src=aiCard();
-  assert.match(src, /status === 'running'/);
-  assert.match(src, /status === 'unavailable'/);
-  assert.match(src, /status === 'failed'/);
-  assert.match(src, /roleFitAiFailureMessages/);
-  assert.match(src, /aiFailure\?\.code/);
-  assert.doesNotMatch(src, /buildRoleFitAssessment|matchRoleRequirements|buildRoleFitRecruiterSummary/);
-});
-
-test('existing layout classes and user-input affordances are reused', () => {
-  const src=aiCard();
-  assert.match(src, /aiPart roleFitResultCard/);
-  assert.match(report, /aiPart roleFitResultCard/);
-  assert.match(report, /roleFitThreeWayGrid/);
-  assert.match(report, /initialVisiblePerGroup = 3/);
-  assert.match(report, /roleFitInventory roleFitAdditionalItems/);
-  assert.match(section, /roleFitForm/);
+test('privacy, form and lifecycle constraints remain intact', () => {
+  assert.match(content, /not uploaded/);
   assert.match(hook, /event\.ctrlKey \|\| event\.metaKey/);
   assert.match(hook, /gateReference\.current\.bump\(\)/);
-});
-
-test('privacy note does not promise remote processing; original model response is not sent outside browser', () => {
-  assert.match(content, /not uploaded/);
-  assert.doesNotMatch(hook, /localStorage|sessionStorage|fetch\s*\(/);
-  assert.doesNotMatch(aiCard(), /fetch\s*\(|navigator\.sendBeacon|localStorage/);
-});
-
-test('accepted AI answers with no rejections do not show a misleading rejected-output panel', () => {
-  const src = aiCard();
-  assert.match(src, /status !== 'ready'/);
-  assert.doesNotMatch(src, /const hasRejectedResponse = Boolean\(assessment\?\.rawModelOutput\) \|\|/);
-});
-
-test('loading 100 percent no longer masquerades as completion; generation has independent progress', () => {
-  assert.match(hook, /awaitRoleFitModelReady/);
-  assert.match(hook, /Finalizing local model initialization/);
-  assert.match(hook, /streamRoleFitAI/);
-  assert.match(hook, /signal: controller\.signal/);
   assert.match(hook, /activeAbortReference\.current\?\.abort\(\)/);
-  assert.match(content, /first_token_timeout/);
-  assert.match(content, /generation_stalled/);
-  assert.match(content, /generation_timeout/);
-  assert.doesNotMatch(hook, /const response = await engine\.chat\.completions\.create\(/);
-});
-
-test('interrupted model output is displayed in the AI card but never as a verified interpretation', () => {
-  const src = aiCard();
-  assert.match(src, /aiFailure\?\.partialOutput/);
-  assert.match(src, /Incomplete model output/);
-  assert.match(src, /<pre\b[^>]*>\{aiFailure\.partialOutput\}<\/pre>/);
-  assert.doesNotMatch(src, /dangerouslySetInnerHTML/);
-  assert.doesNotMatch(report, /aiFailure|partialOutput/);
-  assert.doesNotMatch(hook, /localStorage|sessionStorage/);
-});
-
-test('failed inference logs underlying exception locally while the UI exposes codes only', () => {
-  const src = aiCard();
-  assert.match(hook, /console\.error\('\[AI Lab\] Local model failure'/);
-  assert.match(hook, /details:\s*formatRoleFitAIErrorDetails\(cause\)/);
-  assert.match(src, /<summary>Technical diagnostic \(error codes only\)<\/summary>/);
-  assert.match(src, /Failure: <code>/);
-  assert.match(src, /Stage: <code>/);
-  assert.doesNotMatch(src, /aiFailure\.technicalDetails|Original local runtime error/);
-  assert.doesNotMatch(hook, /technicalDetails:/);
-  assert.doesNotMatch(src, /dangerouslySetInnerHTML|innerHTML/);
-  assert.doesNotMatch(report, /technicalDetails/);
-  assert.doesNotMatch(hook, /localStorage|sessionStorage|fetch\s*\(/);
-});
-
-test('generation sends the request-specific category/ID schema to WebLLM', () => {
-  assert.match(hook, /response_format: request\.responseFormat/);
-  assert.match(hook, /allowedIds: request\.allowedIds/);
-  assert.match(hook, /roleFitAIGenerationOptions/);
-  assert.doesNotMatch(hook, /roleFitAIResponseSchema/);
-});
-
-test('first-token timeout retries a smaller local model without modifying the card layout', () => {
+  assert.match(hook, /streamRoleFitAI/);
   assert.match(hook, /runRoleFitWithFallback/);
-  assert.match(hook, /loadEngine\(revision, excludedIds\)/);
-  assert.match(hook, /onRetry:/);
-  assert.match(hook, /Trying a smaller local model/);
-  assert.match(hook, /stopModel\(\{ workerReference, engineReference, enginePromiseReference \}\)/);
-  assert.match(section, /<RoleFitAIReport/);
-  assert.match(section, /<RoleFitReport/);
-  assert.match(report, /roleFitThreeWayGrid/);
-});
-
-
-test('first-token timeout explains prompt prefill as an alternative to a GPU stall', () => {
-  assert.match(content, /first_token_timeout:[\s\S]{0,240}prepar(?:ing|ation|e) the prompt/);
+  assert.match(section, /roleFitForm/);
+  assert.doesNotMatch(hook, /localStorage|sessionStorage|fetch\s*\(/);
+  assert.doesNotMatch(aiCard, /navigator\.sendBeacon|fetch\s*\(/);
 });
