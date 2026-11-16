@@ -7,6 +7,7 @@ import {
   interpretRoleFitAIResponse,
   roleFitAIGenerationOptions,
   classifyRoleFitAIError,
+  formatRoleFitAIErrorDetails,
   runRoleFitAnalyses,
 } from '../src/utils/roleFitAI.mjs';
 import { getRoleFitEvidenceCatalog } from '../src/utils/roleFitEvidence.mjs';
@@ -404,6 +405,31 @@ test('streamed generation and post-load handshake timeouts have safe, distinct d
   const wrapper = { code: 'generation_failed', cause: new Error('GPU out of memory while generating') };
   assert.deepEqual(classifyRoleFitAIError(wrapper, 'generation'), { stage: 'generation', code: 'memory_limit' });
   assert.equal(classifyRoleFitAIError({ code: 'unexpected_foo' }, 'generation').code, 'generation_failed');
+});
+
+test('AI failure diagnostics preserve the original nested runtime message and stack', () => {
+  const underlying = new Error('WebLLM GPU validation failed during JSON generation');
+  underlying.name = 'GPUValidationError';
+  underlying.code = 'gpu_validation';
+  const wrapper = { name: 'RoleFitStreamError', code: 'generation_failed',
+    message: 'generation_failed', cause: underlying };
+  const details = formatRoleFitAIErrorDetails(wrapper);
+  assert.match(details, /Underlying exception: GPUValidationError \\[gpu_validation\\]/);
+  assert.match(details, /WebLLM GPU validation failed during JSON generation/);
+  assert.match(details, /Stack:/);
+  assert.match(details, /Wrapped by: RoleFitStreamError \\[generation_failed\\]/);
+  assert.ok(details.indexOf('GPUValidationError') < details.indexOf('RoleFitStreamError'));
+  assert.ok(details.length <= 8000);
+});
+
+test('AI failure diagnostics handle strings, cyclic causes and oversized errors safely', () => {
+  assert.match(formatRoleFitAIErrorDetails('Worker generation crashed'), /Worker generation crashed/);
+  const circular = new Error('repeated cause');
+  circular.cause = circular;
+  assert.equal(formatRoleFitAIErrorDetails(circular).match(/repeated cause/g)?.length >= 1, true);
+  const oversized = new Error('z'.repeat(16000));
+  assert.ok(formatRoleFitAIErrorDetails(oversized).length <= 8000);
+  assert.equal(formatRoleFitAIErrorDetails(null), '');
 });
 
 test('AI prompt is prefill-bounded for local model while preserving all three categories', () => {
