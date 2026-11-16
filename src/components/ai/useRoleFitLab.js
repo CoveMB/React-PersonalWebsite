@@ -1,7 +1,9 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { roleFitLabMessageContent as copy } from '../../content/roleFitLabContent';
 import { maximumJobDescriptionLength, getRolePostingValidationCode, selectRoleFitModelCandidates } from '../../utils/roleFit';
-import { buildRoleFitAIRequest, roleFitAIGenerationOptions, runRoleFitAnalyses, classifyRoleFitAIError, formatRoleFitAIErrorDetails } from '../../utils/roleFitAI.mjs';
+import { runRoleFitAnalyses, classifyRoleFitAIError, formatRoleFitAIErrorDetails } from '../../utils/roleFitAI.mjs';
+import { buildRoleFitMarkdownRequest, roleFitMarkdownGenerationOptions } from '../../utils/roleFitMarkdown.mjs';
+import { resumeRoleFitText } from '../../utils/resumeText';
 import { createRoleFitRevisionGuard } from '../../utils/roleFitEnhancement.mjs';
 import { streamRoleFitAI, awaitRoleFitModelReady, runRoleFitWithFallback, RoleFitStreamError } from '../../utils/roleFitStreaming.mjs';
 
@@ -22,7 +24,7 @@ const reducer = (state, action) => {
       analysisId: state.analysisId + 1 };
     case 'progress': return { ...state, statusMessage: action.message };
     case 'aiReady': return { ...state, aiAssessment: action.result,
-      aiStatus: action.result.kind === 'accepted' ? 'ready' : action.result.kind === 'empty' ? 'empty' : 'invalid',
+      aiStatus: ['accepted', 'unstructured'].includes(action.result.kind) ? 'ready' : action.result.kind === 'empty' ? 'empty' : 'invalid',
       statusMessage: '', aiFailure: action.result.failureCode ? { code: action.result.failureCode } : null,
       modelId: action.modelId };
     case 'aiFailed': return { ...state, aiStatus: 'failed',
@@ -177,9 +179,11 @@ export const useRoleFitLab = () => {
       jobDescription: roleFitState.jobDescription, gate, revision,
       onMechanical: (result) => dispatch({ type: 'analyzed', result, hasModel }),
       producer: hasModel ? async (context) => {
-        let stage = 'load';
+        let stage = 'input';
         try {
-          const request = buildRoleFitAIRequest(context);
+          const request = buildRoleFitMarkdownRequest({
+            jobText: context.jobText, resumeMarkdown: resumeRoleFitText,
+          });
           const result = await runRoleFitWithFallback({
             signal: controller.signal,
             loadModel: async excludedIds => {
@@ -195,8 +199,7 @@ export const useRoleFitLab = () => {
               }
               const generated = await streamRoleFitAI({
                 createCompletion: options => engine.chat.completions.create(options),
-                request: { messages: request.messages, ...roleFitAIGenerationOptions,
-                  response_format: request.responseFormat },
+                request: { messages: request.messages, ...roleFitMarkdownGenerationOptions },
                 signal: controller.signal,
                 onProgress: message => {
                   if (gate.isCurrent(revision)) dispatch({ type: 'progress', message });
@@ -205,7 +208,6 @@ export const useRoleFitLab = () => {
               return {
                 text: generated.text,
                 finishReason: generated.finishReason,
-                allowedIds: request.allowedIds,
               };
             },
             dispose: () => stopModel({ workerReference, engineReference, enginePromiseReference }),
