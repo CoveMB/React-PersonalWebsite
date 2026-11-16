@@ -7,11 +7,30 @@ import { findCapabilities } from './roleFitTaxonomy.mjs';
 // A local language model writes short interpretations. Only source-anchored
 // requirement/category combinations can be displayed; it cannot create
 // evidence, add qualifications, or change the classifier's outcome.
+// WebLLM 0.2.88's XGrammar compiler requires a JSON-schema *string* for
+// json_object mode. Omitting it passes undefined into the native compiler
+// ("Cannot pass non-string to std::string") and aborts generation.
+const roleFitAINoteSchema = {
+  type: 'object',
+  properties: { id: { type: 'string' }, note: { type: 'string' } },
+  required: ['id', 'note'],
+  additionalProperties: false,
+};
+const roleFitAIResponseSchema = {
+  type: 'object',
+  properties: {
+    direct: { type: 'array', items: roleFitAINoteSchema },
+    transferable: { type: 'array', items: roleFitAINoteSchema },
+    notEstablished: { type: 'array', items: roleFitAINoteSchema },
+  },
+  required: ['direct', 'transferable', 'notEstablished'],
+  additionalProperties: false,
+};
 export const roleFitAIGenerationOptions = Object.freeze({
   max_tokens: 680, temperature: 0.2, top_p: 0.85, repetition_penalty: 1.08,
-  // WebLLM 0.2.81 XGrammar-constrained JSON output. The prompt still
-  // defines a contract, and our separate validator rejects unsafe content.
-  response_format: { type: 'json_object' },
+  // Grammar constrains shape, not truth. The independent validator still
+  // checks category, ID, supporting sources and model-authored wording.
+  response_format: { type: 'json_object', schema: JSON.stringify(roleFitAIResponseSchema) },
 });
 
 export function classifyRoleFitAIError(error, stage = 'generation') {
