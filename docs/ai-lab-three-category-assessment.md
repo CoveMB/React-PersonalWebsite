@@ -89,3 +89,11 @@ No numerical suitability score or automated hiring recommendation.
 - Detailed nested WebLLM errors and a bounded stack now appear only in the **local browser console** on an AI failure, never in the UI state. The existing UI technical disclosure shows non-sensitive error codes and directs technical users to the console. Console details may still contain employer input or browser paths; users should review them before sharing, and the application must not forward them to telemetry.
 - Added regression coverage for serialized-schema presence/shape and UI/console separation. Browser WebGPU inference with the exact failing posting is still needed to verify end-to-end success; a code-level proof does not constitute a live runtime test.
 - Source: `mlc-ai/web-llm` tag `v0.2.88`, `src/llm_chat.ts` (grammar initialization), `src/openai_api_protocols/chat_completion.ts` (`ResponseFormat.schema?: string`), and `examples/json-schema/src/json_schema.ts`.
+
+## 2026-11-16 — Rejected AI notes with fabricated requirement IDs
+
+- **Reproduction:** in the Wissen posting, `req-1` and `req-2` refer to introductory company text. The model's REST API and Git/CI/CD notes correspond to `req-10` and `req-13`. The notes were correctly rejected as unprovided and incorrectly categorized.
+- **Cause:** the previous JSON grammar accepted any `id` string and the system prompt used a fabricated `"id":"req-1"` sample. The small model appeared to renumber the shortlist.
+- **Repair:** after shortlisting, build a JSON schema with an enum of exactly the permitted IDs for each category; categories with no candidates have `maxItems: 0`. Remove the misleading sample ID and explicitly instruct the model not to renumber IDs. The schema bounds each category to two notes.
+- **Unchanged:** the evidence parser, matcher, authoritative validator, and two-card UI. Invalid IDs still cause rejection; no speculative ID remapping or synthetic model prose is added.
+- **Limit:** request-shape and regression tests can run without GPU inference; the actual WebLLM/XGrammar deployment still needs browser verification.
