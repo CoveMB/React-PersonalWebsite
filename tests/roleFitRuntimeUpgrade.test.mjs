@@ -28,6 +28,6 @@ test('lock the published 0.2.88 WebLLM dependency graph for frozen installs', ()
 });
 
 test('the model still produces source-checked JSON notes rather than unchecked prose', () => {
-  assert.match(ai, /response_format:\s*\{\s*type:\s*'json_object'\s*\}/);
+  assert.match(ai, /response_format:\s*\{\s*type:\s*'json_object',\s*schema:\s*JSON\.stringify\(roleFitAIResponseSchema\)\s*\}/);
   assert.match(ai, /interpretRoleFitAIResponse/);
 });
