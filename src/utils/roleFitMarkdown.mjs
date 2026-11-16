@@ -43,7 +43,10 @@ export function buildRoleFitMarkdownRequest({ jobText, resumeMarkdown }) {
       'Write Markdown using these three exact level-two headings on separate lines:',
       '## Directly demonstrated\n## Transferable experience\n## Not established',
       'Use up to three concise, specific bullet points below each heading. Prioritize consequential required skills and gaps.',
-      'Leave a section empty when no claim is justified. Do not invent filler.',
+      'Before finalizing, review the job\'s required technical skills against the résumé and identify important missing evidence.',
+      'In Not established, name the most important required skills not documented in the résumé (up to three). Do not leave it empty when material gaps exist.',
+      'If a role requires Java or Spring and the résumé only documents JavaScript or Node, state that the résumé does not document Java or Spring experience.',
+      'Leave a section empty only when no justified statement exists. Do not invent filler.',
       'No numerical scores, hiring recommendations, extra headings, links, or personal contact information.',
     ].join(' '),
   }, {
