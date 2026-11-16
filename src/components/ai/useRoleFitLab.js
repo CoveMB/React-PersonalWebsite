@@ -229,9 +229,15 @@ export const useRoleFitLab = () => {
         const cause = error?.cause ?? error;
         const partial = typeof cause?.partialText === 'string' ? cause.partialText.slice(0, 8000) : '';
         const classification = classifyRoleFitAIError(cause, error?.stage);
+        // Keep the complete bounded runtime diagnostic in the local console,
+        // not the UI or application state. It may contain job-posting text:
+        // never forward it to analytics or remote error reporting.
+        console.error('[AI Lab] Local model failure', {
+          modelId: selectedModelId, ...classification,
+          details: formatRoleFitAIErrorDetails(cause),
+        });
         dispatch({ type: 'aiFailed', modelId: selectedModelId,
-          failure: { ...classification, technicalDetails: formatRoleFitAIErrorDetails(cause),
-            ...(partial ? { partialOutput: partial } : {}) } });
+          failure: { ...classification, ...(partial ? { partialOutput: partial } : {}) } });
       },
     }).finally(() => {
       if (activeRunReference.current === revision) {
