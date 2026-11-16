@@ -14,7 +14,7 @@ export const roleFitLabSectionContent = {
 
 export const roleFitLabMessageContent = {
   browserSupport: {
-    ready: 'Analysis runs locally. Requirements are compared with public résumé and project evidence, then the on-device model may add short interpretations. Its first run downloads model files and it analyzes a bounded selection of requirements from the full posting. The posting is not uploaded.',
+    ready: 'Analysis runs locally. The independent evidence assessment compares public résumé and project sources. The on-device model separately reads the complete job description and published Markdown résumé when they fit its context. The first AI run downloads model files. The job description is not uploaded.',
     unavailable: 'This browser cannot run the on-device model (WebGPU and Worker required). A clearly labeled evidence-only comparison is available instead. Your pasted job description stays on this device.',
   },
   buttonLabels: { analyze: 'Analyze role' },
@@ -30,15 +30,12 @@ export const roleFitLabMessageContent = {
 };
 
 export const roleFitAiFailureMessages = Object.freeze({
-  invalid_json: "The local model returned text that was not valid JSON.",
-  invalid_schema: "The local model returned JSON with the wrong structure.",
-  no_valid_notes: "The model returned structured output, but no notes passed the source-evidence checks.",
-  no_notes_generated: "The local model returned a valid but empty assessment; no additional AI commentary was generated.",
-  generation_limit: "The local model reached its generation limit before producing a usable structured response.",
+  input_context_limit: "The complete job description and published résumé exceed this local model's conservative input budget. Nothing was truncated. The independent evidence assessment remains available.",
+  resume_unavailable: "The published Markdown résumé could not be prepared for local AI processing.",
+  generation_limit: "The local model reached its output limit before completing its Markdown assessment.",
   empty_response: "The local model returned an empty response.",
-  response_too_long: "The model returned an oversized response that could not be validated.",
-  validation_unavailable: "The model response could not be checked against the current evidence.",
-  structured_output_unsupported: "The local model or runtime rejected JSON-constrained generation.",
+  response_too_long: "The model returned an oversized Markdown response.",
+  structured_output_unsupported: "The model runtime rejected the requested generation format.",
   download_failed: "Model files could not be downloaded. Check the connection or browser model-cache settings.",
   load_failed: "The local AI model could not initialize on this device.",
   generation_failed: "The local AI model encountered an error during text generation.",
