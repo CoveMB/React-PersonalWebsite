@@ -4,30 +4,44 @@ import { selectRoleFitModelId, selectRoleFitModelCandidates } from '../src/utils
 
 const model = (model_id, vram_required_MB) => ({ model_id, vram_required_MB });
 const catalog = [
-  model('Qwen2.5-0.5B-Instruct-q0f16-MLC', 1624.12),
+  model('Qwen3.5-0.8B-q4f16_1-MLC', 1629.49),
+  model('Qwen3.5-0.8B-q4f32_1-MLC', 1894.19),
   model('Qwen2.5-0.5B-Instruct-q4f16_1-MLC', 944.62),
+  model('Qwen2.5-0.5B-Instruct-q4f32_1-MLC', 1060.2),
   model('Qwen2.5-1.5B-Instruct-q4f16_1-MLC', 1629.75),
   model('Qwen2.5-3B-Instruct-q4f16_1-MLC', 2504.76),
-  model('Qwen3-4B-q4f16_1-MLC', 3431.59),
+  model('Qwen3.5-4B-q4f16_1-MLC', 3867.82),
 ];
-test('prefer more capable 3B instruct model over tiny default while keeping smaller fallbacks', () => {
-  assert.equal(selectRoleFitModelId(catalog), 'Qwen2.5-3B-Instruct-q4f16_1-MLC');
-  const ids = selectRoleFitModelCandidates(catalog);
-  assert.deepEqual(ids.slice(0, 3), [
-    'Qwen2.5-3B-Instruct-q4f16_1-MLC',
-    'Qwen2.5-1.5B-Instruct-q4f16_1-MLC',
+
+test('prioritize Qwen3.5 0.8B as the only primary model; retain a small compatibility fallback', () => {
+  assert.equal(selectRoleFitModelId(catalog), 'Qwen3.5-0.8B-q4f16_1-MLC');
+  assert.deepEqual(selectRoleFitModelCandidates(catalog), [
+    'Qwen3.5-0.8B-q4f16_1-MLC',
     'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',
   ]);
-  assert.equal(new Set(ids).size, ids.length);
 });
-test('do not select models absent from runtime catalog or unbounded enormous models', () => {
+
+test('when shader-f16 is unavailable use Qwen3.5 q4f32 with an f32 fallback', () => {
+  assert.equal(selectRoleFitModelId(catalog, { supportsF16: false }), 'Qwen3.5-0.8B-q4f32_1-MLC');
+  assert.deepEqual(selectRoleFitModelCandidates(catalog, { supportsF16: false }), [
+    'Qwen3.5-0.8B-q4f32_1-MLC',
+    'Qwen2.5-0.5B-Instruct-q4f32_1-MLC',
+  ]);
+});
+
+test('return only exact supported model IDs actually present in the runtime catalog', () => {
   assert.deepEqual(selectRoleFitModelCandidates([]), []);
   assert.deepEqual(selectRoleFitModelCandidates([
+    model('Qwen2.5-3B-Instruct-q4f16_1-MLC', 2504.76),
     model('Unknown-70B-Instruct-q4f16_1-MLC', 40000),
-    model('Qwen2.5-1.5B-Instruct-q4f16_1-MLC', 1629.75),
-  ]), ['Qwen2.5-1.5B-Instruct-q4f16_1-MLC']);
+    model('Qwen3.5-0.8B-q4f16_1-MLC', 1629.49),
+  ]), ['Qwen3.5-0.8B-q4f16_1-MLC']);
+  assert.deepEqual(selectRoleFitModelCandidates([
+    model('Qwen2.5-0.5B-Instruct-q4f16_1-MLC', 944.62),
+  ]), ['Qwen2.5-0.5B-Instruct-q4f16_1-MLC']);
 });
-test('low-resource compatibility retains 0.5B fallback', () => {
-  const ids = selectRoleFitModelCandidates(catalog.filter(x => /0\.5B/.test(x.model_id)));
-  assert.deepEqual(ids, ['Qwen2.5-0.5B-Instruct-q4f16_1-MLC', 'Qwen2.5-0.5B-Instruct-q0f16-MLC']);
+
+test('do not silently choose unsupported F16 model without shader-f16 support', () => {
+  const f16Only = catalog.filter(m => m.model_id.includes('q4f16_1-'));
+  assert.deepEqual(selectRoleFitModelCandidates(f16Only, { supportsF16: false }), []);
 });
