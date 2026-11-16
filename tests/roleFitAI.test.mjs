@@ -448,6 +448,76 @@ test('AI failure diagnostics handle strings, cyclic causes and oversized errors 
   assert.equal(formatRoleFitAIErrorDetails(null), '');
 });
 
+test('Wissen posting constrains model IDs to actual sampled requirements per category', () => {
+  const posting = [
+    'About the job',
+    'The Wissen team continues to expand its footprint in the USA, Canada, UK, Australia, and India.',
+    'More openings to come as we continue to grow the team!',
+    'Please read below for a brilliant career opportunity.',
+    'Role: Senior Java Software EngineerTitle: AVP/VPLocation: Montreal, QCExperience: 6+Work type - FulltimeMode of Work: Onsite 3-4 days per week',
+    'Required skills:',
+    'Experience with Java/J2EE, DB technologies.',
+    'Experience with Java frameworks like Spring, Hibernate, Spring boot.',
+    'Experience on Databases & Linux/Unix.',
+    'Experience with front-end technologies: HTML5, CSS3, JavaScript, and modern frameworks/libraries such as Angular, React, or Vue.js. - Good to have',
+    'Experience in building and consuming RESTful APIs and Microservices.',
+    'Knowledge of database systems: SQL (e.g., MySQL, PostgreSQL), and optionally NoSQL (e.g., MongoDB).',
+    'Familiarity with version control systems (Git), CI/CD pipelines, and Agile development methodologies',
+    'Knowledge of design and development skills.',
+    'Good problem solving and analytical skills.',
+    'Excellent communication skills.',
+    'Experience in a fast-based business environment with a proven ability to balance multiple competing priorities simultaneously.',
+    'The ability to work independently and demonstrate sound judgment.',
+    'The ability to communicate effectively both orally and in writing to internal and external stakeholders.',
+    'The ability to multitask and disciplined attention to detail, along with a team player mentality.',
+  ].join('\n');
+  const assessment = assess(posting);
+  const request = buildRoleFitAIRequest({ jobText: posting, assessment, evidenceCatalog: catalog });
+  const provided = JSON.parse(request.messages[1].content).untrustedRoleRequirements;
+  const responseFormat = request.responseFormat;
+  assert.equal(responseFormat.type, 'json_object');
+  assert.equal(typeof responseFormat.schema, 'string');
+  const schema = JSON.parse(responseFormat.schema);
+  const categories = ['direct', 'transferable', 'notEstablished'];
+  const byCategory = Object.fromEntries(categories.map(
+    category => [category, provided.filter(item => item.category === category).map(item => item.id)]
+  ));
+  assert.deepEqual(request.allowedIds, provided.map(item => item.id));
+  assert.deepEqual(byCategory.direct, ['req-10', 'req-13', 'req-9']);
+  assert.ok(!request.allowedIds.includes('req-1') && !request.allowedIds.includes('req-2'));
+  for (const [category, ids] of Object.entries(byCategory)) {
+    const array = schema.properties[category];
+    assert.equal(array.maxItems, ids.length ? 2 : 0);
+    if (ids.length) assert.deepEqual(array.items.properties.id.enum, ids,
+      category + ' must only generate IDs supplied for that category');
+  }
+  assert.doesNotMatch(request.messages[0].content, /"id":"req-1"/,
+    'a fake example ID can prime the small model to renumber the shortlist');
+  assert.match(request.messages[0].content, /Never renumber or invent an ID/);
+  const invalid = interpretRoleFitAIResponse(JSON.stringify({
+    direct: [
+      { id: 'req-1', note: 'Demonstrates experience building REST APIs and microservices with TypeScript and Koa.' },
+      { id: 'req-2', note: 'Shows Git and CI/CD proficiency supported by the public professional portfolio.' },
+    ],
+    transferable: [], notEstablished: [],
+  }), { assessment, allowedIds: request.allowedIds });
+  assert.equal(invalid.failureCode, 'no_valid_notes');
+  assert.equal(invalid.rejectedCount, 2, 'strict evidence validation remains in force');
+});
+
+test('request-specific schema handles absent categories without inventing eligible IDs', () => {
+  const posting = 'About the job\nWe are hiring.';
+  const request = buildRoleFitAIRequest({ jobText: posting, assessment: assess(posting), evidenceCatalog: catalog });
+  const schema = JSON.parse(request.responseFormat.schema);
+  assert.deepEqual(request.allowedIds, []);
+  for (const category of ['direct', 'transferable', 'notEstablished']) {
+    assert.equal(schema.properties[category].maxItems, 0, category + ' must be an empty array');
+  }
+  const other = buildRoleFitAIRequest({ jobText: job, assessment: assess(job), evidenceCatalog: catalog });
+  assert.notEqual(request.responseFormat.schema, other.responseFormat.schema,
+    'different postings must not reuse an unrelated ID grammar');
+});
+
 test('AI prompt is prefill-bounded for local model while preserving all three categories', () => {
   const input = [
     'Role: Senior Java Software Engineer',
