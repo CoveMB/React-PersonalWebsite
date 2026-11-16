@@ -33,6 +33,26 @@ export const roleFitAIGenerationOptions = Object.freeze({
   response_format: { type: 'json_object', schema: JSON.stringify(roleFitAIResponseSchema) },
 });
 
+const roleFitAICategories = ['direct', 'transferable', 'notEstablished'];
+
+// Requirement IDs are positions in the original job text, not indices in the
+// smaller model shortlist. Constrain the grammar to the IDs actually supplied.
+function buildRoleFitAIResponseFormat(candidates) {
+  const properties = Object.fromEntries(roleFitAICategories.map((category) => {
+    const ids = [...new Set(candidates.filter((item) => item.category === category).map((item) => item.id))];
+    const base = roleFitAIResponseSchema.properties[category];
+    return [category, ids.length ? {
+      ...base,
+      maxItems: 2,
+      items: {
+        ...roleFitAINoteSchema,
+        properties: { ...roleFitAINoteSchema.properties, id: { type: 'string', enum: ids } },
+      },
+    } : { ...base, maxItems: 0 }];
+  }));
+  return { type: 'json_object', schema: JSON.stringify({ ...roleFitAIResponseSchema, properties }) };
+}
+
 export function classifyRoleFitAIError(error, stage = 'generation') {
   // Only fixed, non-sensitive codes leave this boundary. Never expose raw
   // engine exceptions, model text, URLs or the pasted employer posting.
@@ -227,6 +247,8 @@ export function buildRoleFitAIRequest({ jobText, evidenceCatalog = getRoleFitEvi
     ...item, evidence: item.evidence.filter((e) => knownIds.has(e.id)),
   }));
   return {
+    // Construct grammar only after the model shortlist has been bounded.
+    responseFormat: buildRoleFitAIResponseFormat(safe),
     analyzedRequirementCount: safe.length,
     allowedIds: safe.map((item) => item.id),
     totalRequirementCount: Object.values(categorized).reduce((n, items) => n + items.length, 0),
@@ -244,8 +266,10 @@ export function buildRoleFitAIRequest({ jobText, evidenceCatalog = getRoleFitEvi
         'JavaScript, Node.js and Koa are not Java, Spring or J2EE. React is not Angular or Vue.',
         'Do not treat technology in the job posting as candidate experience. Do not invent employers, training, certifications, metrics, timelines or proficiency.',
         'Select up to TWO distinct requirement IDs per category. Use each ID at most once.',
-        'Respond ONLY with valid JSON, no Markdown or introductory text, with this exact shape:',
-        '{"direct":[{"id":"req-1","note":"Short evidence-grounded sentence."}],"transferable":[],"notEstablished":[]}',
+        'Respond ONLY with valid JSON, no Markdown or introductory text. Include exactly three arrays: direct, transferable, notEstablished.',
+        'Each array item has exactly two fields: id and note. Copy each ID exactly from a requirement supplied in that same category.',
+        'The IDs represent positions in the complete posting, not positions in this shortlist. Never renumber or invent an ID.',
+        'When a category has no supplied requirements, return an empty array for that category.',
         'Each note must be 8–22 words, concrete and neutral. Never invent source IDs or URLs; the site attaches verified sources.',
         'All three arrays must be present, including empty arrays. No overall fit verdict, score or recommendation.',
       ].join(' '),
