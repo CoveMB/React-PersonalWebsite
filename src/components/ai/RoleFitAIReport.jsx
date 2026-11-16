@@ -155,11 +155,20 @@ export default function RoleFitAIReport({
         </details>
       ) : null}
       {(status === 'failed' || status === 'invalid' || status === 'empty') ? (
-        <details className="roleFitInventory roleFitAiDiagnostic">
-          <summary>Technical diagnostic (error codes only)</summary>
+        <details className="roleFitInventory roleFitAiDiagnostic" open={status === 'failed'}>
+          <summary>Technical diagnostic</summary>
           <p>Failure: <code>{aiFailure?.code ?? 'unknown'}</code>.
-            {' '}Stage: <code>{aiFailure?.stage ?? 'validation'}</code>.
-            {' '}This diagnostic does not include the job description.</p>
+            {' '}Stage: <code>{aiFailure?.stage ?? 'validation'}</code>.</p>
+          {aiFailure?.technicalDetails ? (
+            <>
+              <p className="roleFitEvidenceDisclaimer">
+                Original local runtime error (including a stack trace when available).
+                It may contain job-posting text or browser paths; review before sharing.
+                These details are not uploaded or saved.
+              </p>
+              <pre className="roleFitOutput">{aiFailure.technicalDetails}</pre>
+            </>
+          ) : null}
         </details>
       ) : null}
     </article>
