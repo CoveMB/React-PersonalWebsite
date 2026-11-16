@@ -104,13 +104,15 @@ test('interrupted model output is displayed in the AI card but never as a verifi
   assert.doesNotMatch(hook, /localStorage|sessionStorage/);
 });
 
-test('failed model inference exposes the original exception in the existing local diagnostic panel', () => {
+test('failed inference logs underlying exception locally while the UI exposes codes only', () => {
   const src = aiCard();
-  assert.match(hook, /technicalDetails: formatRoleFitAIErrorDetails\(cause\)/);
-  assert.match(src, /<summary>Technical diagnostic<\/summary>/);
-  assert.match(src, /open=\{status === 'failed'\}/);
-  assert.match(src, /\{aiFailure\.technicalDetails\}/);
-  assert.match(src, /review before sharing/i);
+  assert.match(hook, /console\.error\('\[AI Lab\] Local model failure'/);
+  assert.match(hook, /details:\s*formatRoleFitAIErrorDetails\(cause\)/);
+  assert.match(src, /<summary>Technical diagnostic \(error codes only\)<\/summary>/);
+  assert.match(src, /Failure: <code>/);
+  assert.match(src, /Stage: <code>/);
+  assert.doesNotMatch(src, /aiFailure\.technicalDetails|Original local runtime error/);
+  assert.doesNotMatch(hook, /technicalDetails:/);
   assert.doesNotMatch(src, /dangerouslySetInnerHTML|innerHTML/);
   assert.doesNotMatch(report, /technicalDetails/);
   assert.doesNotMatch(hook, /localStorage|sessionStorage|fetch\s*\(/);
