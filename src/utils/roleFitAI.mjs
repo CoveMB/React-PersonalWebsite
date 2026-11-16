@@ -31,6 +31,40 @@ export function classifyRoleFitAIError(error, stage = 'generation') {
   return { stage: phase, code };
 }
 
+// Keep original browser/worker error details available for local troubleshooting.
+// Only the active AI failure holds this bounded text; it is never sent or stored.
+export function formatRoleFitAIErrorDetails(error) {
+  const chain = [];
+  const visited = new Set();
+  let current = error;
+  while (current != null && chain.length < 5) {
+    if (typeof current === 'object' || typeof current === 'function') {
+      if (visited.has(current)) break;
+      visited.add(current);
+    }
+    const name = typeof current?.name === 'string' && current.name ? current.name : 'Error';
+    const code = typeof current?.code === 'string' || typeof current?.code === 'number'
+      ? String(current.code) : '';
+    const message = typeof current === 'string' || typeof current === 'number'
+      ? String(current) : typeof current?.message === 'string' ? current.message :
+        typeof current?.reason === 'string' ? current.reason :
+        typeof current?.error === 'string' ? current.error : '';
+    const stack = typeof current?.stack === 'string' ? current.stack : '';
+    chain.push({ name, code, message, stack });
+    current = current?.cause;
+  }
+  if (!chain.length) return '';
+  chain.reverse(); // Put the original exception before generic wrapper codes.
+  const stackIndex = chain.findIndex(entry => entry.stack);
+  return chain.map((entry, index) => {
+    const title = (index === 0 ? 'Underlying exception' : 'Wrapped by') + ': ' +
+      entry.name + (entry.code ? ' [' + entry.code + ']' : '');
+    const message = entry.message ? 'Message: ' + entry.message.slice(0, 2400) : 'Message unavailable';
+    const stack = index === stackIndex ? '\nStack:\n' + entry.stack.slice(0, 4000) : '';
+    return title + '\n' + message + stack;
+  }).join('\n\n').slice(0, 8000);
+}
+
 function roleCategory(row) {
   if (!row?.requirement || row.requirement.excluded) return null;
   const { category, importance } = row.requirement;
